@@ -36,5 +36,5 @@
   "cloud-repo-tools": {
     "requiresKeyFile": true,
     "requiresProjectId": true
+  }
 }
-
