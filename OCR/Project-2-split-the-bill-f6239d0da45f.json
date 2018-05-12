@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "project-2-split-the-bill",
+  "private_key_id": "f6239d0da45f60afc6e66fead2733f3a7cdfb06f",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCdlgm3rPVTMhW5\nscgQnouM7f2HmFdX+sslZuIHQalZonBN7EISuBcHAiK825nlIZ9o37Gtp+sM2DEK\ndTo13FGmCVDLQXekj63L7W1p4SX4A9BFjAv326c6whdkMPuy/pY8L1NLaC6nXo73\nQ6ZSNS6pndnxbZ3SrEwDJvjNnCqZBC9QMRs6cHkJe3TCaOaUBU2oRb76m0adEteW\nCE/RWgYF876+cLnRr5C9+luLlwRxEQ3K2BeSlAhvEmHQsWKPwZ1lRPiipvzsv3DC\nQx0u9QfMyeQpCIgv2SUarQ2KWUFFrF5GY/FL1zaXqRDC4G3e7Kz5Y50AHIwpWWcS\nH8KGRSI9AgMBAAECggEAEk/OhkT3ZvkBdEgX3vKFddVr6hdGQwd2Fr0LU9uJ8cwB\n79Qd42334w0Y+0grbGhJTVb9HxhNpHr0y+nOX1bgOAKKHGxZmkpF4FYRKkYK8vSC\nfapl86HXH2lRbYeRn/2ceJbpP3B2R2WiCFKYn6Hlb7lTi4340nPKC226aK4WdxxK\nMviokNWuAsJIQBaoEEHbDAhFIFKwQcY7zuNF6DYEpkj5cEZaVe++OEu62B5KSYr/\npDnzLMcbai5qkeT1X4SWpR4FVcJvaqoV1W++e0cUcwfpKs1lIC3fKk1GGPugh/TH\noQQ8y6LZ3ZFydriYNCBQNhSzac6PNRv84xM0VcBDsQKBgQDKGq4BC9AUJgl5dtSg\nEGP4mVpF2yGmvzwsR7O483rSL8lL+G2AWjlhsIkPHaaNbQRlIkPSpRAM1Ge3XisQ\nlTLnbd2kYB1698CCZXkuAcOEzaFfOSXs7xajhsc6OOxaVnA+pBS5fwDcDzCup08F\nVJnY7APq4ZVDAqlUtWhKBKVdCQKBgQDHnC3aCy/4xAnSvgbduGSHMyWW2lV8JrNn\nUHILJM2tNmc8FtkzgcdtdWrfja9N2+toIC47dRP4EJiWxZI6XVJQl2zk5g0oTPwX\nNGnuRKeyW4FTPvbC7wpMMLM0I6q80/7oF0vhKPkPzua+CnSnF3VSzbm8SaiDq5j2\nCfOt7FEclQKBgAtcXJOqelPnn3i4eVNWGIiM9koe+1FIRrWmgi/PYAQYs5QVrvIc\nIEWhitLSs94XVrvopS9eH/zYo8vm+zy/ZlEkF+V5ka6r5qJt2dYAO2Fnvb6Ak+Ux\nu3ANz30yXfbmDQE4cAHNZdr475+hwAtoqg1LlxzI+X7+003ztJ0UjcchAoGAFygs\nPZZ8qzx680LuYvyIVRL+8mBD+JI4z+yKPna3kbe1BEiWTB5rN2yeyG6UftDbn4nU\nMzui5G1wdlVXYIQBD65xiKCTuDAuMrb27xhx6AQrna+5SuYWaL5hm9Pjc+KYOO6y\n890f/9B9/mASJmxXRRLu0EQvU48twKVo6q12v30CgYEAq50dFIOUAMdKLnx9delD\nMKuO2nI9MTYZDLFyv0zXN5+88OhjmofQZccorOBRzze0h1WsivGFGBdvcxTVQ+hg\n7QmG2IpegkvYTcAjSKBcZyft/ztcHDntTa+QK+ijLUTidlqFI2njGO3ntk/wwGOf\nr90Z7Gg2qbSqZPFNKhKAGbk=\n-----END PRIVATE KEY-----\n",
+  "client_email": "project-2-split-the-bill@appspot.gserviceaccount.com",
+  "client_id": "114669478659824918450",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/project-2-split-the-bill%40appspot.gserviceaccount.com"
+}
