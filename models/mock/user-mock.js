@@ -5,7 +5,8 @@ const userModel = {'values': []}
 function fillModel() {
   for (let i = 1; i < 4; i++) {
     userModel.values.push({
-      'name': `${faker.name.lastName()}, ${faker.name.firstName()}`,
+      'first_name': faker.name.firstName(),
+      'last_name': faker.name.lastName(),
       'email': faker.internet.email(),
       'username': faker.internet.userName(),
       'avatar': faker.internet.avatar(),
