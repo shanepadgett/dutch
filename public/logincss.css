@@ -1,0 +1,16 @@
+.header{
+    font-family: 'Yeseva One', cursive;
+    font-size:75px;
+    color:#161515;
+    text-align:center;
+}
+
+.loginBox{
+    opacity:0.62;
+    background:#d8d8d8;
+    border:1px solid #979797;
+    width:658px;
+    height:351px;
+    margin-left: 300px;
+    margin-top: 350px;
+}
