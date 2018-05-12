@@ -17,9 +17,9 @@ function fillModel() {
 fillModel()
 
 module.exports = {
-  'getUser': id => userModel.values.find(user => user.id === id),
+  'getUser': id => userModel.values.find(user => user.id === parseInt(id)),
   'getUsers': () => userModel.values,
-  'postUser': user => {
+  'createUser': user => {
     const nextId = userModel.values.length + 1
     userModel.values.push({
       ...user, id: nextId // the ... operator is the property spread operator

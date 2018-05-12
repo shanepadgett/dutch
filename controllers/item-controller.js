@@ -1,5 +1,24 @@
-module.exports = {
-  'getItem': require('../endpoints/items/get-item'),
-  'getItems': require('../endpoints/items/get-items'),
-  'postItem': require('../endpoints/items/post-item')
+const model = require('../models/mock/item-mock')
+
+class Item {
+  static getItem(
+    {
+      params: { itemId }
+    },
+    res
+  ) {
+    res.json(model.getItem(itemId))
+  }
+
+  static getItems(_, res) {
+    res.json(model.getItems())
+  }
+
+  static createItem({ body }, res) {
+    return model.createItem(body).then(({ id }) =>
+      res.set('Location', `/api/items/${id}`).send(204)
+    )
+  }
 }
+
+module.exports = Item

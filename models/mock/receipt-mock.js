@@ -16,9 +16,9 @@ function fillModel() {
 fillModel()
 
 module.exports = {
-  'getReceipt': id => receiptModel.values.find(receipt => receipt.id === id),
+  'getReceipt': id => receiptModel.values.find(receipt => receipt.id === parseInt(id)),
   'getReceipts': () => receiptModel.values,
-  'postReceipt': receipt => {
+  'createReceipt': receipt => {
     const nextId = receiptModel.values.length + 1
     receiptModel.values.push({
       ...receipt, id: nextId // the ... operator is the property spread operator
