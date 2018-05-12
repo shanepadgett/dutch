@@ -1,4 +1,4 @@
-const {getReceipt, getReceipts, postReceipt} = require('../controllers/receipts-controller')
+const {getReceipt, getReceipts, postReceipt} = require('../controllers/receipt-controller')
 
 module.exports = app => {
   app.get('/api/receipts/', getReceipts)

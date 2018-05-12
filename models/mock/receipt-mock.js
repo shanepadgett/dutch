@@ -1,12 +1,7 @@
 const faker = require('faker')
+const {getRandomIntInclusive} = require('../../lib/utils')
 
 const receiptModel = {'values': []}
-
-function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-}
 
 function fillModel() {
   for (let i = 1; i < 11; i++) {
@@ -26,7 +21,7 @@ module.exports = {
   'postReceipt': receipt => {
     const nextId = receiptModel.values.length + 1
     receiptModel.values.push({
-      ...receipt, id: nextId
+      ...receipt, id: nextId // the ... operator is the property spread operator
     })
     return Promise.resolve({'id': nextId})
   }
