@@ -32,6 +32,7 @@ app.use(express.static('public'))
 // Routes
 //==================================
 require('./routes/website-routes')(app)
+require('./routes/receipt-routes')(app)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
