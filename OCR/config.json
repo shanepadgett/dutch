@@ -1,0 +1,7 @@
+{
+  "RESULT_TOPIC": "receiptText",
+  "RESULT_BUCKET": "divvy_up_receipt_text",
+  "TRANSLATE_TOPIC": "text",
+  "TRANSLATE": false,
+  "TO_LANG": ["en"]
+}
