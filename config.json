@@ -1,7 +1,0 @@
-{
-  "RESULT_TOPIC": "[receiptText",
-  "RESULT_BUCKET": "[project2textbucket]",
-  "TRANSLATE_TOPIC": "[text]",
-  "TRANSLATE": false,
-  "TO_LANG": ["en"]
-}
