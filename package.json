@@ -32,7 +32,6 @@
     "proxyquire": "1.8.0",
     "sinon": "3.2.1"
   },
-
   "cloud-repo-tools": {
     "requiresKeyFile": true,
     "requiresProjectId": true
