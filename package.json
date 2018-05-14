@@ -3,25 +3,26 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "SET NODE_ENV=dev node ./bin/www",
+    "start": "SET NODE_ENV=development&& node ./bin/www",
     "test": "mocha --timeout 10000"
   },
   "dependencies": {
+    "@google-cloud/pubsub": "0.13.2",
+    "@google-cloud/storage": "^1.2.1",
+    "@google-cloud/translate": "1.0.0",
+    "@google-cloud/vision": "0.12.0",
     "axios": "^0.18.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "dotenv": "^5.0.1",
     "express": "~4.16.0",
     "express-handlebars": "^3.0.0",
     "http-errors": "~1.6.2",
     "morgan": "~1.9.0",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3",
-    "sequelize": "^4.37.7",
-    "@google-cloud/pubsub": "0.13.2",
-    "@google-cloud/storage": "^1.2.1",
-    "@google-cloud/translate": "1.0.0",
-    "@google-cloud/vision": "0.12.0",
-    "safe-buffer": "5.1.1"
+    "safe-buffer": "5.1.1",
+    "sequelize": "^4.37.7"
   },
   "devDependencies": {
     "chai": "^4.1.2",
@@ -32,7 +33,6 @@
     "proxyquire": "1.8.0",
     "sinon": "3.2.1"
   },
-
   "cloud-repo-tools": {
     "requiresKeyFile": true,
     "requiresProjectId": true
