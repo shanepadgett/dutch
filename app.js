@@ -6,7 +6,6 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const exphbs = require('express-handlebars')
-const db = require('./models')
 
 const app = express()
 
@@ -52,7 +51,5 @@ app.use(function (err, req, res) {
   res.status(err.status || 500)
   res.render('error')
 })
-
-db.sequelize.sync({ force: true })
 
 module.exports = app

@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "start": "SET NODE_ENV=development&& node ./bin/www",
+    "dbCreate": "sequelize db:create --env \"development\"&& sequelize db:create --env \"test\"",
+    "dbSeed": "sequelize db:seed:all",
     "test": "mocha --timeout 10000"
   },
   "dependencies": {
