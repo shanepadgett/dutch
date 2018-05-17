@@ -6,6 +6,7 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const exphbs = require('express-handlebars')
+const db = require('./models')
 
 const app = express()
 
@@ -45,7 +46,7 @@ app.use(function (req, res, next) {
 })
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}
@@ -55,9 +56,13 @@ app.use(function (err, req, res, next) {
   res.render('error')
 })
 
+<<<<<<< HEAD
 app.listen(PORT, function() {
     console.log("App listening on PORT: " + PORT);
 });
 
+=======
+db.sequelize.sync({ force: true })
+>>>>>>> cb1ee400633cb27e28214a0b26f087445bb20281
 
 module.exports = app
