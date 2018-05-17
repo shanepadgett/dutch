@@ -14,21 +14,21 @@ module.exports = function(sequelize, DataTypes) {
         isFloat: true
       }
     },
-    'tax_total': {
+    'taxTotal': {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         isFloat: true
       }
     },
-    'tip_total': {
+    'tipTotal': {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
         isFloat: true
       }
     },
-    'receipt_total': {
+    'receiptTotal': {
       type: DataTypes.FLOAT,
       allowNull: false,
       validate: {
@@ -38,11 +38,11 @@ module.exports = function(sequelize, DataTypes) {
   })
 
   Receipt.associate = models => {
+    Receipt.hasMany(models.Item, {
+      foreignKey: 'receiptId'
+    })
     Receipt.belongsTo(models.User, {
-      as: 'owner',
-      foreignKey: {
-        allowNull: false
-      }
+      foreignKey: 'ownerId'
     })
   }
 

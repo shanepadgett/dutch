@@ -1,13 +1,13 @@
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
-    'first_name': {
+    'firstName': {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [1]
       }
     },
-    'last_name': {
+    'lastName': {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -22,7 +22,7 @@ module.exports = function(sequelize, DataTypes) {
         isEmail: true
       }
     },
-    'display_name': {
+    'displayName': {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
@@ -39,6 +39,12 @@ module.exports = function(sequelize, DataTypes) {
   })
 
   User.associate = models => {
+    User.hasMany(models.Receipt, {
+      foreignKey: 'ownerId'
+    })
+    User.hasMany(models.Item, {
+      foreignKey: 'assigneeId'
+    })
   }
 
   return User
