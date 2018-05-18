@@ -1,23 +1,44 @@
-const model = require('../models/mock/receipt-mock')
+const db = require('../models')
+const dbReceipt = db.Receipt
+const dbUser = db.User
 
 class Receipt {
-  static getReceipt(
-    {
-      params: { receiptId }
-    },
-    res
-  ) {
-    res.json(model.getReceipt(receiptId))
+  static getReceipt({params: { receiptId }}, res) {
+    dbReceipt.findOne({
+      where: {
+        id: receiptId
+      },
+      include: [
+        {
+          model: dbUser,
+          as: 'owner'
+        }
+      ]
+    }).then(receipt => {
+      res.json(receipt)
+    })    
   }
 
-  static getReceipts(_, res) {
-    res.json(model.getReceipts())
+  static getReceipts({params: {ownerId}}, res) {
+    let query = {}
+    if (ownerId) {
+      query.ownerId = ownerId
+    }
+    dbReceipt.findAll({
+      where: query,
+      include: {
+        model: dbUser,
+        as: 'owner'
+      }
+    }).then(receipts => {
+      res.json(receipts)
+    })
   }
 
   static createReceipt({ body }, res) {
-    return model.createReceipt(body).then(({ id }) =>
-      res.set('Location', `/api/receipts/${id}`).send(204)
-    )
+    // return model.createReceipt(body).then(({ id }) =>
+    //   res.set('Location', `/api/receipts/${id}`).send(204)
+    // )
   }
 }
 

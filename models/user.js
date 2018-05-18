@@ -40,10 +40,12 @@ module.exports = function(sequelize, DataTypes) {
 
   User.associate = models => {
     User.hasMany(models.Receipt, {
-      foreignKey: 'ownerId'
+      foreignKey: 'ownerId',
+      as: 'owner'
     })
     User.hasMany(models.Item, {
-      foreignKey: 'assigneeId'
+      foreignKey: 'assigneeId',
+      as: 'assignee'
     })
   }
 
