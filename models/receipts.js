@@ -39,10 +39,12 @@ module.exports = function(sequelize, DataTypes) {
 
   Receipt.associate = models => {
     Receipt.hasMany(models.Item, {
-      foreignKey: 'receiptId'
+      foreignKey: 'receiptId',
+      as: 'receipt'
     })
     Receipt.belongsTo(models.User, {
-      foreignKey: 'ownerId'
+      foreignKey: 'ownerId',
+      as: 'owner'
     })
   }
 
