@@ -1,3 +1,71 @@
-<div class="container">
-    hello
+<div class="container mt-3">
+    <form class="upload-form" enctype="multipart/form-data" method="post" action="#">
+        <div class="card mt-3 item-card">
+            <div class="card-body">
+                <label class="file-input-label w-100 text-center color-pink p-2 rounded zoom" for="file-input">
+                    <i class="fas fa-image fa-lg"></i>
+                    Select Receipt
+                </label>
+                <input id="file-input" class="file-upload" name="receipt-image" type="file" onchange="renderImg()" />
+                <div class="img-wrapper mt-3">
+                    <img class="img-preview" src="" height="500" alt="Image preview...">
+                </div>
+                <button type="button" class="btn btn-light btn-block analyze-btn" type="submit" value="submit">
+                    <i class="fas fa-bolt fa-lg"></i> Analyze</button>
+            </div>
+        </div>
+</div>
+
+<div class="container mt-3">
+    <div class="card mt-3 item-card">
+        <div class="card-body">
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text color-violet">1</div>
+                            </div>
+                            <input type="text" class="form-control" id="item-name" placeholder="Item 1">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text color-violet">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control text-right" id="item-amount" placeholder="$ 0.00">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <div class="input-group mb-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text color-violet">
+                                    <i class="fas fa-address-card fa-lg"></i>
+                                </div>
+                            </div>
+                            <input type="text" class="form-control" id="item-user" placeholder="Add User...">
+                        </div>
+                    </div>
+                    <div class="form-group col-md-1">
+                        <button type="button" class="btn btn-block color-violet zoom">
+                            <i class="fas fa-window-close fa-lg"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <form>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <button type="button" class="btn btn-circle color-pink btn-default">
+                            <i class="fas fa-plus-circle fa-lg"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.item-card -->
 </div>
