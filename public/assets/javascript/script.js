@@ -1,3 +1,8 @@
+$(document).ready(function() {
+    $('html, body').animate({
+        scrollTop: 0})
+})
+
 let file = null
 
 function renderImg() {
@@ -22,6 +27,15 @@ function renderImg() {
 
 $('.analyze-btn').on('click', function (event) {
     event.preventDefault()
+
+    $('.progress-bar')
+        .animate({
+            width: '100%'
+        }, function () {
+            $('html, body').animate({
+                scrollTop: ($('.item-container').offset().top) -73
+            }, 1000)
+        })
 
     let formData = new FormData()
     formData.append("file", file)
