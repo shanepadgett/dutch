@@ -1,37 +1,62 @@
 const db = require('../models')
 const dbItem = db.Item
 const dbUser = db.User
+const dbReceipt = db.Receipt
 
 class Item {
-  static getItem({params: { itemId }}, res) {
-    dbItem.findOne({
-      where: {
-        id: itemId
-      },
-      include: [
-        {
-          model: dbUser,
-          as: 'assignee'
-        }
-      ]
-    }).then(item => {
-      res.json(item)
-    })
+  static getItem(
+    {
+      params: { itemId }
+    },
+    res
+  ) {
+    dbItem
+      .findOne({
+        where: {
+          id: itemId
+        },
+        include: [
+          {
+            model: dbUser,
+            as: 'assignee'
+          }
+        ]
+      })
+      .then(item => {
+        res.json(item)
+      })
   }
 
-  static getItems(_, res) {
-    dbItem.findAll({
-      include: [{
-        model: dbUser,
-        as: 'assignee'
-      }]
-    }).then(items => {
-      res.json(items)
-    })
+  static getItems(
+    {
+      params: { assigneeId, receiptId }
+    },
+    res
+  ) {
+    let query = {}
+
+    if (assigneeId) {
+      query.assigneeId = assigneeId
+    }
+
+    if (receiptId) {
+      query.receiptID = receiptId
+    }
+
+    dbItem
+      .findAll({
+        where: query,
+        include: [
+          {model: dbUser, as: 'assignee'},
+          {model: dbReceipt, as: 'receipt', include: [{model: dbUser, as: 'owner'}]}
+        ]
+      })
+      .then(items => {
+        res.json(items)
+      })
   }
 
   static createItem({ body }, res) {
-
     // return model.createItem(body).then(({ id }) =>
     //   res.set('Location', `/api/items/${id}`).send(204)
     // )
@@ -39,7 +64,6 @@ class Item {
 }
 
 module.exports = Item
-
 
 // const model = require('../models/mock/item-mock')
 
