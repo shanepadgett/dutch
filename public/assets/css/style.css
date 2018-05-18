@@ -1,5 +1,5 @@
 html, body {
-
+    min-height: 100vh;
 }
 
 body {
@@ -55,6 +55,10 @@ body {
     box-shadow: 0 0 11px rgba(33,33,33,.2); 
     transform: scale(1.03, 1.03);
 } */
+
+.item-container {
+    min-height: 100vh;
+}
 
 .file-upload {
     width: 0.1px;
