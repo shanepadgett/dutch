@@ -56,13 +56,10 @@ app.use(function (err, req, res) {
   res.render('error')
 })
 
-<<<<<<< HEAD
+
 app.listen(PORT, function() {
     console.log("App listening on PORT: " + PORT);
 });
-
-=======
 db.sequelize.sync({ force: true })
->>>>>>> cb1ee400633cb27e28214a0b26f087445bb20281
 
 module.exports = app
