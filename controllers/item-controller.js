@@ -29,7 +29,7 @@ class Item {
 
   static getItems(
     {
-      params: { assigneeId }
+      params: { assigneeId, receiptId }
     },
     res
   ) {
@@ -37,6 +37,10 @@ class Item {
 
     if (assigneeId) {
       query.assigneeId = assigneeId
+    }
+
+    if (receiptId) {
+      query.receiptID = receiptId
     }
 
     dbItem
