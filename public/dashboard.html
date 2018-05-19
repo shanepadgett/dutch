@@ -5,21 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+            <!--<link href="css/main.css" rel="stylesheet">-->
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
+<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/popper.js"></script>-->
+<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
+<script type='text/javascript' src='js/bootstrap.js'></script>
     <link rel="stylesheet" href="dashboardcss.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Yeseva+One" rel="stylesheet">
 </head>
 <body>
-
-    <div class="navbar">
-        <div class="title">Divvy Up</div> 
-        <div class="navBtns">
-            <button class="splitBill" href="addphoto.html">Split A Bill</button>
-            <button class="history" href="history.html">Your History</button>
-            <button class="homeBtn" href="dashboard.html">Home</button>
-            <button class="logout"  href="login.html">Log Out</button>
-        </div>
+       
+    <div class='navbar-default'>
+            <div class="title col-8">Divvy Up</div>
+        <div class='container nav-container'>
+              <button type='button' class='navbar-toggle'
+                                                       data-toggle='collapse' 
+                                                       data-target='.navbar-collapse'>
+                        <span class='sr-only'>Toggle Navigation</span>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+                        <span class='icon-bar'></span>
+              </button>
+            <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
+            
+            </ul>
         </div>
     </div>
+      
+
+    <div class="navbar row">
+       
+       
+        <ul class="navBtns nav nav-pills nav navbar-nav navbar-right collapse navbar-collapse">
+            
+            <li class="nav-item">
+                    <a class="homeBtn nav-link" href="newreceipt.html">Split A Bill</a>
+                  </li>
+            <li class="nav-item">
+                    <a class="history nav-link" href="history.html">Your History</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="homeBtn nav-link" href="dashboard.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                        <a class="logout nav-link" href="login.html">Logout</a>
+                      </li>
+                    </div>
+                    
+                </ul>
+
+
+
+
+    <a class="headerText" href="newreceipt.html">Split A New Bill</a>
+
+<div class="billsContainer row">
+    <div class="col-4 billsYouSharedContainer">
+        <p>Bills You Have Shared</p>
+    </div>
+
+    <div class=" col-4 billSentToYouContainer">
+        <p>Bills That Have Been Shared With You</p>
+    </div>
+
+    <div class="col-4 unopenedBills">
+        <p>Unopened New Bills</p>
+    </div>
+</div>
+
+
+
     
 </body>
+
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script type="text/javascript" src="assets/javascript/assignreceipt.js"></script>
+
+
+
 </html>

@@ -7,46 +7,31 @@
     <title>Document</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-            <!--<link href="css/main.css" rel="stylesheet">-->
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.js"></script>
-<!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/popper.js"></script>-->
-<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-<script type='text/javascript' src='js/bootstrap.js'></script>
     <link rel="stylesheet" href="assignreceipt.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Yeseva+One" rel="stylesheet">
 </head>
 <body>
        
-    <div class='navbar-default'>
-            <div class="title col-8">Divvy Up</div>
-        <div class='container nav-container'>
-              <button type='button' class='navbar-toggle'
-                                                       data-toggle='collapse' 
-                                                       data-target='.navbar-collapse'>
-                        <span class='sr-only'>Toggle Navigation</span>
-                        <span class='icon-bar'></span>
-                        <span class='icon-bar'></span>
-                        <span class='icon-bar'></span>
-              </button>
-            <ul class="nav navbar-nav navbar-right collapse navbar-collapse">
-            
-            </ul>
-        </div>
-    </div>
-      
-    
 
-        
 
-             
+        <nav class="navbar navbar-expand-lg navbar-light">
+                <a class="navbar-brand"></a>
+                <button class="navbar-toggler" onClick="navFunction" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                  <div class="navbar-nav">
+                  </div>
+                </div>
+              </nav>
+
 
             
 
     <div class="navbar row">
+        <div class="title col-8">Divvy Up</div> 
        
-       
-        <ul class="navBtns nav nav-pills nav navbar-nav navbar-right collapse navbar-collapse">
+        <ul class="navBtns nav nav-pills">
             <li class="nav-item dropdown">
                 <a class="splitBill nav-link dropdown-toggle" data-toggle="dropdown" href="newreceipt.html" role="button" aria-haspopup="true" aria-expanded="false">Split A Bill</a>
                 <div class="dropdown-menu">
@@ -55,7 +40,7 @@
                     <a class="dropdown-item breadcrumb-item disabled" href="#">Share New Bill</a>
             </li>
             <li class="nav-item">
-                    <a class="history nav-link" href="history.html">Your History</a>
+                    <a class="history nav-link" href="#">Your History</a>
                   </li>
                   <li class="nav-item">
                     <a class="homeBtn nav-link" href="dashboard.html">Home</a>
@@ -63,27 +48,23 @@
                   <li class="nav-item">
                         <a class="logout nav-link" href="login.html">Logout</a>
                       </li>
-                    </div>
-                    
                 </ul>
-        
+        </ul>
             
      
         </div>
         </div>
-    </div>
-   
+    </div> 
 
        
 
- 
+ <div>
 <p class="receiptHeaderText">Here is your itemized Reciept!</p>
 
-
-<div class="receipt">
-
+<div class="reciept">
 
 
+    
     <div data-id="placeName" class="placeName">Uchi</div>
     <div class="date">July 14, 2018</div>
     <div class="time">10:28pm</div>
@@ -94,7 +75,7 @@
     <div class="total">Total: </div>
     
     </div>
-
+    
        
         
 
@@ -124,7 +105,7 @@
 </body>
 
 
-<script
+3<script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
   crossorigin="anonymous"></script>

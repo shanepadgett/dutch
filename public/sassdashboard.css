@@ -1,48 +1,32 @@
-/*
-Error: Invalid CSS after "    position": expected ";", was ": relative,"
-        on line 34 of /Users/allisondriver/Desktop/newdivvyup/divvy-up/public/sassdashboard.scss
+.navbar {
+  position: absolute;
+  background-color: transparent;
+  width: 100%;
+  height: 115px;
+  margin: none; }
 
-29: }
-30: 
-31: 
-32: .splitBill, .history, .homeBtn, .logout{
-33:     background-color: transparent,
-34:     position: relative,
-35:     font-family: $main-font,      
-36:     font-size:  20px,
-37:     margin-right:   20px,
-38:     color:  white,
-39:     border: none;
+.title {
+  position: absolute;
+  font-family: Shrikhand;
+  font-size: 75px;
+  color: #4e85c0;
+  margin-top: 10px;
+  margin-left: 50px; }
 
-Backtrace:
-/Users/allisondriver/Desktop/newdivvyup/divvy-up/public/sassdashboard.scss:34
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1278:in `expected'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1208:in `expected'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1203:in `tok!'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:804:in `block in try_declaration'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:1254:in `rethrow'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:809:in `try_declaration'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:732:in `declaration_or_ruleset'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:697:in `block_child'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:686:in `block_contents'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:678:in `block'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:670:in `ruleset'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:696:in `block_child'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:689:in `block_contents'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:137:in `stylesheet'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/scss/parser.rb:41:in `parse'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:414:in `_to_tree'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:389:in `_render_with_sourcemap'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/engine.rb:307:in `render_with_sourcemap'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/exec/sass_scss.rb:391:in `run'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/exec/sass_scss.rb:63:in `process_result'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/exec/base.rb:52:in `parse'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/lib/sass/exec/base.rb:19:in `parse!'
-/Applications/Koala.app/Contents/Resources/app.nw/rubygems/gems/sass-3.5.2/bin/sass:13:in `<top (required)>'
-/Applications/Koala.app/Contents/Resources/app.nw/bin/sass:22:in `load'
-/Applications/Koala.app/Contents/Resources/app.nw/bin/sass:22:in `<main>'
-*/
-body:before {
-  white-space: pre;
-  font-family: monospace;
-  content: "Error: Invalid CSS after \"    position\": expected \";\", was \": relative,\"\A         on line 34 of /Users/allisondriver/Desktop/newdivvyup/divvy-up/public/sassdashboard.scss\A \A 29: }\A 30: \A 31: \A 32: .splitBill, .history, .homeBtn, .logout{\A 33:     background-color: transparent,\A 34:     position: relative,\A 35:     font-family: $main-font,      \A 36:     font-size:  20px,\A 37:     margin-right:   20px,\A 38:     color:  white,\A 39:     border: none;"; }
+.navBtns {
+  position: relative;
+  margin-left: 700px;
+  margin-top: 60px;
+  color: #4e85c0;
+  font-family: YesevaOne-Regular; }
+
+.splitBill, .history, .homeBtn, .logout {
+  background-color: transparent;
+  position: relative;
+  font-family: YesevaOne-Regular;
+  font-size: 18px;
+  margin-right: 20px;
+  color: #4e85c0;
+  border: none; }
+
+/*# sourceMappingURL=sassdashboard.css.map */

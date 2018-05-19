@@ -29,7 +29,7 @@
   position: relative;
   font-family: YesevaOne-Regular;
   font-size: 1.5vw;
-  margin-right: 5px;
+  margin-right: 25px;
   color: #4e85c0;
   border: none; }
 
@@ -42,32 +42,20 @@
   border: none;
   margin-left: 57%; }
 
-.newBillUploadText {
-  margin-top: 7%;
-  margin-bottom: 0px; }
-
-.shareNewBillText {
-  color: black; }
-
-.friendsContainer {
-  position: absolute;
-  margin-top: 400px;
-  margin-left: 450px; }
-
 .receiptHeaderText {
-  position: absolute;
-  margin-top: 12%;
+  position: relative;
+  margin-top: 200px;
   margin-left: 20%; }
 
-.reciept {
+.receipt {
   position: absolute;
   width: 30%;
-  min-height: 55%;
+  min-height: 20%;
   border-color: black;
   border-width: 2px;
   border-style: solid;
   margin-left: 12%;
-  margin-top: 250px;
+  margin-top: 0px;
   text-align: center; }
 
 .emailAssignContainer {
@@ -88,18 +76,41 @@
 .submitBtn {
   align-items: center; }
 
-@media only screen and (max-width: 990px) {
-  .splitBill, .history, .homeBtn, .logout, .newBillUploadText, .confirmText, .shareNewBillText {
+.nav-container {
+  background-color: white; }
+
+@media only screen and (max-width: 768px) {
+  .splitBill, .history, .homeBtn, .logout, .newBillUploadText, .confirmText, .shareNewBillText, .navBtns {
     display: none; }
 
-  .reciept, .emailAssignContainer {
-    position: absolute;
-    margin-top: 250px; }
-
-  .receiptHeaderText {
-    margin-top: 220px; } }
-@media only screen and (max-width: 375px) {
   .title {
-    font-size: 40px; } }
+    font-size: 7.5pv; }
+
+  .nav-container {
+    height: 30px; }
+
+  .receipt {
+    position: relative;
+    width: 100%;
+    margin-left: 0px;
+    margin-top: 0px; }
+
+  .emailAssignContainer {
+    position: absolute;
+    margin-left: 100px !important;
+    margin-top: 100px !important;
+    margin-right: 100px; } }
+@media only screen and (max-width: 425px) {
+  .receipt {
+    position: relative;
+    width: 100%;
+    margin-left: 0px;
+    margin-top: 0px; }
+
+  .emailAssignContainer {
+    position: absolute;
+    margin-left: 100px !important;
+    margin-top: 100px !important;
+    margin-right: 100px; } }
 
 /*# sourceMappingURL=assignreceipt.css.map */

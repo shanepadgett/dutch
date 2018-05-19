@@ -45,41 +45,10 @@
 .nav-container {
   background-color: white; }
 
-.placeNameTitle {
-  font-size: 30px;
+.billsContainer {
   position: absolute;
+  margin-top: 200px;
   width: 100%;
-  text-align: center; }
-
-.titleInfoOne {
-  position: absolute;
-  margin-top: 165px;
-  font-size: large;
-  width: 100%;
-  text-align: center; }
-
-.titleInfoTwo {
-  position: relative;
-  margin-top: 185px;
-  font-size: large;
-  width: 100%;
-  text-align: center; }
-
-.receipt {
-  position: absolute;
-  width: 30%;
-  min-height: 40%;
-  border-color: black;
-  border-width: 2px;
-  border-style: solid;
-  margin-left: 35%;
-  margin-top: 5%;
-  text-align: center; }
-
-.proceed {
-  position: absolute;
-  width: 100%;
-  margin-top: 350px;
   text-align: center; }
 
 @media only screen and (max-width: 768px) {
@@ -92,4 +61,4 @@
   .nav-container {
     height: 30px; } }
 
-/*# sourceMappingURL=confirmreceipt.css.map */
+/*# sourceMappingURL=historycss.css.map */

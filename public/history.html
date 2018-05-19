@@ -13,7 +13,7 @@
 <!--<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/popper.js"></script>-->
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
 <script type='text/javascript' src='js/bootstrap.js'></script>
-    <link rel="stylesheet" href="addphotocss.css" type="text/css">
+    <link rel="stylesheet" href="historycss.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Yeseva+One" rel="stylesheet">
 </head>
 <body>
@@ -35,63 +35,48 @@
         </div>
     </div>
       
-    
-
-        
-
-             
-
-            
-
     <div class="navbar row">
        
        
-        <ul class="navBtns nav nav-pills nav navbar-nav navbar-right collapse navbar-collapse">
-            <li class="nav-item dropdown">
-                <a class="splitBill nav-link dropdown-toggle" data-toggle="dropdown" href="newreceipt.html" role="button" aria-haspopup="true" aria-expanded="false">Split A Bill</a>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item breadcrumb-item diable" href="#">New Bill Upload</a>
-                  
-            </li>
-            <li class="nav-item">
-                    <a class="history nav-link" href="#">Your History</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="homeBtn nav-link" href="dashboard.html">Home</a>
-                  </li>
-                  <li class="nav-item">
-                        <a class="logout nav-link" href="login.html">Logout</a>
+            <ul class="navBtns nav nav-pills nav navbar-nav navbar-right collapse navbar-collapse">
+                
+                <li class="nav-item">
+                        <a class="homeBtn nav-link" href="newreceipt.html">Split A Bill</a>
                       </li>
-                    </div>
-                    
-                </ul>
-        
+                <li class="nav-item">
+                        <a class="history nav-link" href"history.html"=>Your History</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="homeBtn nav-link" href="dashboard.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                            <a class="logout nav-link" href="login.html">Logout</a>
+                          </li>
+                        </div>
+                        
+                    </ul>
             
      
         </div>
         </div>
     </div>
-   
 
-
-</div>
-</div>
-</div> 
-        <div class="addPhotoContainer">
-        <form class="photoInput" method="post" enctype="multipart/form-data">
-            <div>
-              <label for="file">Select photo of bill or reciept</label>
-              <input type="file" id="file" name="file" multiple>
-            </div>
-            <div>
-              <button class="photoUploadBtn">Submit</button>
-            </div>
-           </form>
+    <div class="billsContainer">
+    <div class="billsYouSharedContainer">
+            <a href="youshared.html">Bills You Have Shared</a>
         </div>
 
-
-
+    <div class="billSentToYouContainer">
+            <a href="sharedwithyou.html">Bills That Have Been Shared With You</a>
+    </div>
+        
+    <div class="unopenedBills">
+            <a href="newbills.html">Unopened New Bills</a>
+        </div>
+    </div>
 </body>
+
+
 <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
@@ -99,4 +84,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script type="text/javascript" src="assets/javascript/assignreceipt.js"></script>
+
+
+
 </html>

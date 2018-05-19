@@ -4,38 +4,30 @@ $title-font: Shrikhand;
 $color-one: rgba(78,133,192,100);
 
 
-.navbar{
-    position:absolute;
-    background-color: transparent;
-    width:100%;
-    height:115px;
-    margin:none;
-}
 
 .title{
-    position:absolute;
-    font-family:$title-font;
+    font-family: $title-font;
     font-size:75px;
-    color:$color-one;
-    margin-top:10px;
-    margin-left: 50px;
+    color:#161515;
+    text-align:center;
 }
 
-.navBtns{
-    position: relative;
-    margin-left:700px;
-    margin-top:60px;
-    color: $color-one;
-    font-family: $main-font;
+.loginBox{
+    position: absolute;
+    opacity:0.62;
+    background:#d8d8d8;
+    border:1px solid #979797;
+    width:70%;
+    min-height:50%;
+    margin-left: 200px;
+    margin-top: 200px;
 }
 
-
-.splitBill, .history, .homeBtn, .logout{
-    background-color: transparent;
-    position: relative;
-    font-family: $main-font;      
-    font-size:  18px;
-    margin-right:   20px;
-    color: $color-one;
-    border: none;
-}
+@media only screen and (max-width: 900px) {
+    .loginBox{
+        width: 80%;
+        margin-left: 10%;
+        margin-right:10%;
+        margin-top:10%;
+    }
+    }

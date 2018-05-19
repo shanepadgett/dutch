@@ -63,58 +63,7 @@ $color-one: rgba(78,133,192,100);
     background-color:white;
   }
    
-
-.titleInfoContainer{
-     margin-top: 10%;
-     width:100%;
-     text-align: center;
- }
-
-
-
- .receiptTitle{
-     font-size: 60px;
- }
-
- .totalsContainer{
-    position: relative;
-    float: right;
-    margin-right: 10%;
-    width: 20%;
-
-}
-
-.receipt{
-    
-        position: relative;
-        margin-top:5%;
-        margin-left:35%;
-        width:400px;
-        height:200px;
-        border-width:2px;
-        border-style:solid;
-        border-color:black;
-         display: block;
-         text-align: center;
-    
-}
-
-.amountOwedContainer{
-    position: relative;
-    float: right;
-    margin-right: 10%;
-    width: 20%;
-    
- }
-
- .payBillBtn{
-     position: absolute;
-     margin-left:48%;
-
- }
-
-
-
+  
   @media only screen and (max-width: 768px) {
     .splitBill, .history, .homeBtn, .logout, .newBillUploadText, .confirmText, .shareNewBillText,.navBtns {
       display: none; }
