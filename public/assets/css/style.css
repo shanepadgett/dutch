@@ -3,24 +3,28 @@ html, body {
 }
 
 body {
-    background: #e7dfdd;
-    color: #0e0b16;
+    background: #d1ccc0;
+    color: #333;
 }
 
 .navbar {
-    background: #1dd1a1;
+    background: #33d9b2;
     color: #e7dfdd;
 }
 
-.color-pink {
-    background: #FF0DFF;
+.btn-danger  {
+    background: #ff5252;
     color: #fff;
 }
 
+
+
 .color-violet {
-    background:#4717f6;
+    background:#706fd3;
     color: #fff;
 }
+
+
 
 /* .btn-circle {
     width: 45px;

@@ -1,6 +1,7 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('html, body').animate({
-        scrollTop: 0})
+        scrollTop: 0
+    })
 })
 
 let file = null
@@ -33,11 +34,12 @@ $('.analyze-btn').on('click', function (event) {
             width: '100%'
         }, function () {
             $('html, body').animate({
-                scrollTop: ($('.item-container').offset().top) -73
+                scrollTop: ($('.item-container').offset().top) - 73
             }, 1000)
         })
 
     let formData = new FormData()
+
     formData.append("file", file)
     formData.append("language", "eng")
     formData.append("apikey", "302d46a6e388957")
@@ -80,17 +82,18 @@ $('.analyze-btn').on('click', function (event) {
                             break
                     }
 
-                    let items = []
+                    let arr = []
 
                     $.each(textOverlay["Lines"], function (index, value) {
                         // console.log(JSON.stringify(value,null,2))
-                        console.log(index, value)
 
                         let text = ''
+                        let amounts = []
+                        let descriptions = []
+                        let items = []
 
-                        for (let i in value.Words) {
+                        for (let i in value.Words)
                             text += ` ${value.Words[i].WordText}`
-                        }
 
                         let obj = {
                             index: index,
@@ -99,23 +102,49 @@ $('.analyze-btn').on('click', function (event) {
                             left: value.Words[0].Left,
                             lineHeight: value.MaxHeight
                         }
-
-                        items.push(obj)
-
-
+                        arr.push(obj)
                     })
 
-                    items
+                    arr
                         .sort(function (a, b) {
                             return a.top - b.top
                         })
 
-                    // for (let i = 0; i < arr.length - 1; i++) {
-                    //     arr[i].line = marginalLineCount
+                    function cleanFloat(string) {
+                        string = string
+                            .replace(/ /g, '')
+                            .replace(/I/g, '1')
+                            .replace(/\,/g, '.')
+                            .replace(/\$/g, '')
 
-                    //     if (arr[i + 1].yAnchorPoint - arr[i].yAnchorPoint >= arr[i].heightBounding / 2)
-                    //         marginalLineCount++
-                    // }
+                        return parseFloat(string)
+                    }
+
+                    function cleanString(string) {
+
+                    }
+
+                    arr.forEach(item =>
+                        item.text.replace(/[^0-9]/g, '').length > 1 &&
+                        (item.text.indexOf('.') !== -1 || item.text.indexOf(',') !== -1) &&
+                        !(isNaN(parseFloat(item.text))) &&
+                        item.text.indexOf('/') === -1 ?
+                        amounts.push(item) : descriptions.push(item))
+
+                    amounts.forEach(item => item.text = cleanFloat(item.text))
+
+                    for (let i in amounts) {
+                        for (let j in descriptions) {
+                            if (Math.abs(descriptions[j].top - amounts[i].top) < amounts[i].lineHeight / 2) {
+                                let obj = {
+                                    name: descriptions[j].text,
+                                    amount: amounts[i].text,
+                                    type: null
+                                }
+                                items.push(obj)
+                            }
+                        }
+                    }
 
                     console.log(items) //here
                 })
