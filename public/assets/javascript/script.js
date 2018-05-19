@@ -38,6 +38,7 @@ $('.analyze-btn').on('click', function (event) {
         })
 
     let formData = new FormData()
+    
     formData.append("file", file)
     formData.append("language", "eng")
     formData.append("apikey", "302d46a6e388957")
@@ -80,11 +81,11 @@ $('.analyze-btn').on('click', function (event) {
                             break
                     }
 
-                    let items = []
+                    let arr = []
 
                     $.each(textOverlay["Lines"], function (index, value) {
                         // console.log(JSON.stringify(value,null,2))
-                        console.log(index, value)
+                        // console.log(index, value)
 
                         let text = ''
 
@@ -100,15 +101,34 @@ $('.analyze-btn').on('click', function (event) {
                             lineHeight: value.MaxHeight
                         }
 
-                        items.push(obj)
+                        arr.push(obj)
 
 
                     })
 
-                    items
+                    arr
                         .sort(function (a, b) {
                             return a.top - b.top
                         })
+
+                    let numeric = []
+
+                        function cleanFloat(string) {
+                            string = string
+                                .replace(/ /g,'')
+                                .replace('I', '1')
+                                .replace(/\$/g,'')
+
+                            return parseFloat(string)
+                        }
+
+                    arr.forEach(item => 
+                        item.text.replace(/[^0-9]/g,'').length > 1 && 
+                        item.text.indexOf('.') !== -1 &&
+                        item.text.indexOf('/') === -1
+                        ? numeric.push(item) : false)
+
+                    numeric.forEach(item => cleanFloat(item.text))
 
                     // for (let i = 0; i < arr.length - 1; i++) {
                     //     arr[i].line = marginalLineCount
@@ -117,7 +137,7 @@ $('.analyze-btn').on('click', function (event) {
                     //         marginalLineCount++
                     // }
 
-                    console.log(items) //here
+                    console.log(numeric) //here
                 })
             }
         }
