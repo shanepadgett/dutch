@@ -31,7 +31,7 @@ app.use(express.static('public'))
 
 // Routes
 //==================================
-require('./routes/website-routes')(app)
+require('./routes/html-routes')(app)
 require('./routes/receipt-routes')(app)
 require('./routes/user-routes')(app)
 require('./routes/item-routes')(app)
