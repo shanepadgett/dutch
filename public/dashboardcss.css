@@ -81,6 +81,14 @@
     text-align: center; }
 
   .nav-container {
-    height: 30px; } }
+    height: 30px; }
+
+  .billsYouSharedContainer, .billSentToYouContainer, .unopenedBills {
+    width: 30%;
+    background-color: gray;
+    padding: 5px;
+    border: 5px;
+    border-color: white;
+    border-style: solid; } }
 
 /*# sourceMappingURL=dashboardcss.css.map */
