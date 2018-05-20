@@ -30,6 +30,7 @@
   "devDependencies": {
     "@google-cloud/nodejs-repo-tools": "1.4.17",
     "ava": "0.22.0",
+    "bootstrap": "^4.1.1",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "cross-env": "^5.1.5",

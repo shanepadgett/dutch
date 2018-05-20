@@ -1,30 +1,109 @@
-html, body {
-    min-height: 100vh;
+/*GLOBALS*/
+:root {
+  --void: #0e0b16;
+  --fuschia: #a239ca;
+  --jewel: #4717f6;
+  --stark: #e7dfdd;
+  --black: #000000;
+  --nobel: #B4AEAC;
+}
+
+/* BACKGROUND COLORS */
+/* ======================== */
+.bg-void {
+  background-color: var(--void);
+}
+
+.bg-fuschia {
+  background-color: var(--fuschia);
+}
+
+.bg-jewel {
+  background-color: var(--jewel);
+}
+
+.bg-stark {
+  background-color: var(--stark);
+}
+
+.bg-black {
+  background-color: var(--black);
+}
+
+.bg-nobel {
+  background-color: var(--nobel);
+}
+
+/* FONT COLORS */
+/* ========================= */
+.text-void {
+  color: var(--void);
+}
+
+.text-fuschia {
+  color: var(--fuschia);
+}
+
+.text-jewel {
+  color: var(--jewel);
+}
+
+.text-stark {
+  color: var(--stark);
+}
+
+.text-black {
+  color: var(--black);
+}
+
+.text-nobel {
+  color: var(--nobel);
+}
+
+/* COMMON */
+/* ======================== */
+html {
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-    background: #d1ccc0;
-    color: #333;
+  margin-bottom: 60px; /* Margin bottom by footer height */
+  background: var(--stark);
+  color: #333;
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* Set the fixed height of the footer here */
+  line-height: 60px; /* Vertically center the text there */
+  background-color: var(--nobel);
 }
 
 .navbar {
-    background: #33d9b2;
-    color: #e7dfdd;
+  background: var(--black);
+  color: #e7dfdd;
 }
 
-.btn-danger  {
-    background: #ff5252;
-    color: #fff;
+a.navbar-brand:link,
+a.navbar-brand:visited,
+a.navbar-brand:hover,
+a.navbar-brand:active,
+a.navbar-brand:focus {
+  color: var(--stark) !important;
 }
 
-
+.btn-danger {
+  background: #ff5252;
+  color: #fff;
+}
 
 .color-violet {
-    background:#706fd3;
-    color: #fff;
+  background: #706fd3;
+  color: #fff;
 }
-
-
 
 /* .btn-circle {
     width: 45px;
@@ -61,23 +140,80 @@ body {
 } */
 
 .item-container {
-    min-height: 100vh;
+  min-height: 100vh;
 }
 
 .file-upload {
-    width: 0.1px;
-    height: 0.1px;
-    opacity: 0;
-    overflow: hidden;
-    position: absolute;
-    z-index: -1;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
 }
 
 .img-wrapper {
-    text-align: center;
-    width: 100%;
+  text-align: center;
+  width: 100%;
 }
 
 .img-preview {
-    display: none;
+  display: none;
+}
+
+/* BUTTONS */
+/* ======================== */
+.btn-jewel {
+  background-color: var(--jewel);
+  color: var(--stark)
+}
+
+.btn-fuschia {
+  background-color: var(--fuschia);
+  color: var(--stark)
+}
+
+/* CAROUSEL */
+/* ====================== */
+.carousel {
+  min-height: 35vh;
+  max-width: 100%;
+}
+
+/* FEATURE CARDS */
+.feature-card {
+  max-width: 300px;
+  margin: 10px;
+}
+
+.f-card-title {
+  font-size: 1.3rem;
+}
+
+.f-card-text {
+  font-size: 1rem;
+}
+
+/* MEDIA QUERIES */
+/*===========================*/
+@media (min-width: 576px) {
+  /* FEATURE CARDS */
+  .f-card-title {
+    font-size: 1.6rem;
+  }
+
+  .f-card-text {
+    font-size: 1.3rem;
+  }
+}
+
+@media (min-width: 992px) {
+  /* FEATURE CARDS */
+  /*.i-card-title {*/
+    /*font-size: 2rem;*/
+  /*}*/
+
+  /*.i-card-text {*/
+    /*font-size: 1.5rem;*/
+  /*}*/
 }
