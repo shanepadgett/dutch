@@ -25,6 +25,16 @@
 .bg-stark {
   background-color: var(--stark);
 }
+.btn-success {
+    background: #33d9b2;
+    border: #20bf6b;
+}
+
+
+/* .analyze-btn,
+.progress {
+    display: none;
+} */
 
 .bg-black {
   background-color: var(--black);
