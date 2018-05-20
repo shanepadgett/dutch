@@ -4,6 +4,9 @@ $(document).ready(function () {
     })
 })
 
+
+// Render Receipt Image, Prepare Data For OCR
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
 let file = null
 
 function renderImg() {
@@ -26,6 +29,8 @@ function renderImg() {
     }
 }
 
+// Process OCR Receipt Image
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
 $('.analyze-btn').on('click', function (event) {
     event.preventDefault()
 
@@ -34,7 +39,7 @@ $('.analyze-btn').on('click', function (event) {
             width: '100%'
         }, function () {
             $('html, body').animate({
-                scrollTop: ($('.item-container').offset().top) - 73
+                scrollTop: ($('.item-container').offset().top) - 74
             }, 1000)
         })
 
@@ -129,10 +134,6 @@ $('.analyze-btn').on('click', function (event) {
                         return parseFloat(string)
                     }
 
-                    function cleanString(string) {
-
-                    }
-
                     arr.forEach(item =>
                         item.text.replace(/[^0-9]/g, '').length > 1 &&
                         (item.text.indexOf('.') !== -1 || item.text.indexOf(',') !== -1) &&
@@ -153,6 +154,7 @@ $('.analyze-btn').on('click', function (event) {
                                 let obj = {
                                     name: descriptions[j].text,
                                     amount: amounts[i].text,
+                                    quantity: 1,
                                     isTax: taxKeywords.test(descriptions[j].text.toLowerCase()),
                                     isTotal: totalKeywords.test(descriptions[j].text.toLowerCase())
                                 }
@@ -178,4 +180,11 @@ $('.analyze-btn').on('click', function (event) {
             }
         }
     })
+})
+//Add Item to OCR Results
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
+$('.add-item').on('click', function(event) {
+    event.preventDefault()
+
+
 })
