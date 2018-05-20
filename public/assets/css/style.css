@@ -17,12 +17,18 @@ body {
     color: #fff;
 }
 
-
-
-.color-violet {
-    background:#706fd3;
-    color: #fff;
+.btn-success {
+    background: #33d9b2;
+    border: #20bf6b;
 }
+
+
+/* .analyze-btn,
+.progress {
+    display: none;
+} */
+
+
 
 
 
