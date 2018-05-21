@@ -359,6 +359,6 @@ $('.split-allocate-btn ').on('click', function (event) {  //here
     console.log($(this).attr(dataTarget))
 })
 
-$('.save-receipt-btn').on('click', function() { //here, also add validation, send object to server, route to user page, call user data, load friends, receipts
+$('.save-receipt-btn').on('click', function() { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
 })
