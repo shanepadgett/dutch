@@ -349,7 +349,7 @@ $(document).on('click', '.remove-item-btn ', function() {
     $(this).closest('.item-wrapper').remove()
 })
 
-$('.split-allocate-btn ').on('click', function (event) {
+$('.split-allocate-btn ').on('click', function (event) {  //here
     event.preventDefault()
 
     // $(this).toggleClass('btn-outline-secondary btn-secondary')
@@ -357,4 +357,8 @@ $('.split-allocate-btn ').on('click', function (event) {
     console.log($('#accordion').children('.show').prop('id'))
 
     console.log($(this).attr(dataTarget))
+})
+
+$('.save-receipt-btn').on('click', function() { //here, also add validation, send object to server, route to user page, call user data, load friends, receipts
+
 })
