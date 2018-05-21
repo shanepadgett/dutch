@@ -107,6 +107,7 @@ $('.analyze-btn').on('click', function (event) {
                     })
 
                     let receipt = {
+                        location: null,
                         date: null,
                         items: [],
                         tax: 0,
@@ -174,7 +175,15 @@ $('.analyze-btn').on('click', function (event) {
                         }, 0) + receipt.tax === receipt.total)
                         receipt.reconciled = true
 
-                    console.log(arr, receipt) //send obj, create hbs string
+                    receipt.location = arr[0].text
+                    descriptions.forEach(item => item.text.indexOf('/') !== -1 ?
+                        item.text.split('/').length === 3 ?
+                        receipt.date = item.text :
+                        false :
+                        false
+                    )
+
+                    console.log(formData, receipt) //send obj, create hbs string
 
                 })
             }
@@ -183,7 +192,7 @@ $('.analyze-btn').on('click', function (event) {
 })
 //Add Item to OCR Results
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
-$('.add-item').on('click', function(event) {
+$('.add-item').on('click', function (event) {
     event.preventDefault()
 
 
