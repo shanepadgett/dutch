@@ -1,4 +1,5 @@
-const model = require('../models/mock/user-mock')
+const db = require('../models')
+const dbUser = db.User
 
 class User {
   static getUser(
@@ -7,17 +8,25 @@ class User {
     },
     res
   ) {
-    res.json(model.getUser(userId))
+    dbUser.findOne({
+      where: {
+        id: userId
+      }
+    }).then(user => {
+      res.json(user)
+    })
   }
 
   static getUsers(_, res) {
-    res.json(model.getUsers())
+    dbUser.findAll({}).then(users => {
+      res.json(users)
+    })
   }
 
   static createUser({ body }, res) {
-    return model.createUser(body).then(({ id }) =>
-      res.set('Location', `/api/users/${id}`).send(204)
-    )
+    // return model.createUser(body).then(({ id }) =>
+    //   res.set('Location', `/api/users/${id}`).send(204)
+    // )
   }
 }
 
