@@ -1,9 +1,13 @@
 <div class="sticky-top">
   <nav class="navbar navbar-light">
-    <a class="navbar-brand mr-auto" href="#">dutch</a>
+    <a class="navbar-brand mr-auto" href="/">dutch</a>
     <form class="form-inline">
-      <button type="button" class="btn btn-jewel rounded-0 mr-2">Login</button>
-      <button type="button" class="btn btn-fuschia rounded-0">Sign Up</button>
+      {{#if loggedIn}}
+        <a href="/dashboard"><button type="button" class="btn btn-jewel rounded-0 mr-2" id="btn-login">Dashboard</button></a>
+        <a href="/logout"><button type="button" class="btn btn-fuschia rounded-0 mr-2" id="btn-login">Sign Out</button></a>
+      {{else}}
+        <a href="/login"><button type="button" class="btn btn-jewel rounded-0 mr-2" id="btn-login">Sign In</button></a>
+      {{/if}}
     </form>
   </nav>
 </div>
