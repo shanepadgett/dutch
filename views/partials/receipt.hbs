@@ -1,8 +1,8 @@
 <div class="container mt-3">
     <form class="upload-form" enctype="multipart/form-data" method="post" action="#">
         <div class="card mt-3">
-            <div class="card-body">
-                <label class="file-input-label w-100 text-center btn btn-danger p-2 rounded" for="file-input">
+            <div class="card-body bg-void rounded">
+                <label class="file-input-label w-100 text-center btn-dark p-2 rounded" for="file-input">
                     <i class="fas fa-image fa-lg"></i>
                     Add Receipt
                 </label>
@@ -10,126 +10,143 @@
                 <div class="img-wrapper mt-3">
                     <img class="img-preview" src="" height="500" alt="Image preview...">
                 </div>
-                <button type="button" class="btn btn-warning btn-block analyze-btn" type="submit" value="submit">
+                <button type="button" class="btn bg-fuschia-btn text-white btn-block analyze-btn" type="submit" value="submit">
                     <i class="fas fa-bolt fa-lg"></i> Analyze</button>
                 <div class="progress mt-3">
-                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
         </div>
     </form>
 </div>
+<!-- Location & Date -->
 <div class="container mt-3 item-container">
-    <div class="card mt-3 item-card">
-        <div class="card-body">
-            <form>
-                <div class="form-row">
-                    <div class="form-group col-md-6">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-map-marker"></i>
+    <div class="card item-card">
+        <div class="card-body bg-void rounded">
+            <div class="card mb-3">
+                <div class="card-body bg-void rounded">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-md-5 col-12 mb-3 mb-md-0">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-map-marker"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control text-white bg-black" id="location" placeholder="Location">
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="item-name" placeholder="Location">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-calendar-alt"></i>
+                            <div class="form-group col-md-5 col-8">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control text-white bg-black" id="date" placeholder="Date">
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="item-name" placeholder="Date">
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <!-- Load Items -->
-            <form data-id="receipt-1">
-                <div class="form-row">
-                    <div class="form-group col-7">
-                        
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                            <div class="input-group-text">1</div>
-                        </div>
-                            <input type="text" class="form-control" id="item-name" placeholder="Item 1">
-                        </div>
-                    </div>
-                    <div class="form-group col-5">
-                        <div class="input-group mb-2">
-                            <input type="text" class="form-control text-right" id="item-amount" placeholder="$ 0.00">
-                            <div class="input-group-append">
-                                <button class="btn btn-outline-secondary btn-block" type="button">
-                                    <i class="fas fa-times"></i>
+                            <div class="form-group col-md-1 col-2">
+                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" type="button" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="false" aria-controls="collapseOne">
+                                    <i class="fas fa-adjust"></i>
                                 </button>
                             </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </form>
-            <hr>
-            <form data-id="receipt-1">
-                <div class="form-row">
-                    <div class="form-group col-md-4 col-10">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">1</div>
+                            <div class="form-group col-md-1 col-2">
+                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-align-left"></i>
+                                </button>
                             </div>
-                            <input type="text" class="form-control" id="item-name" placeholder="Item 1">
+
                         </div>
-                    </div>
-                    <div class="form-group col-2 d-block d-md-none">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary btn-block" type="button">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="form-group col-md-3 col-10">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-money-bill-wave"></i>
+                        <div id="accordion">
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="card-body">
+                                    You've selected to evenly split this receipt. Add users below that will all pay the same amount. Include yourself, if you
+                                    are one of the users that is splitting the receipt. If you would like to allocate different
+                                    amounts for different users, click the allocation button above. Note that if you specify
+                                    users at the items below, the receipt will still be evenly split if this button is selected.
                                 </div>
                             </div>
-                            <input type="text" class="form-control text-right" id="item-amount" placeholder="$ 0.00">
-                        </div>
-                    </div>
-                    <div class="form-group col-md-4 col-10">
-                        <div class="input-group mb-2">
-                            <div class="input-group-prepend">
-                                <div class="input-group-text">
-                                    <i class="fas fa-address-card fa-lg"></i>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="card-body">
+                                    You've selected to allocate this receipt. This is the default action. Add users at each item below. If you are responsible
+                                    for an item, either do not enter a user or enter yourself as the user. If you would like
+                                    to evenly split this receipt across specific users, click the even split button above.
                                 </div>
                             </div>
-                            <input type="text" class="form-control" id="item-user" placeholder="Add User...">
                         </div>
-                    </div>
-                    <div class="form-group col-md-1 d-none d-md-block">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary btn-block" type="button">
-                                <i class="fas fa-times"></i>
-                            </button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
-            </form>
-            <hr>
+            </div>
+            <!-- Items -->
+            <div class="card mb-3">
+                <div class="card-body bg-void rounded">
+                    <form>
+                        <div class="items-form-block">
+                            {{!-- <div class="form-row">
+                                <div class="form-group col-12 mb-3">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">1</div>
+                                        </div>
+                                        <input type="text" class="form-control text-white bg-black" id="item-name" placeholder="Item 1">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-outline-secondary btn-block" type="button">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                Quantity
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control text-white text-right bg-black" id="item-quantity" placeholder="1">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                Cost
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control text-white text-right bg-black" id="item-amount" placeholder="$ 0.00">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text">
+                                                User
+                                            </div>
+                                        </div>
+                                        <input type="text" class="form-control text-white bg-black" id="item-user" placeholder="Add User...">
+                                    </div>
+                                </div>
+                            </div> --}}
+                        </div>
+                    </form>
+                </div>
+            </div>
             <form>
                 <div class="form-row">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-6 mb-3 mb-md-0">
                         <button type="button" class="btn btn-light btn-block add-item">
                             <i class="fas fa-plus-circle"></i>
                             Add Item
                         </button>
                     </div>
                     <div class="form-group col-md-6">
-                        <button type="button" class="btn btn-success btn-block">
+                        <button type="button" class="btn bg-primary text-white btn-block">
                             <i class="fas fa-check-circle"></i>
                             Save
                         </button>

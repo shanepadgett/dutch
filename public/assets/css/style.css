@@ -1,35 +1,55 @@
 /*GLOBALS*/
+
 :root {
-  --void: #0e0b16;
-  --fuschia: #a239ca;
-  --jewel: #4717f6;
-  --stark: #e7dfdd;
-  --black: #000000;
-  --nobel: #B4AEAC;
+    --void: #0e0b16;
+    --fuschia: #a239ca;
+    --jewel: #007bff;
+    --stark: #e7dfdd;
+    --black: #000000;
+    --nobel: #B4AEAC;
+    --fire: #FF0000;
+    --gold: #E8A00C;
+    --white: #ffffff;
+    --green: #76FF0D;
 }
 
 /* BACKGROUND COLORS */
+
 /* ======================== */
+
 .bg-void {
-  background-color: var(--void);
+    background-color: var(--void);
 }
 
 .bg-fuschia {
-  background-color: var(--fuschia);
+    background-color: var(--fuschia);
+}
+
+.bg-fuschia-btn {
+    background-color: var(--fuschia);
+    border: var(--fuschia);
+}
+
+.bg-fuschia-btn:hover {
+    background: rgba(162,57,202, .7)
 }
 
 .bg-jewel {
-  background-color: var(--jewel);
+    background-color: var(--jewel);
 }
 
 .bg-stark {
-  background-color: var(--stark);
-}
-.btn-success {
-    background: #33d9b2;
-    border: #20bf6b;
+    background-color: var(--stark);
 }
 
+.bg-green-btn {
+    background: var(--green);
+    border: var(--green);
+}
+
+.bg-green-btn:hover {
+    background: rgba(118,255,13, 0.7);
+}
 
 /* .analyze-btn,
 .progress {
@@ -37,64 +57,111 @@
 } */
 
 .bg-black {
-  background-color: var(--black);
+    background-color: var(--black);
+}
+
+.input-group {
+    background-color: var(--black);
 }
 
 .bg-nobel {
-  background-color: var(--nobel);
+    background-color: var(--nobel);
 }
 
 /* FONT COLORS */
+
 /* ========================= */
+
 .text-void {
-  color: var(--void);
+    color: var(--void);
 }
 
 .text-fuschia {
-  color: var(--fuschia);
+    color: var(--fuschia);
 }
 
 .text-jewel {
-  color: var(--jewel);
+    color: var(--jewel);
 }
 
 .text-stark {
-  color: var(--stark);
+    color: var(--stark);
 }
 
 .text-black {
-  color: var(--black);
+    color: var(--black);
 }
 
 .text-nobel {
-  color: var(--nobel);
+    color: var(--nobel);
+}
+
+.text-white {
+color: var(--white);
 }
 
 /* COMMON */
+
 /* ======================== */
+
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px; /* Margin bottom by footer height */
-  background: var(--stark);
-  color: #333;
+    margin-bottom: 60px;
+    /* Margin bottom by footer height */
+    background: var(--stark);
+    color: #333;
+}
+.btn-outline-secondary {
+    border: 1px solid #ced4da;
+}
+
+.btn-outline-secondary:hover {
+    border: 1px solid #ced4da;
+}
+
+.form-control:focus {
+    outline: none !important;
+    border: 1px solid var(--fuschia);
+    box-shadow: none !important;
+    background: var(--black);
+}
+
+hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid var(--fuschia);
+    margin: 1em 0;
+    padding: 0; 
+}
+
+.form-group {
+    margin-bottom: 0;
+}
+
+.input-group-text {
+    background: #343a40;
+    color: white;
 }
 
 .footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  height: 60px; /* Set the fixed height of the footer here */
-  line-height: 60px; /* Vertically center the text there */
-  background-color: var(--nobel);
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60px;
+    /* Set the fixed height of the footer here */
+    line-height: 60px;
+    /* Vertically center the text there */
+    background-color: var(--nobel);
 }
 
 .navbar {
-  background: var(--black);
-  color: #e7dfdd;
+    background: var(--black);
+    color: #e7dfdd;
 }
 
 a.navbar-brand:link,
@@ -102,128 +169,99 @@ a.navbar-brand:visited,
 a.navbar-brand:hover,
 a.navbar-brand:active,
 a.navbar-brand:focus {
-  color: var(--stark) !important;
+    color: var(--stark) !important;
 }
 
 .btn-danger {
-  background: #ff5252;
-  color: #fff;
+    color: var(--fire);
+    color: #fff;
 }
 
 .color-violet {
-  background: #706fd3;
-  color: #fff;
+    background: #706fd3;
+    color: #fff;
 }
-
-/* .btn-circle {
-    width: 45px;
-    height: 45px;
-    text-align: center;
-    padding: 6px 0;
-    font-size: 12px;
-    line-height: 1.42;
-    border-radius: 35px;
-  } */
-
-/* .zoom {
-    position: relative;
-    display: inline-block;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-    transition: all 0.3s ease-in-out;
-}
-
-.zoom:after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    border-radius: 5px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    transition: opacity 0.3s ease-in-out;
-}
-
-.zoom:hover {
-    box-shadow: 0 0 11px rgba(33,33,33,.2); 
-    transform: scale(1.03, 1.03);
-} */
 
 .item-container {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 
 .file-upload {
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  overflow: hidden;
-  position: absolute;
-  z-index: -1;
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
 }
 
 .img-wrapper {
-  text-align: center;
-  width: 100%;
+    text-align: center;
+    width: 100%;
 }
 
 .img-preview {
-  display: none;
+    display: none;
 }
 
 /* BUTTONS */
+
 /* ======================== */
+
 .btn-jewel {
-  background-color: var(--jewel);
-  color: var(--stark)
+    background-color: var(--jewel);
+    color: var(--stark)
 }
 
 .btn-fuschia {
-  background-color: var(--fuschia);
-  color: var(--stark)
+    background-color: var(--fuschia);
+    color: var(--stark)
 }
 
 /* CAROUSEL */
+
 /* ====================== */
+
 .carousel {
-  min-height: 35vh;
-  max-width: 100%;
+    min-height: 35vh;
+    max-width: 100%;
 }
 
 /* FEATURE CARDS */
+
 .feature-card {
-  max-width: 300px;
-  margin: 10px;
+    max-width: 300px;
+    margin: 10px;
 }
 
 .f-card-title {
-  font-size: 1.3rem;
+    font-size: 1.3rem;
 }
 
 .f-card-text {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 
 /* MEDIA QUERIES */
-/*===========================*/
-@media (min-width: 576px) {
-  /* FEATURE CARDS */
-  .f-card-title {
-    font-size: 1.6rem;
-  }
 
-  .f-card-text {
-    font-size: 1.3rem;
-  }
+/*===========================*/
+
+@media (min-width: 576px) {
+    /* FEATURE CARDS */
+    .f-card-title {
+        font-size: 1.6rem;
+    }
+    .f-card-text {
+        font-size: 1.3rem;
+    }
 }
 
 @media (min-width: 992px) {
-  /* FEATURE CARDS */
-  /*.i-card-title {*/
+    /* FEATURE CARDS */
+    /*.i-card-title {*/
     /*font-size: 2rem;*/
-  /*}*/
-
-  /*.i-card-text {*/
+    /*}*/
+    /*.i-card-text {*/
     /*font-size: 1.5rem;*/
-  /*}*/
+    /*}*/
 }
