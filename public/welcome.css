@@ -1,28 +1,104 @@
 h1 {
   width: 100%;
+  margin-left: 27%;
   text-align: center;
-  font-size: 40px;
-  font-family: YesevaOne-Regular; }
+  font-size: 30pv;
+  font-family: Shrikhand;
+  color: black; }
+
+.welcomeText, .welcome {
+  position: relative;
+  width: 70%;
+  margin-left: 15%;
+  margin-right: 15%;
+  text-align: center;
+  font-family: YesevaOne-Regular;
+  color: black;
+  font-size: 15px; }
 
 .welcomeText {
-  width: 100%;
-  text-align: center; }
+  margin-top: 25%; }
 
-.imagesContainer {
+.restuarant {
   position: absolute;
   width: 80%;
-  height: 70%;
+  height: 40%;
   margin-left: 10%;
   margin-right: 10%;
   text-align: center;
-  background-color: gray; }
+  background-color: transparent; }
 
-.clickHere {
+.receiptContainer {
   position: absolute;
   width: 80%;
   margin-left: 10%;
   margin-right: 10%;
-  margin-top: 30%;
-  text-align: center; }
+  background-color: transparent; }
+
+.receiptImage, .receiptTextImage {
+  padding-top: 50px;
+  padding-bottom: 50px;
+  padding-left: 100px;
+  padding-right: 100px; }
+
+.clickHere {
+  position: relative;
+  float: right;
+  margin-right: 15%;
+  font-size: 20px;
+  margin-top: 10px;
+  font-family: Shrikhand;
+  color: black; }
+
+.aboutMobile {
+  visibility: hidden; }
+
+@media only screen and (max-width: 600px) {
+  h1 {
+    width: 100%;
+    color: black;
+    text-align: center;
+    margin-left: auto;
+    font-size: 50px;
+    margin-top: 10%; }
+
+  .clickHere {
+    position: absolute;
+    margin-top: 500px;
+    width: 100%;
+    text-align: center;
+    font-size: 25px;
+    color: black; }
+
+  .restuarant {
+    position: absolute;
+    width: 100%;
+    height: 30%;
+    margin-left: 0%;
+    margin-right: 0%;
+    margin-top: 5%;
+    text-align: center;
+    background-color: transparent; }
+
+  .receiptImage, .receiptTextImage {
+    display: none; }
+
+  .welcomeText {
+    display: none; }
+
+  .welcome {
+    position: relative;
+    font-size: 25px;
+    font-family: Shrikhand;
+    margin-top: 20%; }
+
+  .aboutMobile {
+    font-family: Shrikhand;
+    visibility: visible;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 375px;
+    color: black; } }
 
 /*# sourceMappingURL=welcome.css.map */
