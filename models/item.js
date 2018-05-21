@@ -20,6 +20,10 @@ module.exports = function(sequelize, DataTypes) {
       validate: {
         isFloat: true
       }
+    },
+    'isPaid': {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
     }
   })
 
