@@ -29,12 +29,15 @@ function renderImg() {
                 $('.img-preview').fadeIn()
             })
     }
+    $('.analyze-btn').fadeIn()
 }
 
 // Process OCR Receipt Image
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
 $('.analyze-btn').on('click', function (event) {
     event.preventDefault()
+
+    $('.item-container').fadeIn()
 
     $('.progress-bar')
         .animate({
@@ -185,12 +188,10 @@ $('.analyze-btn').on('click', function (event) {
                         false
                     )
 
-                    console.log(formData, receipt) //send obj, create hbs string
                     loadResults(receipt)
 
                     if (receipt.reconciled)
                         $('#total-amount').removeClass('is-invalid').addClass('is-valid')
-
                 })
             }
         }
@@ -449,22 +450,57 @@ $('.split-allocate-btn').on('click', function (event) {
 $('.save-receipt-btn').on('click', function (event) { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
     event.preventDefault()
 
+    checkTotal()
+
     let invalidInput = checkTaxTip()
 
     if (invalidInput)
         return
-        
+
+    submitReady = true
+
     let wrappers = []
-    
+
     $('.user-wrapper').get().map(element => element).forEach(item => wrappers.push(item.dataset.id))
 
     for (let i in wrappers) {
         if ($(`.user-wrapper-${wrappers[i]}`).children().length === 0) {
-            let div = makeGroupMember(currentUsername, 'item-level') 
-    
+            let div = makeGroupMember(currentUsername, 'item-level')
+
             $(`.user-wrapper-${wrappers[i]}`).append(div)
         }
     }
+
+    $('.submit-button-row').remove()
+
+    let h1 = $('<h1>')
+        .text('Almost Done!')
+
+    let textDiv = $('<div>')
+        .addClass('text-center m-3')
+        .append(h1)
+        .text("Be sure to double check item quantities, amounts, and allocations! As a reminder, tax and tip will be allocated to each item on a pro rata basis. When you're done reviewing, click the Submit button below!")
+
+    let button = $('<button>')
+        .attr({
+            'type': 'button'
+        })
+        .addClass('btn btn-secondary btn-block final-submit')
+        .html('<i class="fas fa-flag-checkered"></i> Submit')
+
+    let divTwo = $('<div>')
+        .addClass('form-group col-12')
+        .append(textDiv, button)
+
+    let divOne = $('<div>')
+        .addClass('form-row submit-button-row')
+        .append(divTwo)
+
+    $('.submit-button-block').append(divOne)
+
+    $('html, body').animate({
+        scrollTop: $(document).height()
+    }, 1000)
 })
 
 function checkTaxTip() {
@@ -641,6 +677,11 @@ $('.recalculate-total-btn').on('click', function () {
     if (invalidInput)
         return
 
+    checkTotal()
+})
+
+function checkTotal() {
+
     let itemAmounts = []
 
     for (let i = 0; i < itemCountArr.length; i++) {
@@ -654,7 +695,7 @@ $('.recalculate-total-btn').on('click', function () {
     $('#total-amount').val(itemAmounts.reduce(function (acc, val) {
         return acc + val
     }))
-})
+}
 
 $(document).on('click', '.select-dropdown-user', function (event) {
     event.preventDefault()
@@ -686,7 +727,7 @@ $(document).on('click', '.select-dropdown-user', function (event) {
     //     if (text === 'All Group Members')
     //     $('.assigned-member-row').remove()
 
-    // $('.assigned-member-row').get().map(element => console.log(element))
+
 
 
 })
@@ -722,4 +763,10 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
             'border': '2px #B4AEAC solid'
         })
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
+})
+
+$(document).on('click', '.final-submit', function () {
+
+    
+    //grab values and hit route with items and receipt
 })
