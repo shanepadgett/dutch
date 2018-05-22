@@ -192,6 +192,9 @@ $('.analyze-btn').on('click', function (event) {
 
                     if (receipt.reconciled)
                         $('#total-amount').removeClass('is-invalid').addClass('is-valid')
+
+                    if (!receipt.reconciled)
+                        $('#total-amount').removeClass('is-valid').addClass('is-invalid')
                 })
             }
         }
@@ -216,10 +219,10 @@ function loadResults(data) {
         $('#date').val(data.date)
 
     if (data.tax)
-        $('#tax-amount').val(data.tax)
+        $('#tax-amount').val(parseFloat(data.tax).toFixed(2))
 
     if (data.total)
-        $('#total-amount').val(data.total)
+        $('#total-amount').val(parseFloat(data.total).toFixed(2))
 
     data.items.forEach(item => appendNewItem(item.name, item.quantity, parseFloat(item.amount).toFixed(2)))
 }
@@ -293,6 +296,7 @@ function appendNewItem(name, quantity, amount) {
             'data-id': itemCount,
             placeholder: '0.00'
         })
+        .val('0.00')
         .addClass('form-control item-amount-input format-float text-right rounded-right')
 
     let groupTextTwo = $('<div>')
@@ -692,9 +696,11 @@ function checkTotal() {
 
     itemAmounts.push(parseFloat($('#tax-amount').val().trim()), parseFloat($('#tip-amount').val().trim()))
 
-    $('#total-amount').val(itemAmounts.reduce(function (acc, val) {
+    $('#total-amount').val(parseFloat(itemAmounts.reduce(function (acc, val) {
         return acc + val
-    }))
+    })).toFixed(2))
+
+    $('#total-amount').removeClass('is-invalid').addClass('is-valid')
 }
 
 $(document).on('click', '.select-dropdown-user', function (event) {
@@ -767,6 +773,6 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
 
 $(document).on('click', '.final-submit', function () {
 
-    
+
     //grab values and hit route with items and receipt
 })
