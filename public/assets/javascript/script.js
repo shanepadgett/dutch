@@ -378,8 +378,11 @@ function appendNewItem(name, quantity, amount) {
         .addClass('form-row')
         .append(formGroupName)
 
+    let userWrapper = $('<div>')
+        .addClass('user-wrapper')
+
     let td = $('<td>')
-        .append(nameRow, row)
+        .append(nameRow, row, userWrapper)
 
     let tr = $('<tr>')
         .addClass('item-wrapper')
@@ -468,7 +471,7 @@ $('.clickable-member-badge').on('click', function () {
         return
     }
 
-    let div = makeGroupMember(text)
+    let div = makeGroupMember(text, 'group-level')
 
     $('.group-members').append(div)
 
@@ -482,25 +485,25 @@ $('.clickable-member-badge').on('click', function () {
     $('.add-member-input').val('')
 })
 
-function makeGroupMember(text) {
+function makeGroupMember(text, type) {
 
     let input = $('<input>')
         .attr('type', 'text')
-        .addClass('rounded form-control assigned-member-allocation')
+        .addClass('rounded-left form-control assigned-member-allocation text-right')
         .val('100%')
 
-    // let groupText = $('<div>')
-    //     .addClass('input-group-text')
-    //     .html('<i class="fas fa-percentage"></i>')
+    let groupText = $('<div>')
+        .addClass('input-group-text')
+        .html('<i class="fas fa-percentage"></i>')
 
-    // let prepend = $('<div>')
-    //     .addClass('input-group-prepend')
-    //     .append(groupText)
+    let prepend = $('<div>')
+        .addClass('input-group-prepend')
+        .append(groupText)
 
     let button = $('<button>')
         .attr('type', 'button')
-        .addClass('btn btn-outline-secondary')
-        .html('<i class="fas fa-times remove-group-member"></i>')
+        .addClass(`btn btn-outline-secondary remove-group-member ${type}`)
+        .html(`<i class="fas fa-times remove-group-member ${type}"></i>`)
 
     let appendDiv = $('<div>')
         .addClass('input-group-append')
@@ -508,18 +511,30 @@ function makeGroupMember(text) {
 
     let inputGroup = $('<div>')
         .addClass('input-group margin-top-center')
-        .append(input, appendDiv) //prepend
+        .append(prepend, input, appendDiv)
 
     let groupTwo = $('<div>')
-        .addClass('form-group col-6')
+        .addClass('form-group col-8 col-md-6')
         .append(inputGroup)
 
     let img = $('<img>')
-        .attr('src', 'http://via.placeholder.com/60x60')
-        .addClass('rounded-circle mr-4 assigned-member-badge')
+        .attr({
+            'src': 'http://via.placeholder.com/60x60',
+            'alt': ''
+        })
+        .addClass(`rounded-circle mr-4 assigned-member-badge remove-group-member ${type}`)
+
+    if (text === 'All Group Members') {
+        img
+            .attr({
+                'src': '',
+                'alt': ''
+            })
+            .addClass('placeholder-hidden fas fa-users all-member-badge')
+            .removeClass('rounded-circle')
+    }
 
     let textSpan = $('<span>')
-        .addClass('d-none d-md-inline')
         .text(text)
 
     let span = $('<span>')
@@ -530,14 +545,31 @@ function makeGroupMember(text) {
         .addClass('form-group col-6')
         .append(span)
 
+    let textId = text.toLowerCase().split(' ').join('-')
+
     let div = $('<div>')
-        .addClass('form-row current-user-member-badge assigned-member-row mt-3')
-        .append(group, groupTwo)
+        .attr({
+            'data-id': `user-${textId}`,
+            id: `user-${textId}`
+        })
+        .addClass(`form-row current-user-member-badge assigned-member-row mt-2`)
+        .append(group)
+
+    if (type === 'item-level') {
+        textSpan.addClass('d-none d-md-inline')
+        group.removeClass('col-6').addClass('col-4 col-md-6')
+        div.append(groupTwo)
+    }
 
     return div
 }
 
-$(document).on('click', '.remove-group-member ', function () {
+$(document).on('click', '.remove-group-member', function () {
+
+    if ($(this).hasClass('item-level')) {
+        let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
+        $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/(allocatedUserCount.length-1)).toFixed(0)}%`)
+    }
     $(this).closest('.current-user-member-badge').remove()
 })
 
@@ -553,8 +585,6 @@ $('.recalculate-total-btn').on('click', function () {
     //         $(`#item-amount-${itemCountArr[i]}`).removeClass('is-invalid rounded-right')
     //     }
     // }
-
-
 
     let invalidInput = checkTaxTip()
 
@@ -579,18 +609,59 @@ $('.recalculate-total-btn').on('click', function () {
 $(document).on('click', '.select-dropdown-user', function (event) {
     event.preventDefault()
 
-    console.log($(this).text())
+    if ($(this).text() === 'All Group Members') {
+        $(this).closest('td').find('.user-wrapper').children().remove()
+    } else {
+        $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
+    }
 
-    let div = makeGroupMember($(this).text())
+    let div = makeGroupMember($(this).text(), 'item-level')
 
-    //get allmembers from here
+    $(this).closest('td').find('.user-wrapper').append(div)
+
+    let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element)
+
+    // if (currentItemUsers.includes('user-all-group-members'))
+    //     $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
+
+    let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
+
+    $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/allocatedUserCount.length).toFixed(0)}%`)
+
+    console.log(currentItemUsers, allocatedUserCount)
 
     //determine percentages
 
-//     if (text === 'All Group Members')
-//     $('.assigned-member-row').remove()
+    //     if (text === 'All Group Members')
+    //     $('.assigned-member-row').remove()
 
-// $('.assigned-member-row').get().map(element => console.log(element))
+    // $('.assigned-member-row').get().map(element => console.log(element))
 
-    $(this).closest('td').append(div)
+
+})
+
+let holdingSrc = ''
+
+$(document).on('mouseenter', '.assigned-member-badge', function () {
+
+    holdingSrc = $(this).attr('src')
+
+    $(this)
+        .attr({
+            'src': '',
+            'alt': ''
+        })
+        .css({
+            'border': '#ff5252'
+        })
+        .addClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
+})
+
+$(document).on('mouseleave', '.assigned-member-badge', function () {
+    $(this)
+        .attr('src', holdingSrc)
+        .css({
+            'border': '#B4AEAC'
+        })
+        .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
