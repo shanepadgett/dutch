@@ -12,6 +12,7 @@
     --white: #ffffff;
     --green: #33d9b2;
     --sand: #f7f1e3;
+    --red: #ff5252;
 }
 
 /* BACKGROUND COLORS */
@@ -101,6 +102,10 @@
 color: var(--white);
 }
 
+.text-red {
+    color: var(--red) !important;
+}
+
 /* COMMON */
 
 /* ======================== */
@@ -159,10 +164,23 @@ hr {
 }
 
 .add-member-badge,
-.assigned-member-badge {
+.assigned-member-badge,
+.remove-member-badge {
     width: 60px;
     height: 60px;
     font-size: 60px;
+}
+
+.assigned-member-badge {
+    border: 2px var(--nobel) solid;
+}
+
+.all-member-badge {
+    border: 2px var(--green) solid;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    display: inline-block;
 }
 
 .margin-top-center {
