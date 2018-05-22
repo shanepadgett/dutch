@@ -4,35 +4,31 @@ const dbUser = db.User
 
 class Receipt {
   static getReceipt({params: { receiptId }}, res) {
-    dbReceipt.findOne({
-      where: {
-        id: receiptId
-      },
-      include: [
-        {
-          model: dbUser,
-          as: 'owner'
-        }
-      ]
-    }).then(receipt => {
-      res.json(receipt)
-    })    
+    // dbReceipt.findOne({
+    //   where: {
+    //     id: receiptId
+    //   },
+    //   include: [
+    //     {
+    //       model: dbUser,
+    //       as: 'owner'
+    //     }
+    //   ]
+    // }).then(receipt => {
+    //   res.json(receipt)
+    // })    
   }
 
-  static getReceipts({params: {ownerId}}, res) {
-    let query = {}
-    if (ownerId) {
-      query.ownerId = ownerId
-    }
-    dbReceipt.findAll({
-      where: query,
+  static getReceipts(ownerId) {
+    return dbReceipt.findAll({
+      where: {
+        ownerId: ownerId
+      },
       include: {
         model: dbUser,
         as: 'owner'
       }
-    }).then(receipts => {
-      res.json(receipts)
-    })
+    }).then(receipts => receipts)
   }
 
   static createReceipt({ body }, res) {
