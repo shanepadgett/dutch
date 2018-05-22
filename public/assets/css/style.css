@@ -106,6 +106,11 @@ color: var(--white);
     color: var(--red) !important;
 }
 
+/* ICON COLORS */
+.icon-white {
+  color: white !important;
+}
+
 /* COMMON */
 
 /* ======================== */
@@ -116,7 +121,7 @@ html {
 }
 
 body {
-    margin-bottom: 60px;
+    margin-bottom: 120px;
     /* Margin bottom by footer height */
     background: var(--stark);
     color: #333;
@@ -302,6 +307,14 @@ a.navbar-brand:focus {
     font-size: 1rem;
 }
 
+/* DASHBOARD */
+.list-items-title {
+  font-size: 1.5rem;
+}
+.list-item-text {
+  font-size: 1rem;
+}
+
 /* MEDIA QUERIES */
 
 /*===========================*/
@@ -313,6 +326,12 @@ a.navbar-brand:focus {
     }
     .f-card-text {
         font-size: 1.3rem;
+    }
+    .list-items-title {
+      font-size: 2.3rem;
+    }
+    .list-item-text {
+      font-size: 1.1rem;
     }
 }
 
