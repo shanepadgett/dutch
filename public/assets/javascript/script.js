@@ -2,6 +2,7 @@ $(document).ready(function () {
     $('html, body').animate({
         scrollTop: 0
     })
+    $('[data-toggle="tooltip"]').tooltip()
 })
 
 
@@ -207,6 +208,12 @@ function loadResults(data) {
     if (data.date)
         $('#date').val(data.date)
 
+    if (data.tax)
+        $('#tax-amount').val(data.tax)
+
+    if (data.total)
+        $('#total-amount').val(data.total)
+
     data.items.forEach(item => appendNewItem(item.name, item.quantity, item.amount.toString().indexOf('.') === -1 ? `${item.amount}.00` : item.amount.toString().split('.').pop().length < 2 ? `${item.amount}0` : item.amount))
 
 }
@@ -219,7 +226,7 @@ function appendNewItem(name, quantity, amount) {
             id: 'item-user',
             placeholder: 'Add User...'
         })
-        .addClass('form-control text-white bg-black')
+        .addClass('form-control')
 
     let groupTextThree = $('<div>')
         .addClass('input-group-text')
@@ -243,11 +250,11 @@ function appendNewItem(name, quantity, amount) {
             id: 'item-amount',
             placeholder: '0.00'
         })
-        .addClass('form-control text-white text-right bg-black')
+        .addClass('form-control text-right')
 
     let groupTextTwo = $('<div>')
         .addClass('input-group-text')
-        .html('<i class="fas fa-dollar-sign"></i>')
+        .text('$')
 
     let prependTwo = $('<div>')
         .addClass('input-group-prepend')
@@ -267,11 +274,11 @@ function appendNewItem(name, quantity, amount) {
             id: 'item-quantity',
             placeholder: '1'
         })
-        .addClass('form-control text-white text-right bg-black')
+        .addClass('form-control text-right')
 
     let groupTextOne = $('<div>')
         .addClass('input-group-text')
-        .html('<i class="fab fa-slack-hash"></i>')
+        .text('#')
 
     let prependOne = $('<div>')
         .addClass('input-group-prepend')
@@ -304,7 +311,7 @@ function appendNewItem(name, quantity, amount) {
             id: 'item-name',
             placeholder: 'Enter Item Name...'
         })
-        .addClass('form-control text-white bg-black')
+        .addClass('form-control')
 
     let groupTextName = $('<div>')
         .addClass('input-group-text')
@@ -326,11 +333,12 @@ function appendNewItem(name, quantity, amount) {
         .addClass('form-row')
         .append(formGroupName)
 
-    let hr = $('<hr>')
+    let td = $('<td>')
+        .append(nameRow, row)
 
-    let wrapper = $('<div>')
+    let tr = $('<tr>')
         .addClass('item-wrapper')
-        .append(nameRow, row, hr)
+        .append(td)
 
     if (name)
         inputName.val(name)
@@ -341,24 +349,44 @@ function appendNewItem(name, quantity, amount) {
     if (amount)
         inputTwo.val(amount)
 
-    $('.items-form-block').append(wrapper)
+    $('.items-form-block').append(tr)
 
 }
 
-$(document).on('click', '.remove-item-btn ', function() {
+$(document).on('click', '.remove-item-btn ', function () {
     $(this).closest('.item-wrapper').remove()
 })
 
-$('.split-allocate-btn ').on('click', function (event) {  //here
+let globalOption = 'allocate'
+
+$('.split-allocate-btn').on('click', function (event) { //here
     event.preventDefault()
 
-    // $(this).toggleClass('btn-outline-secondary btn-secondary')
+    if (globalOption === $(this)[0].dataset.id)
+        return
 
-    console.log($('#accordion').children('.show').prop('id'))
+    globalOption = $(this)[0].dataset.id
 
-    console.log($(this).attr(dataTarget))
+    $('.split-allocate-btn')
+        .addClass('btn-outline-secondary')
+        .removeClass('btn-secondary')
+
+    $(this)
+        .removeClass('btn-outline-secondary')
+        .addClass('btn-secondary')
+
 })
 
-$('.save-receipt-btn').on('click', function() { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
+$('.save-receipt-btn').on('click', function () { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
+    $('.validate-icon').show()
+})
 
+$('.clickable-member-badge').on('click', function () {
+
+    if ($('.add-member-input').val().trim() === '') {
+        $('.add-member-input')
+            .focus()
+            .select()
+        return
+    }
 })

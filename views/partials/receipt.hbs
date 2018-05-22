@@ -1,8 +1,8 @@
 <div class="container mt-3">
     <form class="upload-form" enctype="multipart/form-data" method="post" action="#">
         <div class="card mt-3">
-            <div class="card-body bg-void rounded">
-                <label class="file-input-label w-100 text-center btn-dark p-2 rounded" for="file-input">
+            <div class="card-body bg-sand rounded">
+                <label class="file-input-label w-100 text-center btn-secondary p-2 rounded" for="file-input">
                     <i class="fas fa-image fa-lg"></i>
                     Add Receipt
                 </label>
@@ -22,122 +22,243 @@
 <!-- Location & Date -->
 <div class="container mt-3 item-container">
     <div class="card item-card">
-        <div class="card-body bg-void rounded">
+        <div class="card-body bg-sand rounded">
             <div class="card mb-3">
-                <div class="card-body bg-void rounded">
+                <div class="card-body bg-sand rounded">
                     <form>
                         <div class="form-row">
-                            <div class="form-group col-md-5 col-12 mb-3 mb-md-0">
+                            <div class="form-group col-lg-5 col-md-6 col-12 mb-3 mb-lg-0">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="fas fa-map-marker"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control text-white bg-black" id="location" placeholder="Location">
+                                    <input type="text" class="form-control" id="location" placeholder="Location">
                                 </div>
                             </div>
-                            <div class="form-group col-md-5 col-8">
+                            <div class="form-group col-lg-3 col-md-6 col-12 mb-3 mb-lg-0">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <div class="input-group-text">
                                             <i class="fas fa-calendar-alt"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control text-white bg-black" id="date" placeholder="Date">
+                                    <input type="text" class="form-control" id="date" placeholder="Date">
                                 </div>
                             </div>
-                            <div class="form-group col-md-1 col-2">
-                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" type="button" data-toggle="collapse" data-target="#collapseOne"
-                                    aria-expanded="false" aria-controls="collapseOne">
-                                    <i class="fas fa-adjust"></i>
-                                </button>
-                            </div>
-                            <div class="form-group col-md-1 col-2">
-                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" type="button" data-toggle="collapse" data-target="#collapseTwo"
+                            <div class="form-group col-lg-2 col-6">
+                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" data-id="split" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-expanded="false" aria-controls="collapseTwo">
-                                    <i class="fas fa-align-left"></i>
+                                    <i class="fas fa-users"></i> Split Evenly
                                 </button>
                             </div>
-
+                            <div class="form-group col-lg-2 col-6">
+                                <button class="btn btn-secondary split-allocate-btn btn-block" data-id="allocate" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-user"></i> Allocate
+                                </button>
+                            </div>
                         </div>
-                        <div id="accordion">
-                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-                                <div class="card-body">
-                                    You've selected to evenly split this receipt. Add users below that will all pay the same amount. Include yourself, if you
-                                    are one of the users that is splitting the receipt. If you would like to allocate different
-                                    amounts for different users, click the allocation button above. Note that if you specify
-                                    users at the items below, the receipt will still be evenly split if this button is selected.
+                        <div id="accordion" class="text-justify mt-3">
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="">
+                                    You've selected to allocate specific items to specific group members. This is the default action. Add group members below.
+                                    Once added below, you can add group members to specific items. To split the entire receipt
+                                    evenly to all group members, select the
+                                    <button class="btn btn-outline-secondary disabled" type="button">
+                                        <i class="fas fa-users"></i> Split Evenly
+                                    </button> button above.
                                 </div>
                             </div>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-                                <div class="card-body">
-                                    You've selected to allocate this receipt. This is the default action. Add users at each item below. If you are responsible
-                                    for an item, either do not enter a user or enter yourself as the user. If you would like
-                                    to evenly split this receipt across specific users, click the even split button above.
+                                <div class="">
+                                    You've selected to split the entire receipt evenly. Add group members below. All group members will be responsible for an
+                                    equal share of the total amount of this receipt. To allocate specific items to specific
+                                    group members, select the
+                                    <button class="btn btn-outline-secondary disabled" type="button">
+                                        <i class="fas fa-user"></i> Allocate
+                                    </button> button above.
                                 </div>
                             </div>
                         </div>
+                        <div class="form-row current-user-member-badge mt-3">
+                            <div class="form-group col-12">
+                                <span class="clickable btn">
+                                    <img src="http://via.placeholder.com/60x60" class=" rounded-circle mr-4 add-member-badge"> Username
+                                </span>
+                            </div>
+                        </div>
                         <div class="form-row">
-                            <button class="btn btn-outline-secondary split-allocate-btn btn-block" type="button">
-                                    <i class="fas fa-plus"></i> Add Group Member
-                                </button>
+                            <div class="form-group col-md-12 col-9">
+                                <span class="clickable-member-badge btn">
+                                    <img src="" class="placeholder-hidden fas fa-plus-circle mr-3 add-member-badge rounded-circle" alt="" data-toggle="tooltip"
+                                        data-placement="top" title="Click to add user">
+                                    <input type="text" class="rounded form-control add-member-input" placeholder="Add Group Member">
+                                </span>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
             <!-- Items -->
             <div class="card mb-3">
-                <div class="card-body bg-void rounded">
+                <div class="card-body bg-sand rounded">
                     <form>
-                        <div class="items-form-block">
-                            {{!-- <div class="form-row">
-                                <div class="form-group col-12 mb-3">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">1</div>
+                        <table class="table table-striped">
+                            <tbody class="items-form-block">
+                                {{!--
+                                <tr>
+                                    <td>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 mb-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">1</div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white bg-black" id="item-name" placeholder="Item 1">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary btn-block" type="button">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <input type="text" class="form-control text-white bg-black" id="item-name" placeholder="Item 1">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-outline-secondary btn-block" type="button">
-                                                <i class="fas fa-times"></i>
-                                            </button>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            Quantity
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white text-right bg-black" id="item-quantity" placeholder="1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            Cost
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white text-right bg-black" id="item-amount" placeholder="$ 0.00">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            User
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white bg-black" id="item-user" placeholder="Add User...">
+                                                </div>
+                                            </div>
                                         </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="form-row">
+                                            <div class="form-group col-12 mb-3">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">1</div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white bg-black" id="item-name" placeholder="Item 1">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-outline-secondary btn-block" type="button">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            Quantity
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white text-right bg-black" id="item-quantity" placeholder="1">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            Cost
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white text-right bg-black" id="item-amount" placeholder="$ 0.00">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-6">
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <div class="input-group-text">
+                                                            User
+                                                        </div>
+                                                    </div>
+                                                    <input type="text" class="form-control text-white bg-black" id="item-user" placeholder="Add User...">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr> --}}
+                            </tbody>
+                        </table>
+                        <div class="form-row">
+                            <div class="form-group col-12 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Tax</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right is-invalid rounded-right" id="tax-amount" placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Please enter zero, or a valid tax amount.
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                Quantity
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control text-white text-right bg-black" id="item-quantity" placeholder="1">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Tip</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right is-invalid rounded-right" id="tip-amount" placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Please enter zero, or a valid tip amount.
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3 col-6 mb-3 mb-md-0">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                Cost
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control text-white text-right bg-black" id="item-amount" placeholder="$ 0.00">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Total</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right is-valid" id="total-amount" placeholder="0.00">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary rounded-right" type="button">
+                                            <i class="fas fa-sync-alt"></i> Recalculate
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        This total does not equal the sum of the items above (including tax + tip). Please add or remove items, correct item amounts, or correct the total
+                                        amount. Then click the Recalculate button above.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        This total equals the sum of the items above. Nice!
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <div class="input-group-text">
-                                                User
-                                            </div>
-                                        </div>
-                                        <input type="text" class="form-control text-white bg-black" id="item-user" placeholder="Add User...">
-                                    </div>
-                                </div>
-                            </div> --}}
+                            </div>
                         </div>
                     </form>
                 </div>
