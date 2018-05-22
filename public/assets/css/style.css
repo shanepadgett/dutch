@@ -129,6 +129,12 @@ body {
     font-weight: 300;
 }
 
+
+.item-container,
+.analyze-btn {
+    display: none;
+}
+
 .btn-outline-secondary {
     border: 1px solid #ced4da;
 }
