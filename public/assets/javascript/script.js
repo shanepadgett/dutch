@@ -198,6 +198,7 @@ $('.analyze-btn').on('click', function (event) {
 //Add Items to OCR Results
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
 let itemCount = 1
+let itemCountArr = []
 
 $('.add-item').on('click', function (event) {
     event.preventDefault()
@@ -218,42 +219,80 @@ function loadResults(data) {
     if (data.total)
         $('#total-amount').val(data.total)
 
-    data.items.forEach(item => appendNewItem(item.name, item.quantity, makeFloat(item.amount)))
+    data.items.forEach(item => appendNewItem(item.name, item.quantity, parseFloat(item.amount).toFixed(2)))
 }
 
 function appendNewItem(name, quantity, amount) {
 
-    let inputThree = $('<input>')
+    let aTwo = $('<button>')
+        .attr('type', 'button')
+        .addClass('dropdown-item select-dropdown-user')
+        .text('User 1')
+
+    let divider = $('<div>')
+        .addClass('dropdown-divider')
+
+    let aOne = $('<button>')
+        .attr('type', 'button')
+        .addClass('dropdown-item select-dropdown-user')
+        .text('All Group Members')
+
+    let dropDiv = $('<div>')
+        .addClass('dropdown-menu user-dropdown w-100')
+        .append(aOne, divider, aTwo)
+
+    let dropBtn = $('<button>')
         .attr({
-            type: 'text',
-            id: 'item-user',
-            placeholder: 'Add User...'
+            type: 'button',
+            'data-toggle': 'dropdown',
+            'aria-haspopup': 'true',
+            'aria-expanded': 'false'
         })
-        .addClass('form-control')
+        .addClass('btn btn-outline-secondary dropdown-toggle btn-block')
+        .html('<i class="fas fa-user"></i> Select Group Member')
 
-    let groupTextThree = $('<div>')
-        .addClass('input-group-text')
-        .html('<i class="fas fa-user"></i>')
 
-    let prependThree = $('<div>')
-        .addClass('input-group-prepend')
-        .append(groupTextThree)
+    // let inputThree = $('<select>')
+    //     .attr({
+    //         id: `item-user-${itemCount}`
+    //     })
+    //     .addClass('form-control item-user-select rounded-right')
+    //     .append(optionOne, optionTwo)
+
+    // let groupTextThree = $('<div>')
+    //     .addClass('input-group-text')
+    //     .html('<i class="fas fa-user"></i>')
+
+    // let prependThree = $('<div>')
+    //     .addClass('input-group-prepend')
+    //     .append(groupTextThree)
+
+    let btnGroup = $('<div>')
+        .addClass('btn-group btn-block')
+        .append(dropBtn, dropDiv)
+    // .append(prependThree)
 
     let inputGroupThree = $('<div>')
         .addClass('input-group')
-        .append(prependThree, inputThree)
+        .append(btnGroup)
+
 
     let formGroupThree = $('<div>')
         .addClass('form-group col-md-6')
         .append(inputGroupThree)
 
+    let invalidDiv = $('<div>')
+        .addClass('invalid-feedback')
+        .text('Please enter a valid number!')
+
     let inputTwo = $('<input>')
         .attr({
             type: 'text',
-            id: 'item-amount',
+            id: `item-amount-${itemCount}`,
+            'data-id': itemCount,
             placeholder: '0.00'
         })
-        .addClass('form-control text-right')
+        .addClass('form-control item-amount-input format-float text-right rounded-right')
 
     let groupTextTwo = $('<div>')
         .addClass('input-group-text')
@@ -265,7 +304,7 @@ function appendNewItem(name, quantity, amount) {
 
     let inputGroupTwo = $('<div>')
         .addClass('input-group')
-        .append(prependTwo, inputTwo)
+        .append(prependTwo, inputTwo, invalidDiv)
 
     let formGroupTwo = $('<div>')
         .addClass('form-group col-md-3 col-6 mb-3 mb-md-0')
@@ -274,10 +313,10 @@ function appendNewItem(name, quantity, amount) {
     let inputOne = $('<input>')
         .attr({
             type: 'text',
-            id: 'item-quantity',
+            id: `item-quantity-${itemCount}`,
             placeholder: '1'
         })
-        .addClass('form-control text-right')
+        .addClass('form-control text-right item-quantity')
 
     let groupTextOne = $('<div>')
         .addClass('input-group-text')
@@ -300,7 +339,10 @@ function appendNewItem(name, quantity, amount) {
         .append(formGroupOne, formGroupTwo, formGroupThree)
 
     let buttonName = $('<button>')
-        .attr('type', 'button')
+        .attr({
+            type: 'button',
+            'data-id': itemCount,
+        })
         .addClass('btn btn-outline-secondary remove-item-btn btn-block')
         .html('<i class="fas fa-times"></i>')
 
@@ -311,14 +353,14 @@ function appendNewItem(name, quantity, amount) {
     let inputName = $('<input>')
         .attr({
             type: 'text',
-            id: 'item-name',
+            id: `item-name-${itemCount}`,
             placeholder: 'Enter Item Name...'
         })
-        .addClass('form-control')
+        .addClass('form-control item-name')
 
     let groupTextName = $('<div>')
         .addClass('input-group-text')
-        .text(itemCount++)
+        .text(itemCount)
 
     let prependName = $('<div>')
         .addClass('input-group-prepend')
@@ -354,9 +396,12 @@ function appendNewItem(name, quantity, amount) {
 
     $('.items-form-block').append(tr)
 
+    itemCountArr.push(parseInt(itemCount))
+    itemCount++
 }
 
 $(document).on('click', '.remove-item-btn ', function () {
+    itemCountArr.splice(itemCountArr.indexOf(parseInt($(this)[0].dataset.id)), 1)
     $(this).closest('.item-wrapper').remove()
 })
 
@@ -383,35 +428,38 @@ $('.split-allocate-btn').on('click', function (event) { //here
 $('.save-receipt-btn').on('click', function (event) { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
     event.preventDefault()
 
-    let tax = $('#tax-amount').val().trim()
-    let tip = $('#tip-amount').val().trim()
+    let invalidInput = checkTaxTip()
+})
+
+function checkTaxTip() {
+
+    let invalidInput = false
+
+    let tax = parseFloat($('#tax-amount').val().trim()).toFixed(2)
+    let tip = parseFloat($('#tip-amount').val().trim()).toFixed(2)
 
     if (tax === '' || isNaN(tax)) {
         $('#tax-amount').addClass('is-invalid rounded-right').removeClass('is-valid')
+        invalidInput = true
     } else {
         $('#tax-amount').removeClass('is-invalid').addClass('is-valid')
-        $('#tax-amount').val(makeFloat(tax))
+        $('#tax-amount').val(tax)
     }
 
     if (tip === '' || isNaN(tip)) {
         $('#tip-amount').addClass('is-invalid rounded-right').removeClass('is-valid')
+        invalidInput = true
     } else {
         $('#tip-amount').removeClass('is-invalid').addClass('is-valid')
-        $('#tip-amount').val(makeFloat(tip))
+        $('#tip-amount').val(tip)
     }
 
-
-})
-
-function makeFloat(input) {
-    return input.toString().indexOf('.') === -1 ? `${input}.00` : input.toString().split('.').pop().length < 2 ? `${input}0` : input
+    return invalidInput
 }
 
 $('.clickable-member-badge').on('click', function () {
 
     let text = $('.add-member-input').val().trim()
-
-    console.log(text)
 
     if (text === '') {
         $('.add-member-input')
@@ -420,33 +468,129 @@ $('.clickable-member-badge').on('click', function () {
         return
     }
 
+    let div = makeGroupMember(text)
+
+    $('.group-members').append(div)
+
+    let dropBtn = $('<button>')
+        .attr('type', 'button')
+        .addClass('dropdown-item select-dropdown-user')
+        .text(text)
+
+    $('.user-dropdown').append(dropBtn)
+
+    $('.add-member-input').val('')
+})
+
+function makeGroupMember(text) {
+
+    let input = $('<input>')
+        .attr('type', 'text')
+        .addClass('rounded form-control assigned-member-allocation')
+        .val('100%')
+
+    // let groupText = $('<div>')
+    //     .addClass('input-group-text')
+    //     .html('<i class="fas fa-percentage"></i>')
+
+    // let prepend = $('<div>')
+    //     .addClass('input-group-prepend')
+    //     .append(groupText)
+
     let button = $('<button>')
         .attr('type', 'button')
-        .addClass('btn btn-light rounded-circle ml-4')
+        .addClass('btn btn-outline-secondary')
         .html('<i class="fas fa-times remove-group-member"></i>')
+
+    let appendDiv = $('<div>')
+        .addClass('input-group-append')
+        .append(button)
+
+    let inputGroup = $('<div>')
+        .addClass('input-group margin-top-center')
+        .append(input, appendDiv) //prepend
+
+    let groupTwo = $('<div>')
+        .addClass('form-group col-6')
+        .append(inputGroup)
 
     let img = $('<img>')
         .attr('src', 'http://via.placeholder.com/60x60')
-        .addClass('rounded-circle mr-4 add-member-badge')
+        .addClass('rounded-circle mr-4 assigned-member-badge')
+
+    let textSpan = $('<span>')
+        .addClass('d-none d-md-inline')
+        .text(text)
 
     let span = $('<span>')
         .addClass('clickable btn')
-        .append(img, text, button)
-
+        .append(img, textSpan)
 
     let group = $('<div>')
         .addClass('form-group col-6')
         .append(span)
 
     let div = $('<div>')
-        .addClass('form-row current-user-member-badge')
-        .append(group)
+        .addClass('form-row current-user-member-badge assigned-member-row mt-3')
+        .append(group, groupTwo)
 
-    $('.group-members').append(div)
-
-    $('.add-member-input').val('')
-})
+    return div
+}
 
 $(document).on('click', '.remove-group-member ', function () {
     $(this).closest('.current-user-member-badge').remove()
+})
+
+$('.recalculate-total-btn').on('click', function () {
+
+    // let invalidInput = false
+
+    // for (let i = 0; i < itemCountArr.length; i++) {
+    //     if(isNaN(parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()))) {
+    //         invalidInput = true
+    //         $(`#item-amount-${itemCountArr[i]}`).addClass('is-invalid rounded-right')
+    //     } else {
+    //         $(`#item-amount-${itemCountArr[i]}`).removeClass('is-invalid rounded-right')
+    //     }
+    // }
+
+
+
+    let invalidInput = checkTaxTip()
+
+    if (invalidInput)
+        return
+
+    let itemAmounts = []
+
+    for (let i = 0; i < itemCountArr.length; i++) {
+        let value = parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()).toFixed(2)
+        itemAmounts.push(parseFloat(value))
+        $(`#item-amount-${itemCountArr[i]}`).val(value)
+    }
+
+    itemAmounts.push(parseFloat($('#tax-amount').val().trim()), parseFloat($('#tip-amount').val().trim()))
+
+    $('#total-amount').val(itemAmounts.reduce(function (acc, val) {
+        return acc + val
+    }))
+})
+
+$(document).on('click', '.select-dropdown-user', function (event) {
+    event.preventDefault()
+
+    console.log($(this).text())
+
+    let div = makeGroupMember($(this).text())
+
+    //get allmembers from here
+
+    //determine percentages
+
+//     if (text === 'All Group Members')
+//     $('.assigned-member-row').remove()
+
+// $('.assigned-member-row').get().map(element => console.log(element))
+
+    $(this).closest('td').append(div)
 })

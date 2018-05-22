@@ -109,8 +109,8 @@
                     <form>
                         <table class="table table-striped">
                             <tbody class="items-form-block">
-                                {{!--
-                                <tr>
+                                
+                                {{!-- <tr>
                                     <td>
                                         <div class="form-row">
                                             <div class="form-group col-12 mb-3">
@@ -155,7 +155,6 @@
                                                             User
                                                         </div>
                                                     </div>
-                                                    <input type="text" class="form-control text-white bg-black" id="item-user" placeholder="Add User...">
                                                 </div>
                                             </div>
                                         </div>
@@ -220,7 +219,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Tax</div>
                                     </div>
-                                    <input type="text" class="form-control text-right" id="tax-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right format-float" id="tax-amount" placeholder="0.00">
                                     <div class="invalid-feedback">
                                         Please enter zero, or a valid tax amount.
                                     </div>
@@ -236,7 +235,7 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Tip</div>
                                     </div>
-                                    <input type="text" class="form-control text-right" id="tip-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right format-float" id="tip-amount" placeholder="0.00">
                                     <div class="invalid-feedback">
                                         Please enter zero, or a valid tip amount.
                                     </div>
@@ -252,9 +251,9 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Total</div>
                                     </div>
-                                    <input type="text" class="form-control text-right" id="total-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right format-float" id="total-amount" placeholder="0.00">
                                     <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary rounded-right" type="button">
+                                        <button class="btn btn-outline-secondary rounded-right recalculate-total-btn" type="button">
                                             <i class="fas fa-sync-alt"></i> Recalculate
                                         </button>
                                     </div>
