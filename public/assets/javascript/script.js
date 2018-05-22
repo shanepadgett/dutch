@@ -5,6 +5,7 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
+let currentUsername = $('.the-current-user').text().trim()
 
 // Render Receipt Image, Prepare Data For OCR
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
@@ -227,7 +228,7 @@ function appendNewItem(name, quantity, amount) {
     let aTwo = $('<button>')
         .attr('type', 'button')
         .addClass('dropdown-item select-dropdown-user')
-        .text('User 1')
+        .text(currentUsername)
 
     let divider = $('<div>')
         .addClass('dropdown-divider')
@@ -250,7 +251,6 @@ function appendNewItem(name, quantity, amount) {
         })
         .addClass('btn btn-outline-secondary dropdown-toggle btn-block')
         .html('<i class="fas fa-user"></i> Select Group Member')
-
 
     // let inputThree = $('<select>')
     //     .attr({
@@ -379,7 +379,10 @@ function appendNewItem(name, quantity, amount) {
         .append(formGroupName)
 
     let userWrapper = $('<div>')
-        .addClass('user-wrapper')
+        .attr({
+            'data-id': itemCount
+        })
+        .addClass(`user-wrapper user-wrapper-${itemCount}`)
 
     let td = $('<td>')
         .append(nameRow, row, userWrapper)
@@ -410,13 +413,28 @@ $(document).on('click', '.remove-item-btn ', function () {
 
 let globalOption = 'allocate'
 
-$('.split-allocate-btn').on('click', function (event) { //here
+$('.split-allocate-btn').on('click', function (event) {
     event.preventDefault()
 
     if (globalOption === $(this)[0].dataset.id)
         return
 
     globalOption = $(this)[0].dataset.id
+
+    if (globalOption === 'split') {
+
+        let div = makeGroupMember('All Group Members', 'item-level')
+
+        $('.user-wrapper').children().remove()
+
+        $('.user-wrapper').append(div)
+    }
+
+
+    if (globalOption === 'allocate')
+        $('.user-all-group-members').remove()
+
+
 
     $('.split-allocate-btn')
         .addClass('btn-outline-secondary')
@@ -428,10 +446,25 @@ $('.split-allocate-btn').on('click', function (event) { //here
 
 })
 
-$('.save-receipt-btn').on('click', function (event) { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
+$('.save-receipt-btn').on('click', function (event) { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
     event.preventDefault()
 
     let invalidInput = checkTaxTip()
+
+    if (invalidInput)
+        return
+        
+    let wrappers = []
+    
+    $('.user-wrapper').get().map(element => element).forEach(item => wrappers.push(item.dataset.id))
+
+    for (let i in wrappers) {
+        if ($(`.user-wrapper-${wrappers[i]}`).children().length === 0) {
+            let div = makeGroupMember(currentUsername, 'item-level') 
+    
+            $(`.user-wrapper-${wrappers[i]}`).append(div)
+        }
+    }
 })
 
 function checkTaxTip() {
@@ -475,9 +508,11 @@ $('.clickable-member-badge').on('click', function () {
 
     $('.group-members').append(div)
 
+    let textId = text.toLowerCase().split(' ').join('-')
+
     let dropBtn = $('<button>')
         .attr('type', 'button')
-        .addClass('dropdown-item select-dropdown-user')
+        .addClass(`dropdown-item select-dropdown-user dropdown-${textId}`)
         .text(text)
 
     $('.user-dropdown').append(dropBtn)
@@ -488,33 +523,36 @@ $('.clickable-member-badge').on('click', function () {
 function makeGroupMember(text, type) {
 
     let input = $('<input>')
-        .attr('type', 'text')
-        .addClass('rounded-left form-control assigned-member-allocation text-right')
+        .attr({
+            'type': 'text',
+            'readonly': true
+        })
+        .addClass('form-control assigned-member-allocation text-right')
         .val('100%')
 
     let groupText = $('<div>')
         .addClass('input-group-text')
-        .html('<i class="fas fa-percentage"></i>')
+        .html('<i class="fas fa-percent"></i>')
 
     let prepend = $('<div>')
-        .addClass('input-group-prepend')
+        .addClass('input-group-append')
         .append(groupText)
 
-    let button = $('<button>')
-        .attr('type', 'button')
-        .addClass(`btn btn-outline-secondary remove-group-member ${type}`)
-        .html(`<i class="fas fa-times remove-group-member ${type}"></i>`)
+    // let button = $('<button>')
+    //     .attr('type', 'button')
+    //     .addClass(`btn btn-outline-secondary remove-group-member ${type}`)
+    //     .html(`<i class="fas fa-times remove-group-member ${type}"></i>`)
 
-    let appendDiv = $('<div>')
-        .addClass('input-group-append')
-        .append(button)
+    // let appendDiv = $('<div>')
+    //     .addClass('input-group-append')
+    //     .append(button)
 
     let inputGroup = $('<div>')
         .addClass('input-group margin-top-center')
-        .append(prepend, input, appendDiv)
+        .append(prepend, input)
 
     let groupTwo = $('<div>')
-        .addClass('form-group col-8 col-md-6')
+        .addClass('form-group col-6')
         .append(inputGroup)
 
     let img = $('<img>')
@@ -552,12 +590,11 @@ function makeGroupMember(text, type) {
             'data-id': `user-${textId}`,
             id: `user-${textId}`
         })
-        .addClass(`form-row current-user-member-badge assigned-member-row mt-2`)
+        .addClass(`form-row current-user-member-badge assigned-member-row mt-2 user-${textId}`)
         .append(group)
 
     if (type === 'item-level') {
         textSpan.addClass('d-none d-md-inline')
-        group.removeClass('col-6').addClass('col-4 col-md-6')
         div.append(groupTwo)
     }
 
@@ -566,10 +603,23 @@ function makeGroupMember(text, type) {
 
 $(document).on('click', '.remove-group-member', function () {
 
+    if ($(this).hasClass('fa-users'))
+        return
+
     if ($(this).hasClass('item-level')) {
         let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
         $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/(allocatedUserCount.length-1)).toFixed(0)}%`)
     }
+
+    if ($(this).hasClass('group-level')) {
+        let id = $(this).closest('.current-user-member-badge').attr('id').split('-')
+        id.splice(0, 1)
+        id = id.join('-')
+
+        $(`.user-${id}`).remove()
+        $(`.dropdown-${id}`).remove()
+    }
+
     $(this).closest('.current-user-member-badge').remove()
 })
 
@@ -609,6 +659,11 @@ $('.recalculate-total-btn').on('click', function () {
 $(document).on('click', '.select-dropdown-user', function (event) {
     event.preventDefault()
 
+    let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element.id)
+
+    if (currentItemUsers.includes(`user-${$(this).text().toLowerCase().split(' ').join('-')}`))
+        return
+
     if ($(this).text() === 'All Group Members') {
         $(this).closest('td').find('.user-wrapper').children().remove()
     } else {
@@ -619,16 +674,12 @@ $(document).on('click', '.select-dropdown-user', function (event) {
 
     $(this).closest('td').find('.user-wrapper').append(div)
 
-    let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element)
-
     // if (currentItemUsers.includes('user-all-group-members'))
     //     $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
 
     let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
 
     $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/allocatedUserCount.length).toFixed(0)}%`)
-
-    console.log(currentItemUsers, allocatedUserCount)
 
     //determine percentages
 
@@ -644,6 +695,9 @@ let holdingSrc = ''
 
 $(document).on('mouseenter', '.assigned-member-badge', function () {
 
+    if ($(this).hasClass('fa-users'))
+        return
+
     holdingSrc = $(this).attr('src')
 
     $(this)
@@ -658,10 +712,14 @@ $(document).on('mouseenter', '.assigned-member-badge', function () {
 })
 
 $(document).on('mouseleave', '.assigned-member-badge', function () {
+
+    if ($(this).hasClass('fa-users'))
+        return
+
     $(this)
         .attr('src', holdingSrc)
         .css({
-            'border': '#B4AEAC'
+            'border': '2px #B4AEAC solid'
         })
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
