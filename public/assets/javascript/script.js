@@ -186,6 +186,10 @@ $('.analyze-btn').on('click', function (event) {
 
                     console.log(formData, receipt) //send obj, create hbs string
                     loadResults(receipt)
+
+                    if (receipt.reconciled)
+                        $('#total-amount').removeClass('is-invalid').addClass('is-valid')
+
                 })
             }
         }
@@ -214,8 +218,7 @@ function loadResults(data) {
     if (data.total)
         $('#total-amount').val(data.total)
 
-    data.items.forEach(item => appendNewItem(item.name, item.quantity, item.amount.toString().indexOf('.') === -1 ? `${item.amount}.00` : item.amount.toString().split('.').pop().length < 2 ? `${item.amount}0` : item.amount))
-
+    data.items.forEach(item => appendNewItem(item.name, item.quantity, makeFloat(item.amount)))
 }
 
 function appendNewItem(name, quantity, amount) {
@@ -377,16 +380,73 @@ $('.split-allocate-btn').on('click', function (event) { //here
 
 })
 
-$('.save-receipt-btn').on('click', function () { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
-    $('.validate-icon').show()
+$('.save-receipt-btn').on('click', function (event) { //here, also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
+    event.preventDefault()
+
+    let tax = $('#tax-amount').val().trim()
+    let tip = $('#tip-amount').val().trim()
+
+    if (tax === '' || isNaN(tax)) {
+        $('#tax-amount').addClass('is-invalid rounded-right').removeClass('is-valid')
+    } else {
+        $('#tax-amount').removeClass('is-invalid').addClass('is-valid')
+        $('#tax-amount').val(makeFloat(tax))
+    }
+
+    if (tip === '' || isNaN(tip)) {
+        $('#tip-amount').addClass('is-invalid rounded-right').removeClass('is-valid')
+    } else {
+        $('#tip-amount').removeClass('is-invalid').addClass('is-valid')
+        $('#tip-amount').val(makeFloat(tip))
+    }
+
+
 })
+
+function makeFloat(input) {
+    return input.toString().indexOf('.') === -1 ? `${input}.00` : input.toString().split('.').pop().length < 2 ? `${input}0` : input
+}
 
 $('.clickable-member-badge').on('click', function () {
 
-    if ($('.add-member-input').val().trim() === '') {
+    let text = $('.add-member-input').val().trim()
+
+    console.log(text)
+
+    if (text === '') {
         $('.add-member-input')
             .focus()
             .select()
         return
     }
+
+    let button = $('<button>')
+        .attr('type', 'button')
+        .addClass('btn btn-light rounded-circle ml-4')
+        .html('<i class="fas fa-times remove-group-member"></i>')
+
+    let img = $('<img>')
+        .attr('src', 'http://via.placeholder.com/60x60')
+        .addClass('rounded-circle mr-4 add-member-badge')
+
+    let span = $('<span>')
+        .addClass('clickable btn')
+        .append(img, text, button)
+
+
+    let group = $('<div>')
+        .addClass('form-group col-6')
+        .append(span)
+
+    let div = $('<div>')
+        .addClass('form-row current-user-member-badge')
+        .append(group)
+
+    $('.group-members').append(div)
+
+    $('.add-member-input').val('')
+})
+
+$(document).on('click', '.remove-group-member ', function () {
+    $(this).closest('.current-user-member-badge').remove()
 })

@@ -82,11 +82,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="form-row current-user-member-badge mt-3">
-                            <div class="form-group col-12">
-                                <span class="clickable btn">
-                                    <img src="http://via.placeholder.com/60x60" class=" rounded-circle mr-4 add-member-badge"> Username
-                                </span>
+                        <div class="group-members">
+                            <div class="form-row current-user-member-badge mt-3">
+                                <div class="form-group col-12">
+                                    <span class="clickable btn">
+                                        <img src="http://via.placeholder.com/60x60" class="rounded-circle mr-4 add-member-badge"> Username
+                                    </span>
+                                </div>
                             </div>
                         </div>
                         <div class="form-row">
@@ -218,9 +220,12 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Tax</div>
                                     </div>
-                                    <input type="text" class="form-control text-right is-invalid rounded-right" id="tax-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right" id="tax-amount" placeholder="0.00">
                                     <div class="invalid-feedback">
                                         Please enter zero, or a valid tax amount.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Tax looks good! Double check the receipt to make sure it's correct!
                                     </div>
                                 </div>
                             </div>
@@ -231,9 +236,12 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Tip</div>
                                     </div>
-                                    <input type="text" class="form-control text-right is-invalid rounded-right" id="tip-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right" id="tip-amount" placeholder="0.00">
                                     <div class="invalid-feedback">
                                         Please enter zero, or a valid tip amount.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Tip looks good!
                                     </div>
                                 </div>
                             </div>
@@ -244,15 +252,15 @@
                                     <div class="input-group-prepend">
                                         <div class="input-group-text total-block text-fuschia">Total</div>
                                     </div>
-                                    <input type="text" class="form-control text-right is-valid" id="total-amount" placeholder="0.00">
+                                    <input type="text" class="form-control text-right" id="total-amount" placeholder="0.00">
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary rounded-right" type="button">
                                             <i class="fas fa-sync-alt"></i> Recalculate
                                         </button>
                                     </div>
                                     <div class="invalid-feedback">
-                                        This total does not equal the sum of the items above (including tax + tip). Please add or remove items, correct item amounts, or correct the total
-                                        amount. Then click the Recalculate button above.
+                                        This total does not equal the sum of the items above (including tax + tip). Please add or remove items, correct item amounts,
+                                        or correct the total amount. Then click the Recalculate button above.
                                     </div>
                                     <div class="valid-feedback">
                                         This total equals the sum of the items above. Nice!
