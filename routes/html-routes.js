@@ -1,4 +1,5 @@
 const passport = require('passport')
+const db = require('../models')
 
 const env = {
   AUTH0_CLIENT_ID: process.env.AUTH0_CLIENT_ID,
@@ -38,7 +39,26 @@ module.exports = app => {
       failureRedirect: '/failure'
     }),
     function(req, res) {
-      res.redirect(req.session.returnTo || '/dashboard')
+      db.User.findOne({
+        where: {
+          authId: req.user.id
+        }
+      }).then(result => {
+        if (result) {
+          res.redirect(req.session.returnTo || '/dashboard')
+        } else {
+          db.User.create({
+            authId: req.user.id,
+            firstName: req.user.name.givenName,
+            lastName: req.user.name.familyName,
+            email: req.user.emails[0].value,
+            displayName: req.user.nickname,
+            avatar: req.user.picture
+          })
+            .then(data => res.redirect(req.session.returnTo || '/dashboard'))
+            .catch(err => res.json(err))
+        }
+      })
     }
   )
 
