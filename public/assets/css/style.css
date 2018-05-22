@@ -1,6 +1,6 @@
 /*GLOBALS*/
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:300,700');
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,700|Yeseva+One');
 
 :root {
     --void: #0e0b16;
@@ -158,10 +158,15 @@ hr {
     color: var(--green);
 }
 
-.add-member-badge {
+.add-member-badge,
+.assigned-member-badge {
     width: 60px;
     height: 60px;
     font-size: 60px;
+}
+
+.margin-top-center {
+    margin-top: 1.15rem;
 }
 
 #accordion {
