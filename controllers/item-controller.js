@@ -1,91 +1,36 @@
 const db = require('../models')
 const dbItem = db.Item
-const dbUser = db.User
 const dbReceipt = db.Receipt
+const dbUser = db.User
+const { getUserIdFromAuthId } = require('../controllers/user-controller')
 
 class Item {
-  static getItem(
-    {
-      params: { itemId }
-    },
-    res
-  ) {
-    dbItem
-      .findOne({
-        where: {
-          id: itemId
-        },
-        include: [
-          {
-            model: dbUser,
-            as: 'assignee'
-          }
-        ]
-      })
-      .then(item => {
-        res.json(item)
-      })
+
+  static getItemsByAssignee(userAuthId) {
+    return getUserIdFromAuthId(userAuthId).then(userId => {
+      return dbItem
+        .findAll({
+          where: {
+            assigneeId: userId
+          },
+          include: [
+            { model: dbUser, as: 'assignee' },
+            {
+              model: dbReceipt,
+              as: 'receipt',
+              include: [{ model: dbUser, as: 'owner' }]
+            }
+          ]
+        })
+        .then(items => items)
+    })
   }
 
-  static getItems(
-    {
-      params: { assigneeId, receiptId }
-    },
-    res
-  ) {
-    let query = {}
-
-    if (assigneeId) {
-      query.assigneeId = assigneeId
-    }
-
-    if (receiptId) {
-      query.receiptID = receiptId
-    }
-
-    dbItem
-      .findAll({
-        where: query,
-        include: [
-          {model: dbUser, as: 'assignee'},
-          {model: dbReceipt, as: 'receipt', include: [{model: dbUser, as: 'owner'}]}
-        ]
-      })
-      .then(items => {
-        res.json(items)
-      })
-  }
-
-  static createItem({ body }, res) {
-    // return model.createItem(body).then(({ id }) =>
-    //   res.set('Location', `/api/items/${id}`).send(204)
-    // )
-  }
+  // static createItem({ body }, res) {
+  //   return model.createItem(body).then(({ id }) =>
+  //     res.set('Location', `/api/items/${id}`).send(204)
+  //   )
+  // }
 }
 
 module.exports = Item
-
-// const model = require('../models/mock/item-mock')
-
-// class Item {
-//   static getItem(
-//     {
-//       params: { itemId }
-//     },
-//     res
-//   ) {
-//     res.json(model.getItem(itemId))
-//   }
-
-//   static getItems(_, res) {
-//     res.json(model.getItems())
-//   }
-
-//   static createItem({ body }, res) {
-//     return model.createItem(body).then(({ id }) =>
-//       res.set('Location', `/api/items/${id}`).send(204)
-//     )
-//   }
-// }
-
-// module.exports = Item
