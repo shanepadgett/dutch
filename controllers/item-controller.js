@@ -5,7 +5,6 @@ const dbUser = db.User
 const { getUserIdFromAuthId } = require('../controllers/user-controller')
 
 class Item {
-
   static getItemsByAssignee(userAuthId) {
     return getUserIdFromAuthId(userAuthId).then(userId => {
       return dbItem
@@ -14,16 +13,29 @@ class Item {
             assigneeId: userId
           },
           include: [
-            { model: dbUser, as: 'assignee' },
+            /*{ model: dbUser, as: 'assignee' },*/
             {
               model: dbReceipt,
-              as: 'receipt',
-              include: [{ model: dbUser, as: 'owner' }]
+              include: [{ model: dbUser, as: 'owner'}]
             }
           ]
         })
         .then(items => items)
     })
+  }
+
+  static createItem({ body }, res) {
+    dbItem
+      .create({
+        name: body.name,
+        quantity: body.quantity,
+        price: body.price,
+        isPaid: body.isPaid,
+        receiptId: body.receiptId,
+        assigneeId: body.assigneeId
+      })
+      .then(data => res.json(data.id))
+      .catch(err => res.json(err))
   }
 }
 
