@@ -2,25 +2,28 @@ const db = require('../models')
 const dbReceipt = db.Receipt
 const dbUser = db.User
 const dbItem = db.Item
+const { getUserIdFromAuthId } = require('../controllers/user-controller')
 
 class Receipt {
-  static getReceipts(ownerId) {
-    return dbReceipt
-      .findAll({
-        where: {
-          ownerId: ownerId
-        },
-        include: [
-          {
-            model: dbUser,
-            as: 'owner'
+  static getReceipts({ user }, res) {
+    return getUserIdFromAuthId(user.id).then(id => {
+      return dbReceipt
+        .findAll({
+          where: {
+            ownerId: id
           },
-          {
-            model: dbItem
-          }
-        ]
-      })
-      .then(receipts => receipts)
+          include: [
+            {
+              model: dbUser,
+              as: 'owner'
+            },
+            {
+              model: dbItem
+            }
+          ]
+        })
+        .then(receipts => res.json(receipts))
+    })
   }
 
   static createReceipt({ body }, res) {
