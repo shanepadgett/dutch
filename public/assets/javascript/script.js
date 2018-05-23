@@ -246,7 +246,7 @@ $('.analyze-btn').on('click', function (event) {
 let itemCount = 1
 let itemCountArr = []
 
-$('.add-item').on('click', function (event) {
+$('.add-item').on('click', function (event) { //here if globalOption = 'split' add the all users
     event.preventDefault()
 
     appendNewItem()
@@ -270,11 +270,6 @@ function loadResults(data) {
 
 function appendNewItem(name, quantity, amount) {
 
-    let aTwo = $('<button>')
-        .attr('type', 'button')
-        .addClass('dropdown-item select-dropdown-user')
-        .text(groupMembers[0].displayName)
-
     let divider = $('<div>')
         .addClass('dropdown-divider')
 
@@ -285,7 +280,17 @@ function appendNewItem(name, quantity, amount) {
 
     let dropDiv = $('<div>')
         .addClass('dropdown-menu user-dropdown w-100')
-        .append(aOne, divider, aTwo)
+        .append(aOne, divider)
+
+    for (let i in groupMembers) {
+
+        let aTwo = $('<button>')
+            .attr('type', 'button')
+            .addClass('dropdown-item select-dropdown-user')
+            .text(groupMembers[i].displayName)
+
+        dropDiv.append(aTwo)
+    }
 
     let dropBtn = $('<button>')
         .attr({
@@ -442,7 +447,7 @@ $(document).on('click', '.remove-item-btn ', function () {
 
     // $(this).closest('.item-wrapper:first').addClass('bg-red rounded')
     // $(this).closest('.item-wrapper').animateCss('slideOutRight', function () {
-        $(this).closest('.item-wrapper').remove()
+    $(this).closest('.item-wrapper').remove()
     // })
 })
 
@@ -589,7 +594,11 @@ $('.clickable-member-badge').on('click', function () {
 
         let div = makeGroupMember(groupMembers[memberIndex].displayName, 'group-level', groupMembers[memberIndex].avatar)
 
+        div.hide()
+
         $('.group-members').append(div)
+
+        div.fadeIn()
     })
 
     let textId = text.toLowerCase().split(' ').join('-')
@@ -800,10 +809,13 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
 
-let finalItems = []
+
 
 $(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
+    if (parseFloat($('.item-amount-input').val().trim()) === 0 || parseFloat($('.item-amount-input').val().trim()) === '') {
+        //here
+    }
 
     // post receipt, get data back, get user id via email, then post items
 
@@ -843,25 +855,25 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     // use receipt id to post items return $.post items console.log the data in then on chain
 
     let itemArr = []
+    let itemQuantityOneArr = []
+    let innerArr = []
+    let finalItems = []
 
     for (let i in itemCountArr) {
         let obj = {
             name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
             quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
             price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
-            isPaid: true,
+            isPaid: null, //true ??
             receiptId: null, //receipt,
-            assigneeId: finalReceipt.ownerId,
+            assigneeId: null, //finalReceipt.ownerId ??
             allocationMembers: ($(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)[0] === 'all-group-members' ?
-                groupMembers.map(item => item.displayName) : 
+                groupMembers.map(item => item.displayName) :
                 $(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)),
             children: ($(`.user-wrapper-${itemCountArr[i]}`).children('[data-id="all-group-members"]').length === 1 ? groupMembers.length : $(`.user-wrapper-${itemCountArr[i]}`).children().length)
         }
         itemArr.push(obj)
     }
-    console.log(itemArr)
-
-    let itemQuantityOneArr = []
 
     for (let i in itemArr) {
         let count = itemArr[i].quantity
@@ -869,7 +881,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             let multiplyItem = []
             multiplyItem.push(itemArr[i])
             multiplyItem[0].quantity = 1
-            for (let j = 0; j < count; j++ ) {
+            for (let j = 0; j < count; j++) {
                 itemQuantityOneArr.push(multiplyItem[0])
             }
         } else {
@@ -877,22 +889,30 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
         }
     }
 
-  
+    for (let i in itemQuantityOneArr) {
+        let membersArr = itemQuantityOneArr[i].allocationMembers
 
-    // for (let i in itemArr) {
-    //     let count = itemArr[i].quantity
-    //     if (count === 1) {
-    //         itemQuantityOneArr.push(itemArr[i])
-    //         multiplyItem[0].quantity = 1
-    //         for (let j = 0; j < count; j++ ) {
-    //             itemArr.push(multiplyItem[0])
-    //         }
-    //     }
-    // }
+        for (let j in membersArr) {
+            let memberId = null
 
+            for (let k in groupMembers) {
+                if (groupMembers[k].displayName.toLowerCase() === membersArr[j])
+                    memberId = groupMembers[k].id
+            }
 
+            let obj = {
+                name: itemQuantityOneArr[i].name,
+                quantity: itemQuantityOneArr[i].quantity,
+                price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
+                isPaid: groupMembers[0].id === memberId ? true : false,
+                receiptId: null,
+                assigneeId: memberId ? memberId : membersArr[j]
+            }
+            finalItems.push(obj)
+        }
+    }
 
-    console.log(itemArr, itemQuantityOneArr)
+    //then replace username w/ id
 
     // $('[data-id="all-group-members"]')
 
