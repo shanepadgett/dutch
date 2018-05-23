@@ -26,6 +26,14 @@ class User {
     }).then(user => res.json(user.avatar))
   }
 
+  static getUserFromDisplayName({params: {displayName}}, res) {
+    return dbUser.findOne({
+      where: {
+        displayName: displayName
+      }
+    }).then(user => res.json(user))
+  }
+
   // static getUser(
   //   {
   //     params: { userId }

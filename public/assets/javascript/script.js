@@ -6,16 +6,19 @@ $(document).ready(function () {
 })
 
 let currentUserEmail = 'josephemswiler@gmail.com'
-$('.the-current-user').text(currentUserEmail) //here
-let currentUsername = $('.the-current-user').text().trim()
-let currentUserAvatar = ''
-$.get(`/api/users/avatar/${currentUserEmail}`).then(avatar => {
-    currentUserAvatar = avatar
 
-    $('#current-user-img').attr('src', currentUserAvatar)
+
+let ownerDisplayName = 'josephemswiler' //here
+
+let groupMembers = []
+$.get(`/api/users/user/${ownerDisplayName}`).then(data => {
+    groupMembers.push(data)
+
+    $('.the-current-user').text(groupMembers[0].displayName)
+    $('#current-user-img').attr('src', groupMembers[0].avatar)
 })
 
-let groupMembers = [currentUserEmail]
+
 let holdingSrc = ''
 
 // Render Receipt Image, Prepare Data For OCR
@@ -243,7 +246,7 @@ function appendNewItem(name, quantity, amount) {
     let aTwo = $('<button>')
         .attr('type', 'button')
         .addClass('dropdown-item select-dropdown-user')
-        .text(currentUsername)
+        .text(groupMembers[0].displayName)
 
     let divider = $('<div>')
         .addClass('dropdown-divider')
@@ -465,7 +468,7 @@ $('.save-receipt-btn').on('click', function (event) {
 
     for (let i in wrappers) {
         if ($(`.user-wrapper-${wrappers[i]}`).children().length === 0) {
-            let div = makeGroupMember(currentUsername, 'item-level', currentUserAvatar)
+            let div = makeGroupMember(groupMembers[0].displayName, 'item-level', groupMembers[0].avatar)
 
             $(`.user-wrapper-${wrappers[i]}`).append(div)
         }
@@ -760,8 +763,6 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
 
     // post receipt, get data back, get user id via email, then post items
 
-    let allItems = $('.item-wrapper')
-
     let finalReceipt = {
         place: $('#location').val().trim(),
         // receiptDate: $('#date').val().trim(),
@@ -769,7 +770,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
         taxTotal: parseFloat($('#tax-amount').val().trim()),
         tipTotal: parseFloat($('#tip-amount').val().trim()),
         receiptTotal: parseFloat($('#total-amount').val().trim()),
-        ownerId: null
+        ownerId: groupMembers[0].id
     }
 
     finalReceipt.subtotal = parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal))
@@ -784,16 +785,41 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     //       })
     // })
 
-    $.get(`/api/users/id/${currentUserEmail}`)
+    $.get(`/api/users/id/${groupMembers[0].email}`)
         .then(getData => {
             finalReceipt.ownerId = parseInt(getData)
             return $.post('/api/receipts/', finalReceipt).then(data => data)
-        }).then(postData => {
-            console.log(postData)
+        }).then(receipt => {
+            console.log(receipt)
             // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
             //     item.assigneeId = parseInt(getData)
             // return $.post('/api/items/', item).then(data => data)
             // use receipt id to post items return $.post items console.log the data in then on chain
+
+            let finalItems = []
+
+            for (let i in itemCountArr) {
+                let obj = {
+                    name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
+                    quantity: $(`#item-quantity-${itemCountArr[i]}`).val().trim(),
+                    price: $(`#item-amount-${itemCountArr[i]}`).val().trim(),
+                    isPaid: true,
+                    receiptId: receipt,
+                    assigneeId: finalReceipt.ownerId
+                }
+
+                $(`.item-wrapper-${itemCountArr[i]}`).children().forEach(item => {
+                    let id = item.attr('id').split('-')
+                    id.splice(0, 1)
+
+                })
+                // another loop, push in inner loop, if all members, add an item w/ equal allocation
+
+                finalItems.push(obj)
+            }
+
+            finalItems.forEach(item => item.assigneeId === finalReceipt.ownerId ? item.isPaid = true : false)
+
         })
 
 
@@ -803,25 +829,6 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     // (item.amount / receipt.subTotal) * tip =  item allocation
 
 
-
-    let finalItems = []
-
-    for (let i in itemCountArr) {
-        let obj = {
-            name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
-            quantity: $(`#item-quantity-${itemCountArr[i]}`).val().trim(),
-            price: $(`#item-amount-${itemCountArr[i]}`).val().trim(),
-            isPaid: false,
-            receiptId: null,
-            assigneeId: null
-        }
-
-        // another loop, push in inner loop, if all members, add an item w/ equal allocation
-
-        finalItems.push(obj)
-    }
-
-    finalItems.forEach(item => item.assigneeId === finalReceipt.ownerId ? item.isPaid = true : false)
 
     //     // ids
     //     item-name-1
