@@ -31,10 +31,17 @@ class Receipt {
     }).then(receipts => receipts)
   }
 
-  static createReceipt({ body }, res) {
-    // return model.createReceipt(body).then(({ id }) =>
-    //   res.set('Location', `/api/receipts/${id}`).send(204)
-    // )
+  static createReceipt({body}, res) {
+    dbReceipt.create({
+      place: body.place,
+      subtotal: body.subtotal,
+      taxTotal: body.taxTotal,
+      tipTotal: body.tipTotal,
+      receiptTotal: body.receiptTotal,
+      ownerId: body.ownerId
+    })
+      .then(data => res.json(data.id))
+      .catch(err => res.json(err))
   }
 }
 
