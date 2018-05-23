@@ -48,8 +48,8 @@ module.exports = function(sequelize, DataTypes) {
       as: 'owner'
     })
     User.hasMany(models.Item, {
-      foreignKey: 'assigneeId',
-      as: 'assignee'
+      foreignKey: 'assigneeId'/*,
+      as: 'assignee'*/
     })
   }
 
