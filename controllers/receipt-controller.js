@@ -22,7 +22,7 @@ class Receipt {
             }
           ]
         })
-        .then(receipts => res.json(receipts))
+        .then(receipts => receipts)
     })
   }
 
