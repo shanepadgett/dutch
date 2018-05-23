@@ -7,18 +7,21 @@ function createItemRecords() {
   const records = []
 
   for (let i = 0; i < 10; i++) {
-    const record = {
-      name: faker.commerce.productName(),
-      quantity: getRandomIntInclusive(1, 3),
-      price: parseFloat(faker.finance.amount(3, 35, 2)),
-      isPaid: getRandomIntInclusive(0, 1),
-      receiptId: getRandomIntInclusive(1, 10),
-      assigneeId: getRandomIntInclusive(1, 3),
-      createdAt: new Date(),
-      updatedAt: new Date()
+    const numItemsToGen = getRandomIntInclusive(1, 5)
+    for (let j = 0; j < numItemsToGen; j++) {
+      const record = {
+        name: faker.commerce.productName(),
+        quantity: getRandomIntInclusive(1, 3),
+        price: parseFloat(faker.finance.amount(3, 35, 2)),
+        isPaid: getRandomIntInclusive(0, 1),
+        receiptId: i+1,
+        assigneeId: getRandomIntInclusive(1, 3),
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+  
+      records.push(record)
     }
-
-    records.push(record)
   }
 
   return records
