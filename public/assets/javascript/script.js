@@ -5,7 +5,21 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-let currentUsername = $('.the-current-user').text().trim()
+let currentUserEmail = 'josephemswiler@gmail.com'
+
+
+let ownerDisplayName = 'josephemswiler' //here
+
+let groupMembers = []
+$.get(`/api/users/user/${ownerDisplayName}`).then(data => {
+    groupMembers.push(data)
+
+    $('.the-current-user').text(groupMembers[0].displayName)
+    $('#current-user-img').attr('src', groupMembers[0].avatar)
+})
+
+
+let holdingSrc = ''
 
 // Render Receipt Image, Prepare Data For OCR
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
@@ -192,6 +206,9 @@ $('.analyze-btn').on('click', function (event) {
 
                     if (receipt.reconciled)
                         $('#total-amount').removeClass('is-invalid').addClass('is-valid')
+
+                    if (!receipt.reconciled)
+                        $('#total-amount').removeClass('is-valid').addClass('is-invalid')
                 })
             }
         }
@@ -216,10 +233,10 @@ function loadResults(data) {
         $('#date').val(data.date)
 
     if (data.tax)
-        $('#tax-amount').val(data.tax)
+        $('#tax-amount').val(parseFloat(data.tax).toFixed(2))
 
     if (data.total)
-        $('#total-amount').val(data.total)
+        $('#total-amount').val(parseFloat(data.total).toFixed(2))
 
     data.items.forEach(item => appendNewItem(item.name, item.quantity, parseFloat(item.amount).toFixed(2)))
 }
@@ -229,7 +246,7 @@ function appendNewItem(name, quantity, amount) {
     let aTwo = $('<button>')
         .attr('type', 'button')
         .addClass('dropdown-item select-dropdown-user')
-        .text(currentUsername)
+        .text(groupMembers[0].displayName)
 
     let divider = $('<div>')
         .addClass('dropdown-divider')
@@ -253,25 +270,9 @@ function appendNewItem(name, quantity, amount) {
         .addClass('btn btn-outline-secondary dropdown-toggle btn-block')
         .html('<i class="fas fa-user"></i> Select Group Member')
 
-    // let inputThree = $('<select>')
-    //     .attr({
-    //         id: `item-user-${itemCount}`
-    //     })
-    //     .addClass('form-control item-user-select rounded-right')
-    //     .append(optionOne, optionTwo)
-
-    // let groupTextThree = $('<div>')
-    //     .addClass('input-group-text')
-    //     .html('<i class="fas fa-user"></i>')
-
-    // let prependThree = $('<div>')
-    //     .addClass('input-group-prepend')
-    //     .append(groupTextThree)
-
     let btnGroup = $('<div>')
         .addClass('btn-group btn-block')
         .append(dropBtn, dropDiv)
-    // .append(prependThree)
 
     let inputGroupThree = $('<div>')
         .addClass('input-group')
@@ -293,6 +294,7 @@ function appendNewItem(name, quantity, amount) {
             'data-id': itemCount,
             placeholder: '0.00'
         })
+        .val('0.00')
         .addClass('form-control item-amount-input format-float text-right rounded-right')
 
     let groupTextTwo = $('<div>')
@@ -381,7 +383,8 @@ function appendNewItem(name, quantity, amount) {
 
     let userWrapper = $('<div>')
         .attr({
-            'data-id': itemCount
+            'data-id': itemCount,
+            id: `user-wrapper-${itemCount}`
         })
         .addClass(`user-wrapper user-wrapper-${itemCount}`)
 
@@ -424,7 +427,7 @@ $('.split-allocate-btn').on('click', function (event) {
 
     if (globalOption === 'split') {
 
-        let div = makeGroupMember('All Group Members', 'item-level')
+        let div = makeGroupMember('All Group Members', 'item-level', null)
 
         $('.user-wrapper').children().remove()
 
@@ -447,7 +450,7 @@ $('.split-allocate-btn').on('click', function (event) {
 
 })
 
-$('.save-receipt-btn').on('click', function (event) { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
+$('.save-receipt-btn').on('click', function (event) {
     event.preventDefault()
 
     checkTotal()
@@ -465,7 +468,7 @@ $('.save-receipt-btn').on('click', function (event) { //here, make hover x for m
 
     for (let i in wrappers) {
         if ($(`.user-wrapper-${wrappers[i]}`).children().length === 0) {
-            let div = makeGroupMember(currentUsername, 'item-level')
+            let div = makeGroupMember(groupMembers[0].displayName, 'item-level', groupMembers[0].avatar)
 
             $(`.user-wrapper-${wrappers[i]}`).append(div)
         }
@@ -498,8 +501,10 @@ $('.save-receipt-btn').on('click', function (event) { //here, make hover x for m
 
     $('.submit-button-block').append(divOne)
 
+    let container = $('.item-container')
+
     $('html, body').animate({
-        scrollTop: $(document).height()
+        scrollTop: container.prop('scrollHeight')
     }, 1000)
 })
 
@@ -540,9 +545,16 @@ $('.clickable-member-badge').on('click', function () {
         return
     }
 
-    let div = makeGroupMember(text, 'group-level')
+    let memberIndex = ''
 
-    $('.group-members').append(div)
+    $.get(`/api/users/user/${text}`).then(data => {
+        memberIndex = groupMembers.length
+        groupMembers.push(data)
+
+        let div = makeGroupMember(groupMembers[memberIndex].displayName, 'group-level', groupMembers[memberIndex].avatar)
+
+        $('.group-members').append(div)
+    })
 
     let textId = text.toLowerCase().split(' ').join('-')
 
@@ -554,9 +566,10 @@ $('.clickable-member-badge').on('click', function () {
     $('.user-dropdown').append(dropBtn)
 
     $('.add-member-input').val('')
+
 })
 
-function makeGroupMember(text, type) {
+function makeGroupMember(text, type, avatar) {
 
     let input = $('<input>')
         .attr({
@@ -574,15 +587,6 @@ function makeGroupMember(text, type) {
         .addClass('input-group-append')
         .append(groupText)
 
-    // let button = $('<button>')
-    //     .attr('type', 'button')
-    //     .addClass(`btn btn-outline-secondary remove-group-member ${type}`)
-    //     .html(`<i class="fas fa-times remove-group-member ${type}"></i>`)
-
-    // let appendDiv = $('<div>')
-    //     .addClass('input-group-append')
-    //     .append(button)
-
     let inputGroup = $('<div>')
         .addClass('input-group margin-top-center')
         .append(prepend, input)
@@ -597,6 +601,9 @@ function makeGroupMember(text, type) {
             'alt': ''
         })
         .addClass(`rounded-circle mr-4 assigned-member-badge remove-group-member ${type}`)
+
+    if (avatar)
+        img.attr('src', avatar)
 
     if (text === 'All Group Members') {
         img
@@ -661,17 +668,6 @@ $(document).on('click', '.remove-group-member', function () {
 
 $('.recalculate-total-btn').on('click', function () {
 
-    // let invalidInput = false
-
-    // for (let i = 0; i < itemCountArr.length; i++) {
-    //     if(isNaN(parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()))) {
-    //         invalidInput = true
-    //         $(`#item-amount-${itemCountArr[i]}`).addClass('is-invalid rounded-right')
-    //     } else {
-    //         $(`#item-amount-${itemCountArr[i]}`).removeClass('is-invalid rounded-right')
-    //     }
-    // }
-
     let invalidInput = checkTaxTip()
 
     if (invalidInput)
@@ -692,9 +688,11 @@ function checkTotal() {
 
     itemAmounts.push(parseFloat($('#tax-amount').val().trim()), parseFloat($('#tip-amount').val().trim()))
 
-    $('#total-amount').val(itemAmounts.reduce(function (acc, val) {
+    $('#total-amount').val(parseFloat(itemAmounts.reduce(function (acc, val) {
         return acc + val
-    }))
+    })).toFixed(2))
+
+    $('#total-amount').removeClass('is-invalid').addClass('is-valid')
 }
 
 $(document).on('click', '.select-dropdown-user', function (event) {
@@ -706,33 +704,31 @@ $(document).on('click', '.select-dropdown-user', function (event) {
         return
 
     if ($(this).text() === 'All Group Members') {
+
         $(this).closest('td').find('.user-wrapper').children().remove()
+
+        let div = makeGroupMember($(this).text(), 'item-level', null)
+
+        $(this).closest('td').find('.user-wrapper').append(div)
     } else {
+
         $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
+
+        let memberIndex = ''
+
+        $.get(`/api/users/user/${$(this).text()}`).then(data => {
+            groupMembers.forEach(item => item.displayName === $(this).text() ? memberIndex = groupMembers.indexOf(item) : false)
+
+            let div = makeGroupMember($(this).text(), 'item-level', groupMembers[memberIndex].avatar)
+
+            $(this).closest('td').find('.user-wrapper').append(div)
+        })
     }
-
-    let div = makeGroupMember($(this).text(), 'item-level')
-
-    $(this).closest('td').find('.user-wrapper').append(div)
-
-    // if (currentItemUsers.includes('user-all-group-members'))
-    //     $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
 
     let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
 
     $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/allocatedUserCount.length).toFixed(0)}%`)
-
-    //determine percentages
-
-    //     if (text === 'All Group Members')
-    //     $('.assigned-member-row').remove()
-
-
-
-
 })
-
-let holdingSrc = ''
 
 $(document).on('mouseenter', '.assigned-member-badge', function () {
 
@@ -765,8 +761,128 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
 
-$(document).on('click', '.final-submit', function () {
+$(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
+
+    // post receipt, get data back, get user id via email, then post items
+
+    let finalReceipt = {
+        place: $('#location').val().trim(),
+        // receiptDate: $('#date').val().trim(),
+        subtotal: null,
+        taxTotal: parseFloat($('#tax-amount').val().trim()),
+        tipTotal: parseFloat($('#tip-amount').val().trim()),
+        receiptTotal: parseFloat($('#total-amount').val().trim()),
+        ownerId: groupMembers[0].id
+    }
+
+    finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
     
+
+    // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
+    //     finalReceipt.ownerId = parseInt(getData)
+
+    //     $.post('/api/receipts/', finalReceipt).done(function(postData) {
+    //         console.log(postData)
+
+    //         //upload items
+    //       })
+    // })
+
+    // $.get(`/api/users/id/${groupMembers[0].email}`)
+    //     .then(getData => {
+    //         finalReceipt.ownerId = parseInt(getData)
+    //         return $.post('/api/receipts/', finalReceipt).then(data => data)
+    //     }).then(receipt => {
+    //         console.log(receipt)
+
+    // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
+    //     item.assigneeId = parseInt(getData)
+    // return $.post('/api/items/', item).then(data => data)
+    // use receipt id to post items return $.post items console.log the data in then on chain
+
+    let finalItems = []
+
+    for (let i in itemCountArr) {
+        let obj = {
+            name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
+            quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
+            price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
+            isPaid: true,
+            // receiptId: receipt,
+            assigneeId: finalReceipt.ownerId
+        }
+
+        $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element).forEach(item => {
+            if (item) {
+                let name = item.id
+                name = name.split('-')
+                name.splice(0, 1)
+                name = name.join('')
+                console.log(name)
+
+                let memberIndex = ''
+
+                if (name === 'allgroupmembers') {
+                    groupMembers.forEach(item => {
+
+                        obj.assigneeId = item.id
+
+                        if (groupMembers.indexOf(item) !== 0)
+                            obj.isPaid = false
+
+                        if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+                            let allocation = parseInt(100 / $(`.user-wrapper-${itemCountArr[i]}`).children().length)
+
+                            obj.price = obj.price * allocation
+
+                            finalItems.push(obj)
+                        }
+                    })
+                } else {
+
+                    groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
+
+                    console.log(memberIndex, groupMembers[memberIndex])
+
+                    obj.assigneeId = groupMembers[memberIndex].id
+
+                    if (memberIndex !== 0)
+                        obj.isPaid = false
+
+                    if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+                        let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
+                        allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
+
+                        obj.price = obj.price * allocation
+
+                        finalItems.push(obj)
+                    } else {
+                        finalItems.push(obj)
+                    }
+                }
+            }
+        })
+    }
+    // }) 
+    console.log(finalReceipt, finalItems)
+
+
+
+    // (item.amount / receipt.subTotal) * tax = item allocation
+    // (item.amount / receipt.subTotal) * tip =  item allocation
+
+
+
+    //     // ids
+    //     item-name-1
+    //     item-quantity-1
+    //     item-amount-1 & assigned-member-allocation . value = 100%
+    //    paid t/f if assignee = owener, paid = true : false 
+    //     //id
+    //     user-wrapper-1
+    //         data-id="user-current-username" //via email
+
+
     //grab values and hit route with items and receipt
 })
