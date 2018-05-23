@@ -761,6 +761,8 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
 
+let finalItems = []
+
 $(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
 
@@ -777,7 +779,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     }
 
     finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
-    
+
 
     // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
     //     finalReceipt.ownerId = parseInt(getData)
@@ -801,7 +803,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     // return $.post('/api/items/', item).then(data => data)
     // use receipt id to post items return $.post items console.log the data in then on chain
 
-    let finalItems = []
+
 
     for (let i in itemCountArr) {
         let obj = {
@@ -813,57 +815,77 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             assigneeId: finalReceipt.ownerId
         }
 
-        $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element).forEach(item => {
-            if (item) {
-                let name = item.id
-                name = name.split('-')
+        let items = $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element ? element.id : false)
+        
+        for (let i in items) {
+
+                let name = items[i].split('-')
                 name.splice(0, 1)
                 name = name.join('')
                 console.log(name)
 
-                let memberIndex = ''
-
                 if (name === 'allgroupmembers') {
-                    groupMembers.forEach(item => {
+                    for (let i in groupMembers) {
+                        obj.assigneeId = groupMembers[i].id
 
-                        obj.assigneeId = item.id
-
-                        if (groupMembers.indexOf(item) !== 0)
+                        if (i !== 0)
                             obj.isPaid = false
 
-                        if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-                            let allocation = parseInt(100 / $(`.user-wrapper-${itemCountArr[i]}`).children().length)
+                        let allocation = parseFloat(1.00 / parseFloat(groupMembers.length))
 
-                            obj.price = obj.price * allocation
+                        let result = parseFloat(obj.price * allocation).toFixed(2)
 
-                            finalItems.push(obj)
-                        }
-                    })
-                } else {
+                        obj.price = parseFloat(result)
 
-                    groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
-
-                    console.log(memberIndex, groupMembers[memberIndex])
-
-                    obj.assigneeId = groupMembers[memberIndex].id
-
-                    if (memberIndex !== 0)
-                        obj.isPaid = false
-
-                    if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-                        let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
-                        allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
-
-                        obj.price = obj.price * allocation
-
-                        finalItems.push(obj)
-                    } else {
                         finalItems.push(obj)
                     }
-                }
-            }
-        })
-    }
+
+                    }
+                    // groupMembers.forEach(item => {
+
+                    //     obj.assigneeId = item.id
+
+                    //     if (groupMembers[0].id !== item.id)
+                    //         obj.isPaid = false
+
+                    //     if (groupMembers.length > 1) {
+                    //         let allocation = parseFloat(groupMembers.length / 100)
+
+                    //         let result = parseFloat(obj.price * allocation).toFixed(2)
+
+                    //         obj.price = parseFloat(result)
+
+                    //         finalItems.push(obj)
+                    //     } else {
+                    //         finalItems.push(obj)
+                    //     }
+                    // })
+                } //keep below???????????????
+                // else {
+
+                //     groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
+
+                //     console.log(memberIndex, groupMembers[memberIndex])
+
+                //     obj.assigneeId = groupMembers[memberIndex].id
+
+                //     if (memberIndex !== 0)
+                //         obj.isPaid = false
+
+                //     if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+                //         let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
+                //         allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
+
+                //         obj.price = obj.price * allocation
+
+                //         finalItems.push(obj)
+                //     } else {
+                //         finalItems.push(obj)
+                //     }
+                // }
+            
+        }
+    
     // }) 
     console.log(finalReceipt, finalItems)
 
