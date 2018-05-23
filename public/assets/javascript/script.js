@@ -6,6 +6,7 @@ $(document).ready(function () {
 })
 
 let currentUsername = $('.the-current-user').text().trim()
+let holdingSrc = ''
 
 // Render Receipt Image, Prepare Data For OCR
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
@@ -385,7 +386,8 @@ function appendNewItem(name, quantity, amount) {
 
     let userWrapper = $('<div>')
         .attr({
-            'data-id': itemCount
+            'data-id': itemCount,
+            id: `user-wrapper-${itemCount}`
         })
         .addClass(`user-wrapper user-wrapper-${itemCount}`)
 
@@ -738,8 +740,6 @@ $(document).on('click', '.select-dropdown-user', function (event) {
 
 })
 
-let holdingSrc = ''
-
 $(document).on('mouseenter', '.assigned-member-badge', function () {
 
     if ($(this).hasClass('fa-users'))
@@ -772,6 +772,55 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
 })
 
 $(document).on('click', '.final-submit', function () {
+
+
+    // post receipt, get data back, get user id via email, then post items
+
+    let allItems = $('.item-wrapper')
+
+    let finalReceipt = {
+        place: $('#location').val().trim(),
+        receiptDate: $('#date').val().trim(),
+        subtotal: null,
+        taxTotal: $('#tax-amount').val().trim(),
+        tipTotal: $('#tip-amount').val().trim(),
+        receiptTotal: $('#total-amount').val().trim(),
+        ownerId: null
+    }
+
+    finalReceipt.subtotal = parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)
+
+    // (item.amount / receipt.subTotal) * tax = item allocation
+       // (item.amount / receipt.subTotal) * tip =  item allocation
+
+    let finalItems = []
+
+    for (let i in itemCountArr) {
+        let obj = {
+            name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
+            quantity: $(`#item-quantity-${itemCountArr[i]}`).val().trim(),
+            price: $(`#item-amount-${itemCountArr[i]}`).val().trim(),
+            isPaid: false,
+            receiptId: null,
+            assigneeId: null
+        }
+
+        // another loop, push in inner loop, if all members, add an item w/ equal allocation
+
+
+        finalItems.push(obj)
+    }
+
+    finalItems.forEach(item => item.assigneeId === finalReceipt.ownerId ? item.isPaid = true : false)
+
+    //     // ids
+    //     item-name-1
+    //     item-quantity-1
+    //     item-amount-1 & assigned-member-allocation . value = 100%
+    //    paid t/f if assignee = owener, paid = true : false 
+    //     //id
+    //     user-wrapper-1
+    //         data-id="user-current-username" //via email
 
 
     //grab values and hit route with items and receipt
