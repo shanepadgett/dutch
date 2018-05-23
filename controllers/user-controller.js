@@ -18,32 +18,13 @@ class User {
     }).then(user => res.json(user.id))
   }
 
-  // static getUser(
-  //   {
-  //     params: { userId }
-  //   },
-  //   res
-  // ) {
-  //   dbUser.findOne({
-  //     where: {
-  //       id: userId
-  //     }
-  //   }).then(user => {
-  //     res.json(user)
-  //   })
-  // }
-
-  // static getUsers(_, res) {
-  //   dbUser.findAll({}).then(users => {
-  //     res.json(users)
-  //   })
-  // }
-
-  // static createUser({ body }, res) {
-  //   return model.createUser(body).then(({ id }) =>
-  //     res.set('Location', `/api/users/${id}`).send(204)
-  //   )
-  // }
+  static getUserEmailFromAuthId({user}, res) {
+    return dbUser.findOne({
+      where: {
+        authId: user.id
+      }
+    }).then(user => res.json(user.email))
+  }
 }
 
 module.exports = User

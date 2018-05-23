@@ -9,7 +9,6 @@ module.exports = app => {
 
   app.get('/dashboard', ensureLoggedIn, (req, res) => {
     getItemsByAssignee(req.user.id).then(items => {
-      console.log(items)
       res.render('dashboard', {
         user: req.user,
         items: items

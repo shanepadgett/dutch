@@ -25,12 +25,6 @@ class Item {
         .then(items => items)
     })
   }
-
-  // static createItem({ body }, res) {
-  //   return model.createItem(body).then(({ id }) =>
-  //     res.set('Location', `/api/items/${id}`).send(204)
-  //   )
-  // }
 }
 
 module.exports = Item
