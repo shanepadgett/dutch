@@ -501,8 +501,10 @@ $('.save-receipt-btn').on('click', function (event) {
 
     $('.submit-button-block').append(divOne)
 
+    let container = $('.item-container')
+
     $('html, body').animate({
-        scrollTop: $(window).scrollTop() + $(document).height()
+        scrollTop: container.prop('scrollHeight')
     }, 1000)
 })
 
@@ -543,27 +545,27 @@ $('.clickable-member-badge').on('click', function () {
         return
     }
 
-    groupMembers.push(text)
-    let avatar = ''
-    $.get(`/api/users/avatar/${text}`).then(data => {
-        avatar = data
+    let memberIndex = ''
 
-        let div = makeGroupMember(text, 'group-level', avatar)
+    $.get(`/api/users/user/${text}`).then(data => {
+        memberIndex = groupMembers.length
+        groupMembers.push(data)
+
+        let div = makeGroupMember(groupMembers[memberIndex].displayName, 'group-level', groupMembers[memberIndex].avatar)
 
         $('.group-members').append(div)
-
-        let textId = text.toLowerCase().split(' ').join('-')
-
-        let dropBtn = $('<button>')
-            .attr('type', 'button')
-            .addClass(`dropdown-item select-dropdown-user dropdown-${textId}`)
-            .text(text)
-
-        $('.user-dropdown').append(dropBtn)
-
-        $('.add-member-input').val('')
-
     })
+
+    let textId = text.toLowerCase().split(' ').join('-')
+
+    let dropBtn = $('<button>')
+        .attr('type', 'button')
+        .addClass(`dropdown-item select-dropdown-user dropdown-${textId}`)
+        .text(text)
+
+    $('.user-dropdown').append(dropBtn)
+
+    $('.add-member-input').val('')
 
 })
 
@@ -696,27 +698,28 @@ function checkTotal() {
 $(document).on('click', '.select-dropdown-user', function (event) {
     event.preventDefault()
 
-    let text = $(this).text()
-
     let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element.id)
 
     if (currentItemUsers.includes(`user-${$(this).text().toLowerCase().split(' ').join('-')}`))
         return
 
-    if (text === 'All Group Members') {
+    if ($(this).text() === 'All Group Members') {
+
         $(this).closest('td').find('.user-wrapper').children().remove()
-        let div = makeGroupMember(text, 'item-level', null)
+
+        let div = makeGroupMember($(this).text(), 'item-level', null)
 
         $(this).closest('td').find('.user-wrapper').append(div)
     } else {
+
         $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
 
-        let avatar = ''
+        let memberIndex = ''
 
-        $.get(`/api/users/avatar/${text}`).then(data => {
-            avatar = data
+        $.get(`/api/users/user/${$(this).text()}`).then(data => {
+            groupMembers.forEach(item => item.displayName === $(this).text() ? memberIndex = groupMembers.indexOf(item) : false)
 
-            let div = makeGroupMember(text, 'item-level', avatar)
+            let div = makeGroupMember($(this).text(), 'item-level', groupMembers[memberIndex].avatar)
 
             $(this).closest('td').find('.user-wrapper').append(div)
         })
@@ -773,7 +776,8 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
         ownerId: groupMembers[0].id
     }
 
-    finalReceipt.subtotal = parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal))
+    finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
+    
 
     // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
     //     finalReceipt.ownerId = parseInt(getData)
@@ -785,43 +789,83 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     //       })
     // })
 
-    $.get(`/api/users/id/${groupMembers[0].email}`)
-        .then(getData => {
-            finalReceipt.ownerId = parseInt(getData)
-            return $.post('/api/receipts/', finalReceipt).then(data => data)
-        }).then(receipt => {
-            console.log(receipt)
-            // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
-            //     item.assigneeId = parseInt(getData)
-            // return $.post('/api/items/', item).then(data => data)
-            // use receipt id to post items return $.post items console.log the data in then on chain
+    // $.get(`/api/users/id/${groupMembers[0].email}`)
+    //     .then(getData => {
+    //         finalReceipt.ownerId = parseInt(getData)
+    //         return $.post('/api/receipts/', finalReceipt).then(data => data)
+    //     }).then(receipt => {
+    //         console.log(receipt)
 
-            let finalItems = []
+    // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
+    //     item.assigneeId = parseInt(getData)
+    // return $.post('/api/items/', item).then(data => data)
+    // use receipt id to post items return $.post items console.log the data in then on chain
 
-            for (let i in itemCountArr) {
-                let obj = {
-                    name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
-                    quantity: $(`#item-quantity-${itemCountArr[i]}`).val().trim(),
-                    price: $(`#item-amount-${itemCountArr[i]}`).val().trim(),
-                    isPaid: true,
-                    receiptId: receipt,
-                    assigneeId: finalReceipt.ownerId
+    let finalItems = []
+
+    for (let i in itemCountArr) {
+        let obj = {
+            name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
+            quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
+            price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
+            isPaid: true,
+            // receiptId: receipt,
+            assigneeId: finalReceipt.ownerId
+        }
+
+        $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element).forEach(item => {
+            if (item) {
+                let name = item.id
+                name = name.split('-')
+                name.splice(0, 1)
+                name = name.join('')
+                console.log(name)
+
+                let memberIndex = ''
+
+                if (name === 'allgroupmembers') {
+                    groupMembers.forEach(item => {
+
+                        obj.assigneeId = item.id
+
+                        if (groupMembers.indexOf(item) !== 0)
+                            obj.isPaid = false
+
+                        if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+                            let allocation = parseInt(100 / $(`.user-wrapper-${itemCountArr[i]}`).children().length)
+
+                            obj.price = obj.price * allocation
+
+                            finalItems.push(obj)
+                        }
+                    })
+                } else {
+
+                    groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
+
+                    console.log(memberIndex, groupMembers[memberIndex])
+
+                    obj.assigneeId = groupMembers[memberIndex].id
+
+                    if (memberIndex !== 0)
+                        obj.isPaid = false
+
+                    if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+                        let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
+                        allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
+
+                        obj.price = obj.price * allocation
+
+                        finalItems.push(obj)
+                    } else {
+                        finalItems.push(obj)
+                    }
                 }
-
-                $(`.item-wrapper-${itemCountArr[i]}`).children().forEach(item => {
-                    let id = item.attr('id').split('-')
-                    id.splice(0, 1)
-
-                })
-                // another loop, push in inner loop, if all members, add an item w/ equal allocation
-
-                finalItems.push(obj)
             }
-
-            finalItems.forEach(item => item.assigneeId === finalReceipt.ownerId ? item.isPaid = true : false)
-
         })
-
+    }
+    // }) 
+    console.log(finalReceipt, finalItems)
 
 
 
