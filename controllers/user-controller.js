@@ -18,6 +18,14 @@ class User {
     }).then(user => res.json(user.id))
   }
 
+  static getUserAvatarFromEmail({params: {email}}, res) {
+    return dbUser.findOne({
+      where: {
+        email: email
+      }
+    }).then(user => res.json(user.avatar))
+  }
+
   // static getUser(
   //   {
   //     params: { userId }
