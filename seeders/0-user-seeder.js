@@ -7,6 +7,7 @@ function createUserRecords() {
 
   for (let i = 0; i < 10; i++) {
     const record = {
+      authId: faker.internet.ipv6(),
       firstName: faker.name.firstName(),
       lastName: faker.name.lastName(),
       email: faker.internet.email(),
