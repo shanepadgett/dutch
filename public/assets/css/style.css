@@ -1,6 +1,6 @@
 /*GLOBALS*/
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:300,700|Yeseva+One');
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,700|Tajawal');
 
 :root {
     --void: #0e0b16;
@@ -132,6 +132,11 @@ body {
     color: #333;
     font-family: 'Nunito', sans-serif;
     font-weight: 300;
+}
+
+.navbar-brand {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 25px;
 }
 
 

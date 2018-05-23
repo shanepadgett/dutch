@@ -246,7 +246,7 @@ $('.analyze-btn').on('click', function (event) {
 let itemCount = 1
 let itemCountArr = []
 
-$('.add-item').on('click', function (event) {
+$('.add-item').on('click', function (event) { //here if globalOption = 'split' add the all users
     event.preventDefault()
 
     appendNewItem()
@@ -270,11 +270,6 @@ function loadResults(data) {
 
 function appendNewItem(name, quantity, amount) {
 
-    let aTwo = $('<button>')
-        .attr('type', 'button')
-        .addClass('dropdown-item select-dropdown-user')
-        .text(groupMembers[0].displayName)
-
     let divider = $('<div>')
         .addClass('dropdown-divider')
 
@@ -285,7 +280,17 @@ function appendNewItem(name, quantity, amount) {
 
     let dropDiv = $('<div>')
         .addClass('dropdown-menu user-dropdown w-100')
-        .append(aOne, divider, aTwo)
+        .append(aOne, divider)
+
+    for (let i in groupMembers) {
+
+        let aTwo = $('<button>')
+            .attr('type', 'button')
+            .addClass('dropdown-item select-dropdown-user')
+            .text(groupMembers[i].displayName)
+
+        dropDiv.append(aTwo)
+    }
 
     let dropBtn = $('<button>')
         .attr({
@@ -442,7 +447,7 @@ $(document).on('click', '.remove-item-btn ', function () {
 
     // $(this).closest('.item-wrapper:first').addClass('bg-red rounded')
     // $(this).closest('.item-wrapper').animateCss('slideOutRight', function () {
-        $(this).closest('.item-wrapper').remove()
+    $(this).closest('.item-wrapper').remove()
     // })
 })
 
@@ -589,7 +594,11 @@ $('.clickable-member-badge').on('click', function () {
 
         let div = makeGroupMember(groupMembers[memberIndex].displayName, 'group-level', groupMembers[memberIndex].avatar)
 
+        div.hide()
+
         $('.group-members').append(div)
+
+        div.fadeIn()
     })
 
     let textId = text.toLowerCase().split(' ').join('-')
@@ -800,10 +809,13 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
 
-let finalItems = []
+
 
 $(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
+    if (parseFloat($('.item-amount-input').val().trim()) === 0 || parseFloat($('.item-amount-input').val().trim()) === '') {
+        //here
+    }
 
     // post receipt, get data back, get user id via email, then post items
 
@@ -819,173 +831,183 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
 
     finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
 
-
-    // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
-    //     finalReceipt.ownerId = parseInt(getData)
-
-    //     $.post('/api/receipts/', finalReceipt).done(function(postData) {
-    //         console.log(postData)
-
-    //         //upload items
-    //       })
-    // })
-
     // $.get(`/api/users/id/${groupMembers[0].email}`)
     //     .then(getData => {
     //         finalReceipt.ownerId = parseInt(getData)
-    //         return $.post('/api/receipts/', finalReceipt).then(data => data)
-    //     }).then(receipt => {
-    //         console.log(receipt)
+            // return 
+    $.post('/api/receipts/', finalReceipt)
+        .then(receipt => {
+            console.log(receipt)
 
-    // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
-    //     item.assigneeId = parseInt(getData)
-    // return $.post('/api/items/', item).then(data => data)
-    // use receipt id to post items return $.post items console.log the data in then on chain
+            // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
+            //     item.assigneeId = parseInt(getData)
 
-    let itemArr = []
+            // use receipt id to post items return $.post items console.log the data in then on chain
 
-    for (let i in itemCountArr) {
-        let obj = {
-            name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
-            quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
-            price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
-            isPaid: true,
-            receiptId: null, //receipt,
-            assigneeId: finalReceipt.ownerId,
-            allocationMembers: ($(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)[0] === 'all-group-members' ?
-                groupMembers.map(item => item.displayName) : 
-                $(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)),
-            children: ($(`.user-wrapper-${itemCountArr[i]}`).children('[data-id="all-group-members"]').length === 1 ? groupMembers.length : $(`.user-wrapper-${itemCountArr[i]}`).children().length)
-        }
-        itemArr.push(obj)
-    }
-    console.log(itemArr)
+            let itemArr = []
+            let itemQuantityOneArr = []
+            let innerArr = []
+            let finalItems = []
 
-    let itemQuantityOneArr = []
-
-    for (let i in itemArr) {
-        let count = itemArr[i].quantity
-        if (count > 1) {
-            let multiplyItem = []
-            multiplyItem.push(itemArr[i])
-            multiplyItem[0].quantity = 1
-            for (let j = 0; j < count; j++ ) {
-                itemQuantityOneArr.push(multiplyItem[0])
+            for (let i in itemCountArr) {
+                let obj = {
+                    name: $(`#item-name-${itemCountArr[i]}`).val().trim(),
+                    quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
+                    price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
+                    isPaid: null,
+                    receiptId: receipt,
+                    assigneeId: null,
+                    allocationMembers: ($(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)[0] === 'all-group-members' ?
+                        groupMembers.map(item => item.displayName) :
+                        $(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)),
+                    children: ($(`.user-wrapper-${itemCountArr[i]}`).children('[data-id="all-group-members"]').length === 1 ? groupMembers.length : $(`.user-wrapper-${itemCountArr[i]}`).children().length)
+                }
+                itemArr.push(obj)
             }
-        } else {
-            itemQuantityOneArr.push(itemArr[i])
-        }
-    }
 
-  
+            for (let i in itemArr) {
+                let count = itemArr[i].quantity
+                if (count > 1) {
+                    let multiplyItem = []
+                    multiplyItem.push(itemArr[i])
+                    multiplyItem[0].quantity = 1
+                    for (let j = 0; j < count; j++) {
+                        itemQuantityOneArr.push(multiplyItem[0])
+                    }
+                } else {
+                    itemQuantityOneArr.push(itemArr[i])
+                }
+            }
 
-    // for (let i in itemArr) {
-    //     let count = itemArr[i].quantity
-    //     if (count === 1) {
-    //         itemQuantityOneArr.push(itemArr[i])
-    //         multiplyItem[0].quantity = 1
-    //         for (let j = 0; j < count; j++ ) {
-    //             itemArr.push(multiplyItem[0])
-    //         }
-    //     }
-    // }
+            for (let i in itemQuantityOneArr) {
+                let membersArr = itemQuantityOneArr[i].allocationMembers
 
+                for (let j in membersArr) {
+                    let memberId = null
 
+                    for (let k in groupMembers) {
+                        if (groupMembers[k].displayName.toLowerCase() === membersArr[j])
+                            memberId = groupMembers[k].id
+                    }
 
-    console.log(itemArr, itemQuantityOneArr)
-
-    // $('[data-id="all-group-members"]')
-
-    // let items = $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element ? element.id : false)
-
-    // for (let i in items) {
-
-    //         let name = items[i].split('-')
-    //         name.splice(0, 1)
-    //         name = name.join('')
-    //         console.log(name)
-
-    //         if (name === 'allgroupmembers') {
-    //             for (let i in groupMembers) {
-    //                 obj.assigneeId = groupMembers[i].id
-
-    //                 if (i !== 0)
-    //                     obj.isPaid = false
-
-    //                 let allocation = parseFloat(1.00 / parseFloat(groupMembers.length))
-
-    //                 let result = parseFloat(obj.price * allocation).toFixed(2)
-
-    //                 obj.price = parseFloat(result)
-
-    //                 finalItems.push(obj)
-    //             }
-
-    //             }
-    // groupMembers.forEach(item => {
-
-    //     obj.assigneeId = item.id
-
-    //     if (groupMembers[0].id !== item.id)
-    //         obj.isPaid = false
-
-    //     if (groupMembers.length > 1) {
-    //         let allocation = parseFloat(groupMembers.length / 100)
-
-    //         let result = parseFloat(obj.price * allocation).toFixed(2)
-
-    //         obj.price = parseFloat(result)
-
-    //         finalItems.push(obj)
-    //     } else {
-    //         finalItems.push(obj)
-    //     }
-    // })
-    // } //keep below???????????????
-    // else {
-
-    //     groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
-
-    //     console.log(memberIndex, groupMembers[memberIndex])
-
-    //     obj.assigneeId = groupMembers[memberIndex].id
-
-    //     if (memberIndex !== 0)
-    //         obj.isPaid = false
-
-    //     if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-    //         let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
-    //         allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
-
-    //         obj.price = obj.price * allocation
-
-    //         finalItems.push(obj)
-    //     } else {
-    //         finalItems.push(obj)
-    //     }
-    // }
-
-    // }
-
-    // }) 
-    // console.log(finalReceipt, finalItems)
-
-
-
-    // (item.amount / receipt.subTotal) * tax = item allocation
-    // (item.amount / receipt.subTotal) * tip =  item allocation
-
-
-
-    //     // ids
-    //     item-name-1
-    //     item-quantity-1
-    //     item-amount-1 & assigned-member-allocation . value = 100%
-    //    paid t/f if assignee = owener, paid = true : false 
-    //     //id
-    //     user-wrapper-1
-    //         data-id="user-current-username" //via email
-
-
-    //grab values and hit route with items and receipt
+                    let obj = {
+                        name: itemQuantityOneArr[i].name,
+                        quantity: itemQuantityOneArr[i].quantity,
+                        price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
+                        isPaid: groupMembers[0].id === memberId ? true : false,
+                        receiptId: null,
+                        assigneeId: memberId ? memberId : membersArr[j]
+                    }
+                    finalItems.push(obj)
+                }
+            }
+            return $.post('/api/items/', finalItems)
+        }).then(data => console.log(data))
 })
+
+// $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
+//     finalReceipt.ownerId = parseInt(getData)
+
+//     $.post('/api/receipts/', finalReceipt).done(function(postData) {
+//         console.log(postData)
+
+//         //upload items
+//       })
+// })
+
+//then replace username w/ id
+
+// $('[data-id="all-group-members"]')
+
+// let items = $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element ? element.id : false)
+
+// for (let i in items) {
+
+//         let name = items[i].split('-')
+//         name.splice(0, 1)
+//         name = name.join('')
+//         console.log(name)
+
+//         if (name === 'allgroupmembers') {
+//             for (let i in groupMembers) {
+//                 obj.assigneeId = groupMembers[i].id
+
+//                 if (i !== 0)
+//                     obj.isPaid = false
+
+//                 let allocation = parseFloat(1.00 / parseFloat(groupMembers.length))
+
+//                 let result = parseFloat(obj.price * allocation).toFixed(2)
+
+//                 obj.price = parseFloat(result)
+
+//                 finalItems.push(obj)
+//             }
+
+//             }
+// groupMembers.forEach(item => {
+
+//     obj.assigneeId = item.id
+
+//     if (groupMembers[0].id !== item.id)
+//         obj.isPaid = false
+
+//     if (groupMembers.length > 1) {
+//         let allocation = parseFloat(groupMembers.length / 100)
+
+//         let result = parseFloat(obj.price * allocation).toFixed(2)
+
+//         obj.price = parseFloat(result)
+
+//         finalItems.push(obj)
+//     } else {
+//         finalItems.push(obj)
+//     }
+// })
+// } //keep below???????????????
+// else {
+
+//     groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
+
+//     console.log(memberIndex, groupMembers[memberIndex])
+
+//     obj.assigneeId = groupMembers[memberIndex].id
+
+//     if (memberIndex !== 0)
+//         obj.isPaid = false
+
+//     if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+//         let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
+//         allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
+
+//         obj.price = obj.price * allocation
+
+//         finalItems.push(obj)
+//     } else {
+//         finalItems.push(obj)
+//     }
+// }
+
+// }
+
+// }) 
+// console.log(finalReceipt, finalItems)
+
+
+
+// (item.amount / receipt.subTotal) * tax = item allocation
+// (item.amount / receipt.subTotal) * tip =  item allocation
+
+
+
+//     // ids
+//     item-name-1
+//     item-quantity-1
+//     item-amount-1 & assigned-member-allocation . value = 100%
+//    paid t/f if assignee = owener, paid = true : false 
+//     //id
+//     user-wrapper-1
+//         data-id="user-current-username" //via email
+
+
+//grab values and hit route with items and receipt
