@@ -21,6 +21,33 @@ $.get(`/api/users/user/${ownerDisplayName}`).then(data => {
 
 let holdingSrc = ''
 
+$.fn.extend({
+    animateCss: function (animationName, callback) {
+        var animationEnd = (function (el) {
+            var animations = {
+                animation: 'animationend',
+                OAnimation: 'oAnimationEnd',
+                MozAnimation: 'mozAnimationEnd',
+                WebkitAnimation: 'webkitAnimationEnd',
+            };
+
+            for (var t in animations) {
+                if (el.style[t] !== undefined) {
+                    return animations[t]
+                }
+            }
+        })(document.createElement('div'))
+
+        this.addClass('animated ' + animationName).one(animationEnd, function () {
+            $(this).removeClass('animated ' + animationName)
+
+            if (typeof callback === 'function') callback()
+        })
+
+        return this
+    },
+})
+
 // Render Receipt Image, Prepare Data For OCR
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
 let file = null
@@ -317,7 +344,7 @@ function appendNewItem(name, quantity, amount) {
         .attr({
             type: 'text',
             id: `item-quantity-${itemCount}`,
-            placeholder: '1'
+            value: 1
         })
         .addClass('form-control text-right item-quantity')
 
@@ -412,7 +439,11 @@ function appendNewItem(name, quantity, amount) {
 
 $(document).on('click', '.remove-item-btn ', function () {
     itemCountArr.splice(itemCountArr.indexOf(parseInt($(this)[0].dataset.id)), 1)
-    $(this).closest('.item-wrapper').remove()
+
+    // $(this).closest('.item-wrapper:first').addClass('bg-red rounded')
+    // $(this).closest('.item-wrapper').animateCss('slideOutRight', function () {
+        $(this).closest('.item-wrapper').remove()
+    // })
 })
 
 let globalOption = 'allocate'
@@ -538,8 +569,13 @@ $('.clickable-member-badge').on('click', function () {
 
     let text = $('.add-member-input').val().trim()
 
-    if (text === '') {
+    let included = false
+
+    let nameList = groupMembers.map(item => item.displayName)
+
+    if (text === '' || nameList.includes(text)) {
         $('.add-member-input')
+            .val('')
             .focus()
             .select()
         return
@@ -580,7 +616,7 @@ function makeGroupMember(text, type, avatar) {
         .val('100%')
 
     let groupText = $('<div>')
-        .addClass('input-group-text')
+        .addClass('input-group-text rounded-left')
         .html('<i class="fas fa-percent"></i>')
 
     let prepend = $('<div>')
@@ -630,8 +666,8 @@ function makeGroupMember(text, type, avatar) {
 
     let div = $('<div>')
         .attr({
-            'data-id': `user-${textId}`,
-            id: `user-${textId}`
+            'data-id': `${textId}`,
+            // id: `user-${textId}`
         })
         .addClass(`form-row current-user-member-badge assigned-member-row mt-2 user-${textId}`)
         .append(group)
@@ -655,9 +691,10 @@ $(document).on('click', '.remove-group-member', function () {
     }
 
     if ($(this).hasClass('group-level')) {
-        let id = $(this).closest('.current-user-member-badge').attr('id').split('-')
-        id.splice(0, 1)
-        id = id.join('-')
+        let id = $(this).closest('.current-user-member-badge')[0].dataset.id
+        // id.split('-')
+        // id.splice(0, 1)
+        // id = id.join('-')
 
         $(`.user-${id}`).remove()
         $(`.dropdown-${id}`).remove()
@@ -698,9 +735,9 @@ function checkTotal() {
 $(document).on('click', '.select-dropdown-user', function (event) {
     event.preventDefault()
 
-    let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element.id)
+    let currentItemUsers = $(this).closest('td').find('.user-wrapper').children().get().map(element => element ? element.dataset.id : false)
 
-    if (currentItemUsers.includes(`user-${$(this).text().toLowerCase().split(' ').join('-')}`))
+    if (currentItemUsers.includes(`${$(this).text().toLowerCase().split(' ').join('-')}`))
         return
 
     if ($(this).text() === 'All Group Members') {
@@ -712,7 +749,7 @@ $(document).on('click', '.select-dropdown-user', function (event) {
         $(this).closest('td').find('.user-wrapper').append(div)
     } else {
 
-        $(this).closest('td').find('.user-wrapper').children('#user-all-group-members').remove()
+        $(this).closest('td').find('.user-wrapper').children('.user-all-group-members').remove()
 
         let memberIndex = ''
 
@@ -722,12 +759,14 @@ $(document).on('click', '.select-dropdown-user', function (event) {
             let div = makeGroupMember($(this).text(), 'item-level', groupMembers[memberIndex].avatar)
 
             $(this).closest('td').find('.user-wrapper').append(div)
+
+            let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
+
+            $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/allocatedUserCount.length).toFixed(0)}%`)
         })
     }
 
-    let allocatedUserCount = $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').get().map(element => element)
 
-    $(this).closest('td').find('.user-wrapper').find('.assigned-member-allocation').val(`${parseFloat(100/allocatedUserCount.length).toFixed(0)}%`)
 })
 
 $(document).on('mouseenter', '.assigned-member-badge', function () {
@@ -761,6 +800,8 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
         .removeClass('placeholder-hidden fas fa-times-circle text-red remove-member-badge')
 })
 
+let finalItems = []
+
 $(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
 
@@ -777,7 +818,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     }
 
     finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
-    
+
 
     // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
     //     finalReceipt.ownerId = parseInt(getData)
@@ -801,7 +842,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     // return $.post('/api/items/', item).then(data => data)
     // use receipt id to post items return $.post items console.log the data in then on chain
 
-    let finalItems = []
+    let itemArr = []
 
     for (let i in itemCountArr) {
         let obj = {
@@ -809,63 +850,125 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
             price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
             isPaid: true,
-            // receiptId: receipt,
-            assigneeId: finalReceipt.ownerId
+            receiptId: null, //receipt,
+            assigneeId: finalReceipt.ownerId,
+            allocationMembers: ($(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)[0] === 'all-group-members' ?
+                groupMembers.map(item => item.displayName) : 
+                $(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)),
+            children: ($(`.user-wrapper-${itemCountArr[i]}`).children('[data-id="all-group-members"]').length === 1 ? groupMembers.length : $(`.user-wrapper-${itemCountArr[i]}`).children().length)
         }
-
-        $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element).forEach(item => {
-            if (item) {
-                let name = item.id
-                name = name.split('-')
-                name.splice(0, 1)
-                name = name.join('')
-                console.log(name)
-
-                let memberIndex = ''
-
-                if (name === 'allgroupmembers') {
-                    groupMembers.forEach(item => {
-
-                        obj.assigneeId = item.id
-
-                        if (groupMembers.indexOf(item) !== 0)
-                            obj.isPaid = false
-
-                        if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-                            let allocation = parseInt(100 / $(`.user-wrapper-${itemCountArr[i]}`).children().length)
-
-                            obj.price = obj.price * allocation
-
-                            finalItems.push(obj)
-                        }
-                    })
-                } else {
-
-                    groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
-
-                    console.log(memberIndex, groupMembers[memberIndex])
-
-                    obj.assigneeId = groupMembers[memberIndex].id
-
-                    if (memberIndex !== 0)
-                        obj.isPaid = false
-
-                    if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-                        let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
-                        allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
-
-                        obj.price = obj.price * allocation
-
-                        finalItems.push(obj)
-                    } else {
-                        finalItems.push(obj)
-                    }
-                }
-            }
-        })
+        itemArr.push(obj)
     }
+    console.log(itemArr)
+
+    let itemQuantityOneArr = []
+
+    for (let i in itemArr) {
+        let count = itemArr[i].quantity
+        if (count > 1) {
+            let multiplyItem = []
+            multiplyItem.push(itemArr[i])
+            multiplyItem[0].quantity = 1
+            for (let j = 0; j < count; j++ ) {
+                itemQuantityOneArr.push(multiplyItem[0])
+            }
+        } else {
+            itemQuantityOneArr.push(itemArr[i])
+        }
+    }
+
+  
+
+    // for (let i in itemArr) {
+    //     let count = itemArr[i].quantity
+    //     if (count === 1) {
+    //         itemQuantityOneArr.push(itemArr[i])
+    //         multiplyItem[0].quantity = 1
+    //         for (let j = 0; j < count; j++ ) {
+    //             itemArr.push(multiplyItem[0])
+    //         }
+    //     }
+    // }
+
+
+
+    console.log(itemArr, itemQuantityOneArr)
+
+    // $('[data-id="all-group-members"]')
+
+    // let items = $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element ? element.id : false)
+
+    // for (let i in items) {
+
+    //         let name = items[i].split('-')
+    //         name.splice(0, 1)
+    //         name = name.join('')
+    //         console.log(name)
+
+    //         if (name === 'allgroupmembers') {
+    //             for (let i in groupMembers) {
+    //                 obj.assigneeId = groupMembers[i].id
+
+    //                 if (i !== 0)
+    //                     obj.isPaid = false
+
+    //                 let allocation = parseFloat(1.00 / parseFloat(groupMembers.length))
+
+    //                 let result = parseFloat(obj.price * allocation).toFixed(2)
+
+    //                 obj.price = parseFloat(result)
+
+    //                 finalItems.push(obj)
+    //             }
+
+    //             }
+    // groupMembers.forEach(item => {
+
+    //     obj.assigneeId = item.id
+
+    //     if (groupMembers[0].id !== item.id)
+    //         obj.isPaid = false
+
+    //     if (groupMembers.length > 1) {
+    //         let allocation = parseFloat(groupMembers.length / 100)
+
+    //         let result = parseFloat(obj.price * allocation).toFixed(2)
+
+    //         obj.price = parseFloat(result)
+
+    //         finalItems.push(obj)
+    //     } else {
+    //         finalItems.push(obj)
+    //     }
+    // })
+    // } //keep below???????????????
+    // else {
+
+    //     groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
+
+    //     console.log(memberIndex, groupMembers[memberIndex])
+
+    //     obj.assigneeId = groupMembers[memberIndex].id
+
+    //     if (memberIndex !== 0)
+    //         obj.isPaid = false
+
+    //     if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
+    //         let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
+    //         allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
+
+    //         obj.price = obj.price * allocation
+
+    //         finalItems.push(obj)
+    //     } else {
+    //         finalItems.push(obj)
+    //     }
+    // }
+
+    // }
+
     // }) 
-    console.log(finalReceipt, finalItems)
+    // console.log(finalReceipt, finalItems)
 
 
 
