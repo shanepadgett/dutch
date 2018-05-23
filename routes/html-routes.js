@@ -70,7 +70,6 @@ module.exports = app => {
   })
 
   app.get('/receipts', ensureLoggedIn, (req, res) => {
-    // getReceipts(1).then(receipts => res.render('receipts', {receipts: JSON.stringify(receipts)}))
-    getReceipts(1).then(receipts => res.json(receipts))
+    getReceipts(req, res).then(receipts => res.render('receipts', {receipts: receipts}))
   })
 }

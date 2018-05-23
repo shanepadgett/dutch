@@ -23,6 +23,20 @@ class Item {
         .then(items => items)
     })
   }
+
+  static createItem({ body }, res) {
+    dbItem
+      .create({
+        name: body.name,
+        quantity: body.quantity,
+        price: body.price,
+        isPaid: body.isPaid,
+        receiptId: body.receiptId,
+        assigneeId: body.assigneeId
+      })
+      .then(data => res.json(data.id))
+      .catch(err => res.json(err))
+  }
 }
 
 module.exports = Item
