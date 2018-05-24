@@ -86,8 +86,8 @@
                             <div class="form-row current-user-member-badge mt-3">
                                 <div class="form-group col-12">
                                     <span class="clickable btn ">
-                                        <img src="http://via.placeholder.com/60x60" class="rounded-circle mr-4 assigned-member-badge" id="current-user-img"> 
-                                        <span class="the-current-user">Current Username</span>    
+                                        <img src="http://via.placeholder.com/60x60" class="rounded-circle mr-4 assigned-member-badge" id="current-user-img">
+                                        <span class="the-current-user">Current Username</span>
                                     </span>
                                 </div>
                             </div>
@@ -110,7 +110,7 @@
                     <form>
                         <table class="table table-striped">
                             <tbody class="items-form-block">
-                                
+
                             </tbody>
                         </table>
                         <div class="form-row">
@@ -189,43 +189,17 @@
         </div>
     </div>
     <!-- /.item-card -->
-  </div> 
-   <!-- /.item-container -->
-{{!-- {{#each receipts}}
-    {{#each items}} --}}
-
-{{!-- has an items arr --}}
-
-
-    {{!-- Date
-    <hr>
-    <div class=" mt-3 receipt-container">
-        <div class="card mt-3 item-card">
-            <div class="card-body">
-                Location Date X
-            </div>
+</div>
+<!-- /.item-container -->
+{{!-- {{#each receipts}} {{#each items}} --}} {{!-- has an items arr --}}
+{{#each receipts}} 
+{{#each items}} 
+<div class=" mt-3 receipt-container">
+    <div class="card mt-3 item-card">
+        <div class="card-body">
+            Location Date X
         </div>
     </div>
-    <div class=" mt-3 receipt-container">
-        <div class="card mt-3 item-card">
-            <div class="card-body">
-                Location Date X
-            </div>
-        </div>
-    </div>
-    <div class=" mt-3 receipt-container">
-        <div class="card mt-3 item-card">
-            <div class="card-body">
-                Location Date X
-            </div>
-        </div>
-    </div>
-    Date
-    <hr>
-    <div class=" mt-3 receipt-container">
-        <div class="card mt-3 item-card">
-            <div class="card-body">
-                Location Date X
-            </div>
-        </div>
-    </div> --}}
+</div>
+{{/each receipts}} 
+{{/each items}} 

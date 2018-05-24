@@ -901,4 +901,6 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             }
             return
         })
+    $('.item-container').fadeOut()
+    $('.analyze-btn').fadeOut()
 })
