@@ -28,7 +28,7 @@ const mapItemsToReceipts = (items) => {
 
     let itemIndex = receipts[receiptIndex].items.findIndex(receiptItem => receiptItem.id === item.id)
 
-    const itemTotal = parseFloat(item.price) + parseFloat(item.taxTip)
+    const itemTotal = parseFloat(item.taxTip)
 
     receipts[receiptIndex].allocTotal += itemTotal
 
