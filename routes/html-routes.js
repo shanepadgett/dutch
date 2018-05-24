@@ -40,6 +40,7 @@ const mapItemsToReceipts = (items) => {
         taxTip: item.taxTip,
         total: itemTotal.toFixed(2),
         isPaid: item.isPaid,
+        receiptId: item.receiptId,
         assigneeId: item.assigneeId
       }
       receipts[receiptIndex].items.push(newItem)
