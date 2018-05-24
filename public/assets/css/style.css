@@ -59,7 +59,7 @@
 }
 
 .bg-gray {
-    background-color: gray;
+    background-color: rgb(184, 184, 184);
 }
 
 /* .analyze-btn,
@@ -142,6 +142,10 @@ body {
 .navbar-brand {
     font-family: 'Tajawal', sans-serif;
     font-size: 25px;
+}
+
+.app-font {
+    font-family: 'Tajawal', sans-serif;
 }
 
 
@@ -272,7 +276,7 @@ hr.hr-gray-2 {
     /* Set the fixed height of the footer here */
     line-height: 60px;
     /* Vertically center the text there */
-    background-color: var(--nobel);
+    background-color: var(--void);
 }
 
 .navbar {
