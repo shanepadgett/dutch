@@ -67,6 +67,10 @@ function renderImg() {
                 $('.img-preview').fadeIn()
             })
     }
+    $('.progress')
+        .animate({
+            width: '100%'
+        })
     $('.analyze-btn').fadeIn()
 }
 
@@ -75,7 +79,12 @@ function renderImg() {
 $('.enter-data-btn').on('click', function (event) {
     event.preventDefault()
 
-    console.log($('.item-container').height())
+    $('.img-preview').fadeOut()
+    $('.img-preview').attr('src', '')
+    $('.img-wrapper')
+        .animate({
+            height: '0px'
+        })
 
     $('.item-container').fadeIn()
 
@@ -340,7 +349,6 @@ function appendNewItem(name, quantity, amount) {
             'data-id': itemCount,
             placeholder: '0.00'
         })
-        .val('0.00')
         .addClass('form-control item-amount-input format-float text-right rounded-right')
 
     let groupTextTwo = $('<div>')
@@ -582,8 +590,28 @@ function checkTaxTip() {
         $('#location').removeClass('is-invalid').addClass('is-valid')
     }
 
+    if ($('#date').val().trim() === '') {
+        $('#date').addClass('is-invalid rounded-right').removeClass('is-valid')
+        invalidInput = true
+    } else {
+        $('#date').removeClass('is-invalid').addClass('is-valid')
+    }
+
+    if (invalidInput) {
+        $('.complete-form').show()
+        $('.submit-button-row').remove()
+    } else {
+        $('.complete-form').hide()
+    }
+
     return invalidInput
 }
+
+$(document).on('click', '.complete-form', function () {
+    $('html, body').animate({
+        scrollTop: ($('.item-container').offset().top) - 74
+    }, 1000)
+})
 
 $('.clickable-member-badge').on('click', function () {
 
@@ -604,6 +632,9 @@ $('.clickable-member-badge').on('click', function () {
     let memberIndex = ''
 
     $.get(`/api/users/user/${text}`).then(data => {
+        if(!data)
+            return
+
         memberIndex = groupMembers.length
         groupMembers.push(data)
 
@@ -742,8 +773,10 @@ function checkTotal() {
     let itemAmounts = []
 
     for (let i = 0; i < itemCountArr.length; i++) {
-        let value = parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()).toFixed(2)
-        itemAmounts.push(parseFloat(value))
+        let value = parseFloat(parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()).toFixed(2))
+        let quantity = parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim())
+        let itemTotal = parseFloat(value * quantity)
+        itemAmounts.push(itemTotal)
         $(`#item-amount-${itemCountArr[i]}`).val(value)
     }
 
@@ -834,7 +867,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
 
     let finalReceipt = {
         place: $('#location').val().trim(),
-        //here receiptDate: $('#date').val().trim(),
+        receiptDate: $('#date').val().trim(),
         subtotal: null,
         taxTotal: parseFloat($('#tax-amount').val().trim()),
         tipTotal: parseFloat($('#tip-amount').val().trim()),
@@ -842,7 +875,11 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
         ownerId: groupMembers[0].id
     }
 
-    finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
+    let sumTaxTip = parseFloat(finalReceipt.taxTotal) + parseFloat(finalReceipt.tipTotal)
+
+    finalReceipt.subtotal = parseFloat(parseFloat(finalReceipt.receiptTotal - sumTaxTip).toFixed(2))
+
+    let allocationBase = finalReceipt.subtotal
 
     $.post('/api/receipts/', finalReceipt)
         .then(receipt => {
@@ -851,6 +888,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             let itemQuantityOneArr = []
             let innerArr = []
             let finalItems = []
+
 
             for (let i in itemCountArr) {
                 let obj = {
@@ -898,10 +936,13 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         quantity: itemQuantityOneArr[i].quantity,
                         price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
                         isPaid: groupMembers[0].id === memberId ? true : false,
-                        //here taxTipAllocation: null,
+                        taxTip: sumTaxTip * ((allocationBase / (itemQuantityOneArr[i].price / itemQuantityOneArr[i].children)) / 100),
                         receiptId: parseInt(receipt),
                         assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
+
+                    console.log(sumTaxTip, allocationBase, itemQuantityOneArr[i].price, itemQuantityOneArr[i].children)
+
                     finalItems.push(obj)
 
                     for (let l in finalItems) {
@@ -919,14 +960,34 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             }
             return
         })
-    resetAddReceipt()
+
+    $('.img-preview').fadeOut()
+    $('html, body').animate({
+        scrollTop: 0
+    }, function () {
+        $('.img-wrapper')
+            .animate({
+                height: '0px'
+            }, function () {
+                $('.progress')
+                    .animate({
+                        width: '100%'
+                    }, function () {
+                        location.reload()
+                    })
+            })
+    })
+
 })
 
-$('.close-receipt-btn').on('click',function () {
+$('.close-receipt-btn').on('click', function () {
     resetAddReceipt()
 })
 
 function resetAddReceipt() {
+
+    itemCount = 1
+    itemCountArr = []
 
     $('.submit-button-row').remove()
     $('.item-wrapper').remove()
@@ -936,28 +997,28 @@ function resetAddReceipt() {
     $('#tip-amount').removeClass('is-invalid is-valid')
     $('#tax-amount').removeClass('is-invalid is-valid')
 
-    groupMembers = groupMembers[0]
+    groupMembers = groupMembers.splice(0, 1)
 
     $(':input').val('')
     $('.item-container').fadeOut()
     $('.analyze-btn').fadeOut()
 
+    $('.img-preview').fadeOut()
+    $('.img-preview').attr('src', '')
+
     $('html, body').animate({
-            scrollTop: 0
-        }, function () {
-            $('.img-preview').fadeOut()
-        },
-        function () {
-            $('.img-wrapper')
-                .animate({
-                    height: '0px'
-                }, function () {
-                    $('.progress')
-                        .animate({
-                            width: '100%'
-                        })
-                })
-        })
+        scrollTop: 0
+    }, function () {
+        $('.img-wrapper')
+            .animate({
+                height: '0px'
+            }, function () {
+                $('.progress')
+                    .animate({
+                        width: '100%'
+                    })
+            })
+    })
 }
 
 $(document).on('click', '.btn-pay', function () {

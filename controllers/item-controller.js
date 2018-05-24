@@ -31,6 +31,7 @@ class Item {
         quantity: body.quantity,
         price: body.price,
         isPaid: body.isPaid,
+        taxTip: body.taxTip,
         receiptId: body.receiptId,
         assigneeId: body.assigneeId
       })

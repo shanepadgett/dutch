@@ -164,6 +164,10 @@ body {
     box-shadow: none !important;
 }
 
+.complete-form {
+    display: none;
+}
+
 hr {
     display: block;
     height: 1px;
@@ -213,7 +217,8 @@ hr.hr-gray-2 {
 
 .add-member-badge,
 .assigned-member-badge,
-.remove-member-badge {
+.remove-member-badge,
+.receipt-member-badge {
     width: 60px;
     height: 60px;
     font-size: 60px;
@@ -233,6 +238,9 @@ hr.hr-gray-2 {
 
 .margin-top-center {
     margin-top: 1.15rem;
+}
+.margin-top-center-two {
+    margin-top: .85rem;
 }
 
 #accordion {
