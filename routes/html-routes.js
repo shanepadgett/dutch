@@ -6,21 +6,19 @@ const {getItemsByAssignee} = require('../controllers/item-controller')
 const mapItemsToReceipts = (items) => {
   const receipts = []
 
-  let allocTotal = 0
-
   items.forEach(item => {
     let receiptIndex = receipts.findIndex(receipt => receipt.id === item.Receipt.id)
 
     if (receiptIndex === -1) {
       let newReceipt = {
         id: item.Receipt.id,
+        receiptDate: item.Receipt.receiptDate,
         place: item.Receipt.place,
         subtotal: item.Receipt.subtotal,
         taxTotal: item.Receipt.taxTotal,
         tipTotal: item.Receipt.tipTotal,
         receiptTotal: item.Receipt.receiptTotal,
         allocTotal: 0.00,
-        receiptDate: item.Receipt.createdAt,
         isReceiptPaid: false,
         items: []
       }
@@ -49,6 +47,7 @@ const mapItemsToReceipts = (items) => {
   })
 
   receipts.forEach(receipt => {
+    receipt.allocTotal = parseFloat(receipt.allocTotal.toFixed(2))
     let isPaid = true
     receipt.items.forEach(item => {
       if (item.isPaid === false) {

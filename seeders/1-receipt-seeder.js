@@ -8,6 +8,7 @@ function createReceiptRecords() {
 
   for (let i = 0; i < 10; i++) {
     const record = {
+      receiptDate: faker.date.recent(),
       place: faker.company.companyName(),
       subtotal: parseFloat(faker.finance.amount(3, 300, 2)),
       taxTotal: parseFloat(faker.finance.amount(3, 22, 2)),

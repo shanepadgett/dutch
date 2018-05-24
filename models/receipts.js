@@ -1,5 +1,12 @@
 module.exports = function(sequelize, DataTypes) {
   var Receipt = sequelize.define('Receipt', {
+    'receiptDate': {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+      validate: {
+        isDate: true
+      }
+    },
     'place': {
       type: DataTypes.STRING,
       allowNull: false,
