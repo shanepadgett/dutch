@@ -345,6 +345,10 @@ a.navbar-brand:focus {
   font-size: 1rem;
 }
 
+.dashboard-avatar {
+    max-width: 75%;
+}
+
 /* MEDIA QUERIES */
 
 /*===========================*/
@@ -363,6 +367,10 @@ a.navbar-brand:focus {
     .list-item-text {
       font-size: 1.1rem;
     }
+
+    .dashboard-avatar {
+        max-width: 60%;
+    }
 }
 
 @media (min-width: 992px) {
@@ -373,4 +381,8 @@ a.navbar-brand:focus {
     /*.i-card-text {*/
     /*font-size: 1.5rem;*/
     /*}*/
+
+    .dashboard-avatar {
+        max-width: 15%;
+    }
 }
