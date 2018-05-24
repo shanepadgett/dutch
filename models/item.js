@@ -21,6 +21,13 @@ module.exports = function(sequelize, DataTypes) {
         isFloat: true
       }
     },
+    'taxTip': {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      validate: {
+        isFloat: true
+      }
+    },
     'isPaid': {
       type: DataTypes.BOOLEAN,
       allowNull: false

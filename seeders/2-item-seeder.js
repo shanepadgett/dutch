@@ -13,9 +13,10 @@ function createItemRecords() {
         name: faker.commerce.productName(),
         quantity: getRandomIntInclusive(1, 3),
         price: parseFloat(faker.finance.amount(3, 35, 2)),
+        taxTip: parseFloat(faker.finance.amount(1, 8, 2)),
         isPaid: getRandomIntInclusive(0, 1),
         receiptId: i+1,
-        assigneeId: getRandomIntInclusive(1, 3),
+        assigneeId: getRandomIntInclusive(1, 5),
         createdAt: new Date(),
         updatedAt: new Date()
       }
