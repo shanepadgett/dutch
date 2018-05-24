@@ -5,18 +5,15 @@ $(document).ready(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-let currentUserEmail = 'josephemswiler@gmail.com'
-
-
-let ownerDisplayName = 'josephemswiler' //here
-
 let groupMembers = []
-$.get(`/api/users/user/${ownerDisplayName}`).then(data => {
+
+$.get('/api/users/authUser').then(data => {
     groupMembers.push(data)
 
     $('.the-current-user').text(groupMembers[0].displayName)
     $('#current-user-img').attr('src', groupMembers[0].avatar)
 })
+//here remove all users wrappers when removed top
 
 
 let holdingSrc = ''
@@ -834,7 +831,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
     // $.get(`/api/users/id/${groupMembers[0].email}`)
     //     .then(getData => {
     //         finalReceipt.ownerId = parseInt(getData)
-            // return 
+    // return 
     $.post('/api/receipts/', finalReceipt)
         .then(receipt => {
             console.log(receipt)
@@ -855,7 +852,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                     quantity: parseInt($(`#item-quantity-${itemCountArr[i]}`).val().trim()),
                     price: parseFloat($(`#item-amount-${itemCountArr[i]}`).val().trim()),
                     isPaid: null,
-                    receiptId: receipt,
+                    receiptId: parseInt(receipt),
                     assigneeId: null,
                     allocationMembers: ($(`.user-wrapper-${itemCountArr[i]}`).children().get().map(element => element ? element.dataset.id : false)[0] === 'all-group-members' ?
                         groupMembers.map(item => item.displayName) :
@@ -895,14 +892,30 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         quantity: itemQuantityOneArr[i].quantity,
                         price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
                         isPaid: groupMembers[0].id === memberId ? true : false,
-                        receiptId: null,
-                        assigneeId: memberId ? memberId : membersArr[j]
+                        //taxTipAllocation: null,
+                        receiptId: parseInt(receipt),
+                        assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
                     finalItems.push(obj)
+
+                    for (let l in finalItems) {
+                        if (typeof finalItems[l].assigneeId !== "number") {
+                            for (let m in groupMembers) {
+                                if (groupMembers[m].displayName.toLowerCase() === finalItems[l].assigneeId)
+                                    finalItems[l].assigneeId = groupMembers[m].id
+                            }
+                        }
+                    }
                 }
             }
-            return $.post('/api/items/', finalItems)
-        }).then(data => console.log(data))
+
+            console.log(finalItems)
+
+            for (let i in finalItems) {
+                $.post('/api/items/', finalItems[i]).then(data => console.log(data))
+            }
+            return
+        })
 })
 
 // $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
