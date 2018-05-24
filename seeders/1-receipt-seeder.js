@@ -13,7 +13,7 @@ function createReceiptRecords() {
       taxTotal: parseFloat(faker.finance.amount(3, 22, 2)),
       tipTotal: parseFloat(faker.finance.amount(3, 25, 2)),
       receiptTotal: parseFloat(faker.finance.amount(3, 375, 2)),
-      ownerId: getRandomIntInclusive(1, 3),
+      ownerId: getRandomIntInclusive(1, 5),
       createdAt: new Date(),
       updatedAt: new Date()
     }
