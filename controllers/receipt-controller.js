@@ -29,6 +29,7 @@ class Receipt {
   static createReceipt({ body }, res) {
     dbReceipt
       .create({
+        receiptDate: body.receiptDate,
         place: body.place,
         subtotal: body.subtotal,
         taxTotal: body.taxTotal,

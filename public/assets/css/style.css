@@ -160,6 +160,10 @@ body {
     box-shadow: none !important;
 }
 
+.complete-form {
+    display: none;
+}
+
 hr {
     display: block;
     height: 1px;
