@@ -67,6 +67,10 @@ function renderImg() {
                 $('.img-preview').fadeIn()
             })
     }
+    $('.progress')
+        .animate({
+            width: '100%'
+        })
     $('.analyze-btn').fadeIn()
 }
 
@@ -75,7 +79,12 @@ function renderImg() {
 $('.enter-data-btn').on('click', function (event) {
     event.preventDefault()
 
-    console.log($('.item-container').height())
+    $('.img-preview').fadeOut()
+    $('.img-preview').attr('src', '')
+    $('.img-wrapper')
+        .animate({
+            height: '0px'
+        })
 
     $('.item-container').fadeIn()
 
@@ -834,7 +843,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
 
     let finalReceipt = {
         place: $('#location').val().trim(),
-        //here receiptDate: $('#date').val().trim(),
+        //here receiptDate: $('#date').val().trim(), validate this
         subtotal: null,
         taxTotal: parseFloat($('#tax-amount').val().trim()),
         tipTotal: parseFloat($('#tip-amount').val().trim()),
@@ -898,7 +907,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         quantity: itemQuantityOneArr[i].quantity,
                         price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
                         isPaid: groupMembers[0].id === memberId ? true : false,
-                        //here taxTipAllocation: null,
+                        taxTip: 0.0, //replace w/ allocation AMOUNT
                         receiptId: parseInt(receipt),
                         assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
@@ -919,14 +928,35 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             }
             return
         })
-    resetAddReceipt()
+    $('html, body').animate({
+            scrollTop: 0
+        }, function () {
+            $('.img-preview').fadeOut()
+        },
+        function () {
+            $('.img-wrapper')
+                .animate({
+                    height: '0px'
+                }, function () {
+                    $('.progress')
+                        .animate({
+                            width: '100%'
+                        }, function () {
+                            location.reload()
+                        })
+                })
+        })
+
 })
 
-$('.close-receipt-btn').on('click',function () {
+$('.close-receipt-btn').on('click', function () {
     resetAddReceipt()
 })
 
 function resetAddReceipt() {
+
+    itemCount = 1
+    itemCountArr = []
 
     $('.submit-button-row').remove()
     $('.item-wrapper').remove()
@@ -936,7 +966,7 @@ function resetAddReceipt() {
     $('#tip-amount').removeClass('is-invalid is-valid')
     $('#tax-amount').removeClass('is-invalid is-valid')
 
-    groupMembers = groupMembers[0]
+    // groupMembers = groupMembers[0] //here
 
     $(':input').val('')
     $('.item-container').fadeOut()
@@ -946,6 +976,7 @@ function resetAddReceipt() {
             scrollTop: 0
         }, function () {
             $('.img-preview').fadeOut()
+            $('.img-preview').attr('src', '')
         },
         function () {
             $('.img-wrapper')

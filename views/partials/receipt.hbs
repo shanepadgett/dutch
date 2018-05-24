@@ -229,15 +229,13 @@
                 </button>
               </div>
           </div>
-        
       </h5>
     </div>
     <div id="collapse{{id}}" class="collapse" aria-labelledby="heading{{id}}" data-parent="#accordion">
-        
       <div class="card-body">
-          {{#each receipts.items}} 
+          {{#each Items}} 
           <ul>
-              <li>{{price}}</li>
+              <li>{{price}} {{isPaid}}</li>
           </ul>
        {{/each}} 
       </div>
