@@ -961,5 +961,16 @@ function resetAddReceipt() {
 }
 
 $(document).on('click', '.btn-pay', function () {
-    console.log(this)
+    const id = $(this).data('receipt-id')
+    const count = $(`.receipt-item-${id}`).length
+
+    $(`.receipt-item-${id}`).each( function (index, element) {
+        const itemId = $(this).data('item-id')
+
+        if (index + 1 === count) {
+            $.post(`/api/items/${itemId}`, {isPaid: 1}).then(() => location.reload(true))
+        } else {
+            $.post(`/api/items/${itemId}`, {isPaid: 1})
+        }
+    })
 })
