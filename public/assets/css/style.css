@@ -166,7 +166,16 @@ hr {
     border: 0;
     border-top: 1px solid var(--fuschia);
     margin: 1em 0;
-    padding: 0; 
+    padding: 0;
+}
+
+hr.hr-gray {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid gray;
+    margin: 1em 0;
+    padding: 0;
 }
 
 .fas{
@@ -284,6 +293,10 @@ a.navbar-brand:focus {
 
 .img-preview {
     display: none;
+}
+
+.simple-receipt-accordion {
+    background-color: #e7e7e7;
 }
 
 /* BUTTONS */

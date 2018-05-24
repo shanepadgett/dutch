@@ -15,6 +15,9 @@
       <div class="col-12 col-sm-4 mt-4 mt-sm-0 d-flex">
         <button type="button" class="btn btn-secondary btn-block"><i class="far fa-eye mr-2"></i>View</button>
       </div>
+      <div class="col-12">
+        {{> dashboard-receipt-table-li-accordion items=receipt.items}}
+      </div>
       {{else}}
         <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
           <button type="button" class="btn btn-secondary btn-block"><i class="far fa-eye mr-2"></i>View</button>
@@ -22,6 +25,9 @@
         <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
           <button type="button" class="btn btn-secondary btn-block"><i class="fas fa-money-bill-wave-alt mr-2"></i>Pay</button>
         </div>
+        <div class="col-12">
+        {{> dashboard-receipt-table-li-accordion items=receipt.items}}
+      </div>
       {{/if}}
   </div>
 </li>
