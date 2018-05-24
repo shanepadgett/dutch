@@ -936,7 +936,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         quantity: itemQuantityOneArr[i].quantity,
                         price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
                         isPaid: groupMembers[0].id === memberId ? true : false,
-                        taxTip: sumTaxTip * ((allocationBase / (itemQuantityOneArr[i].price / itemQuantityOneArr[i].children)) / 100),
+                        taxTip: (itemQuantityOneArr[i].price / itemQuantityOneArr[i].children) + (sumTaxTip * ((itemQuantityOneArr[i].price / itemQuantityOneArr[i].children) / allocationBase)),
                         receiptId: parseInt(receipt),
                         assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
