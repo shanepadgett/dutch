@@ -811,14 +811,12 @@ $(document).on('mouseleave', '.assigned-member-badge', function () {
 $(document).on('click', '.final-submit', function () { //here, make hover x for mobile also add validation, send object to server, route to user page, call user data, load friends, >receipts who's assigned, who's paid, circle w/ tooltips, pull items, >items & who you owe/paid, status - pending, complete, >activity
 
     if (parseFloat($('.item-amount-input').val().trim()) === 0 || parseFloat($('.item-amount-input').val().trim()) === '') {
-        //here
+        //here possibly delete
     }
-
-    // post receipt, get data back, get user id via email, then post items
 
     let finalReceipt = {
         place: $('#location').val().trim(),
-        // receiptDate: $('#date').val().trim(),
+        //here receiptDate: $('#date').val().trim(),
         subtotal: null,
         taxTotal: parseFloat($('#tax-amount').val().trim()),
         tipTotal: parseFloat($('#tip-amount').val().trim()),
@@ -828,18 +826,8 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
 
     finalReceipt.subtotal = parseFloat(parseFloat(parseFloat(finalReceipt.receiptTotal) - parseFloat(finalReceipt.taxTotal) - parseFloat(finalReceipt.tipTotal)).toFixed(2))
 
-    // $.get(`/api/users/id/${groupMembers[0].email}`)
-    //     .then(getData => {
-    //         finalReceipt.ownerId = parseInt(getData)
-    // return 
     $.post('/api/receipts/', finalReceipt)
         .then(receipt => {
-            console.log(receipt)
-
-            // $.get(`/api/users/id/${assigneeEmail}`).then(getData => {
-            //     item.assigneeId = parseInt(getData)
-
-            // use receipt id to post items return $.post items console.log the data in then on chain
 
             let itemArr = []
             let itemQuantityOneArr = []
@@ -892,7 +880,7 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         quantity: itemQuantityOneArr[i].quantity,
                         price: itemQuantityOneArr[i].price / itemQuantityOneArr[i].children,
                         isPaid: groupMembers[0].id === memberId ? true : false,
-                        //taxTipAllocation: null,
+                        //here taxTipAllocation: null,
                         receiptId: parseInt(receipt),
                         assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
@@ -908,119 +896,9 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                     }
                 }
             }
-
-            console.log(finalItems)
-
             for (let i in finalItems) {
                 $.post('/api/items/', finalItems[i]).then(data => console.log(data))
             }
             return
         })
 })
-
-// $.get(`/api/users/id/${currentUserEmail}`, function(getData) {
-//     finalReceipt.ownerId = parseInt(getData)
-
-//     $.post('/api/receipts/', finalReceipt).done(function(postData) {
-//         console.log(postData)
-
-//         //upload items
-//       })
-// })
-
-//then replace username w/ id
-
-// $('[data-id="all-group-members"]')
-
-// let items = $(`.user-wrapper-${itemCountArr[i]}`).find('.current-user-member-badge').get().map(element => element ? element.id : false)
-
-// for (let i in items) {
-
-//         let name = items[i].split('-')
-//         name.splice(0, 1)
-//         name = name.join('')
-//         console.log(name)
-
-//         if (name === 'allgroupmembers') {
-//             for (let i in groupMembers) {
-//                 obj.assigneeId = groupMembers[i].id
-
-//                 if (i !== 0)
-//                     obj.isPaid = false
-
-//                 let allocation = parseFloat(1.00 / parseFloat(groupMembers.length))
-
-//                 let result = parseFloat(obj.price * allocation).toFixed(2)
-
-//                 obj.price = parseFloat(result)
-
-//                 finalItems.push(obj)
-//             }
-
-//             }
-// groupMembers.forEach(item => {
-
-//     obj.assigneeId = item.id
-
-//     if (groupMembers[0].id !== item.id)
-//         obj.isPaid = false
-
-//     if (groupMembers.length > 1) {
-//         let allocation = parseFloat(groupMembers.length / 100)
-
-//         let result = parseFloat(obj.price * allocation).toFixed(2)
-
-//         obj.price = parseFloat(result)
-
-//         finalItems.push(obj)
-//     } else {
-//         finalItems.push(obj)
-//     }
-// })
-// } //keep below???????????????
-// else {
-
-//     groupMembers.forEach(item => item.displayName.toLowerCase() === name ? memberIndex = groupMembers.indexOf(item) : false)
-
-//     console.log(memberIndex, groupMembers[memberIndex])
-
-//     obj.assigneeId = groupMembers[memberIndex].id
-
-//     if (memberIndex !== 0)
-//         obj.isPaid = false
-
-//     if ($(`.user-wrapper-${itemCountArr[i]}`).children().length > 1) {
-//         let allocation = $(`.user-wrapper-${itemCountArr[i]}`).children().find('.assigned-member-allocation').val()
-//         allocation = parseFloat(parseInt(allocation.substring(0, allocation.length - 1)) / 100)
-
-//         obj.price = obj.price * allocation
-
-//         finalItems.push(obj)
-//     } else {
-//         finalItems.push(obj)
-//     }
-// }
-
-// }
-
-// }) 
-// console.log(finalReceipt, finalItems)
-
-
-
-// (item.amount / receipt.subTotal) * tax = item allocation
-// (item.amount / receipt.subTotal) * tip =  item allocation
-
-
-
-//     // ids
-//     item-name-1
-//     item-quantity-1
-//     item-amount-1 & assigned-member-allocation . value = 100%
-//    paid t/f if assignee = owener, paid = true : false 
-//     //id
-//     user-wrapper-1
-//         data-id="user-current-username" //via email
-
-
-//grab values and hit route with items and receipt
