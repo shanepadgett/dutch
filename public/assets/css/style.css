@@ -1,6 +1,6 @@
 /*GLOBALS*/
 
-@import url('https://fonts.googleapis.com/css?family=Nunito:300,700|Yeseva+One');
+@import url('https://fonts.googleapis.com/css?family=Nunito:300,700|Tajawal');
 
 :root {
     --void: #0e0b16;
@@ -12,7 +12,8 @@
     --white: #ffffff;
     --green: #33d9b2;
     --sand: #f7f1e3;
-    --red: #ff5252;
+    --red: #DC5D36; /*ff5252*/
+    --orange: #DC5D36;
 }
 
 /* BACKGROUND COLORS */
@@ -134,11 +135,16 @@ body {
     font-weight: 300;
 }
 
+.navbar-brand {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 25px;
+}
 
-/* .item-container,
+
+.item-container,
 .analyze-btn {
     display: none;
-} */
+}
 
 .btn-outline-secondary {
     border: 1px solid #ced4da;

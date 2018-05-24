@@ -41,6 +41,15 @@ class User {
       }
     }).then(user => res.json(user))
   }
+
+  static getAuthUser(req, res) {
+    console.log(req.user)
+    return dbUser.findOne({
+      where: {
+        displayName: req.user.nickname
+      }
+    }).then(user => res.json(user))
+  }
 }
 
 module.exports = User
