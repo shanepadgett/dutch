@@ -575,6 +575,13 @@ function checkTaxTip() {
         $('#tip-amount').val(tip)
     }
 
+    if ($('#location').val().trim() === '') {
+        $('#location').addClass('is-invalid rounded-right').removeClass('is-valid')
+        invalidInput = true
+    } else {
+        $('#location').removeClass('is-invalid').addClass('is-valid')
+    }
+
     return invalidInput
 }
 
