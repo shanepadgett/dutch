@@ -10,7 +10,7 @@ module.exports = {
     dialect: 'mysql'
   },
   production: {
-    url: process.env.JawsDB_URL,
+    url: "mysql://pkbekmxkd4vxedv4:e6jvymqebtnzhvo9@zf4nk2bcqjvif4in.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/wsfk48l52dpisnok",
     dialect: 'mysql'
   }
 }
