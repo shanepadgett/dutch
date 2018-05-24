@@ -1,0 +1,30 @@
+<div id="collapse{{receiptId}}" class="collapse" aria-labelledby="heading{{receiptId}}" data-parent="#accordion">
+  <div class="simple-receipt-accordion p-3 mt-2">
+    <h5 class="text-center">Your Allocated Items</h5>
+    <hr class="hr-gray">
+    <div class="row">
+      <div class="col-4">
+        <h5 class="text-center">Item</h5>
+      </div>
+      <div class="col-4">
+        <h5 class="text-center">Price</h5>
+      </div>
+      <div class="col-4">
+        <h5 class="text-center">Total (incl tax & tip)</h5>
+      </div>
+    </div>
+    {{#each items}}
+      <div class="row receipt-item-{{receiptId}}" data-item-id="{{id}}">
+        <div class="col-4">
+          <h5 class="text-center list-item-text">{{name}}</h5>
+        </div>
+        <div class="col-4">
+          <h5 class="text-center list-item-text">{{price}}</h5>
+        </div>
+        <div class="col-4">
+          <h5 class="text-center list-item-text">{{total}}</h5>
+        </div>
+      </div>
+    {{/each}}
+  </div>
+</div>

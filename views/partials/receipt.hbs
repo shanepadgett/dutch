@@ -1,0 +1,288 @@
+<div class="container mt-3">
+    <form class="upload-form" enctype="multipart/form-data" method="post" action="#">
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-receipt"></i> Receipts
+                </h5>
+            </div>
+            <div class="card-body bg-sand rounded">
+                <div class="row">
+                    <div class="col-6">
+                        <label class="file-input-label w-100 text-center btn-secondary p-2 rounded" for="file-input">
+                            <i class="fas fa-image fa-lg"></i>
+                            Add Image
+                        </label>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-secondary btn-block enter-data-btn">
+                            <i class="fas fa-keyboard"></i> Enter Data</button>
+                    </div>
+                </div>
+
+                <input id="file-input" class="file-upload" name="receipt-image" type="file" onchange="renderImg()" />
+                <div class="img-wrapper mt-3">
+                    <img class="img-preview" src="" height="500" alt="Image preview...">
+                </div>
+                <button type="button" class="btn bg-fuschia-btn text-white btn-block analyze-btn" type="submit" value="submit">
+                    <i class="fas fa-bolt fa-lg"></i> Analyze</button>
+                <div class="progress mt-3">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+<!-- Location & Date -->
+<div class="container mt-3 item-container">
+    <div class="card item-card">
+        <div class="card-body bg-sand rounded">
+            <div class="card mb-3">
+                <div class="card-body bg-sand rounded">
+                    <form>
+                        <div class="form-row">
+                            <div class="form-group col-lg-5 col-md-6 col-12 mb-3 mb-lg-0">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-map-marker"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="location" placeholder="Location">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-3 col-md-6 col-12 mb-3 mb-lg-0">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar-alt"></i>
+                                        </div>
+                                    </div>
+                                    <input type="text" class="form-control" id="date" placeholder="05/24/2018">
+                                </div>
+                            </div>
+                            <div class="form-group col-lg-2 col-6">
+                                <button class="btn btn-outline-secondary split-allocate-btn btn-block" data-id="split" data-toggle="collapse" data-target="#collapseTwo"
+                                    aria-expanded="false" aria-controls="collapseTwo">
+                                    <i class="fas fa-users"></i> Split Evenly
+                                </button>
+                            </div>
+                            <div class="form-group col-lg-2 col-6">
+                                <button class="btn btn-secondary split-allocate-btn btn-block" data-id="allocate" data-toggle="collapse" data-target="#collapseOne"
+                                    aria-expanded="true" aria-controls="collapseOne">
+                                    <i class="fas fa-user"></i> Allocate
+                                </button>
+                            </div>
+                        </div>
+                        <div id="accordion" class="text-justify mt-3">
+                            <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                                <div class="">
+                                    You've selected to allocate specific items to specific group members. This is the default action. Add group members below.
+                                    Once added below, you can add group members to specific items. To split the entire receipt
+                                    evenly to all group members, select the
+                                    <button class="btn btn-outline-secondary disabled" type="button">
+                                        <i class="fas fa-users"></i> Split Evenly
+                                    </button> button above.
+                                </div>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                                <div class="">
+                                    You've selected to split the entire receipt evenly. Add group members below. All group members will be responsible for an
+                                    equal share of the total amount of this receipt. To allocate specific items to specific
+                                    group members, select the
+                                    <button class="btn btn-outline-secondary disabled" type="button">
+                                        <i class="fas fa-user"></i> Allocate
+                                    </button> button above.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="group-members">
+                            <div class="form-row current-user-member-badge mt-3">
+                                <div class="form-group col-12">
+                                    <span class="clickable btn ">
+                                        <img src="http://via.placeholder.com/60x60" class="rounded-circle mr-4 assigned-member-badge" id="current-user-img">
+                                        <span class="the-current-user">Current Username</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-12 col-9 mt-2">
+                                <span class="clickable-member-badge btn">
+                                    <img src="" class="placeholder-hidden fas fa-plus-circle mr-3 add-member-badge rounded-circle" alt="" data-toggle="tooltip"
+                                        data-placement="top" title="Click to add user">
+                                    <input type="text" class="rounded form-control add-member-input" placeholder="Add Group Member">
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- Items -->
+            <div class="card mb-3">
+                <div class="card-body bg-sand rounded">
+                    <form>
+                        <table class="table table-striped">
+                            <tbody class="items-form-block">
+
+                            </tbody>
+                        </table>
+                        <div class="form-row">
+                            <div class="form-group col-12 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Tax</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right format-float rounded-right" id="tax-amount" placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Please enter zero, or a valid tax amount.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Tax looks good! Double check the receipt to make sure it's correct!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12 mb-3">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Tip</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right format-float rounded-right" id="tip-amount" placeholder="0.00">
+                                    <div class="invalid-feedback">
+                                        Please enter zero, or a valid tip amount.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        Tip looks good!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-12">
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text total-block text-fuschia">Total</div>
+                                    </div>
+                                    <input type="text" class="form-control text-right format-float" id="total-amount" placeholder="0.00">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-outline-secondary rounded-right recalculate-total-btn" type="button">
+                                            <i class="fas fa-sync-alt"></i> Recalculate
+                                        </button>
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        This total does not equal the sum of the items above (including tax + tip). Please add or remove items, correct item amounts,
+                                        or correct the total amount. Then click the Recalculate button above.
+                                    </div>
+                                    <div class="valid-feedback">
+                                        This total equals the sum of the items above. Nice!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <form class="submit-button-block">
+                <div class="form-row">
+                    <div class="form-group col-md-6 mb-3 mb-md-0">
+                        <button type="button" class="btn bg-primary text-white btn-block save-receipt-btn">
+                            <i class="fas fa-check-circle"></i>
+                            Save
+                        </button>
+                    </div>
+                    <div class="form-group col-md-3 col-6">
+                        <button type="button" class="btn btn-light btn-block add-item">
+                            <i class="fas fa-plus-circle"></i>
+                            Add Item
+                        </button>
+                    </div>
+                    <div class="form-group col-md-3 col-6">
+                        <button type="button" class="btn bg-light btn-block close-receipt-btn">
+                            <i class="fas fa-times-circle text-red"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group mt-3 col-12">
+                        <button type="button" class="btn bg-red btn-danger btn-block complete-form">
+                            <i class="fas fa-exclamation-circle text-white"></i>
+                            Please complete all required items
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- /.item-card -->
+</div>
+<!-- /.item-container -->
+<div class="container mt-3 receipt-container">
+    {{#each receipts}}
+    <div id="accordion">
+        <div class="card mb-3">
+            <div class="card-header" id="heading{{id}}" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                <h5 class="mb-0">
+                    <div class="row">
+                        <div class="col-6 col-md-10 text-left">
+                            <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                                <i class="fas fa-receipt"></i>
+                            </button>
+                            <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                                {{receiptDate}}
+                            </button>
+                            <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                                {{place}}
+                            </button>
+                        </div>
+                        <div class="col-6 col-md-2 text-right">
+                            <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                                $ {{receiptTotal}}
+                            </button>
+                        </div>
+                    </div>
+                </h5>
+            </div>
+            <div id="collapse{{id}}" class="collapse" aria-labelledby="heading{{id}}" data-parent="#accordion">
+                <div class="card-body">
+                    {{#each Items}}
+                    <table class="table table-striped">
+                        <tbody class="receipt-form-block">
+                            <tr>
+                                <td>
+                                    <div class="row receipt-member-row">
+                                        <div class="col-12 col-md-9">
+                                            <img src="{{User.avatar}}" class="rounded-circle mr-4 receipt-member-badge" data-toggle="tooltip" data-placement="top" title="{{User.displayName}}">
+                                            <span class="text-left">
+                                                <button type="button" class="btn btn-light mr-2 d-none d-md-inline">{{User.displayName}}</button>
+                                            </span>
+                                            <span class="text-left">
+                                                {{name}}
+                                            </span>
+                                        </div>
+                                        <div class="col-10 col-md-2 text-right margin-top-center-two">
+                                            $ {{taxTip}}
+                                        </div>
+                                        <div class="col-2 col-md-1 text-center margin-top-center-two">
+                                            {{#if isPaid}}
+                                            <i class="fas fa-check-circle"></i>
+                                            {{else}}
+                                            <i class="fas fa-exclamation-circle text-red"></i>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {{/each}}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

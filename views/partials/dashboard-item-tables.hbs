@@ -1,0 +1,24 @@
+<div class="container mt-5">
+  <div class="card w-100">
+    <div class="card-header">
+      <h3 class="text-center m-0 list-items-title">Unpaid Receipts</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      {{#each receipts}} {{#unless isReceiptPaid}}
+        {{> dashboard-receipt-table-li receipt=this}}
+      {{/unless}} {{/each}}
+    </ul>
+  </div>
+
+  <div class="card w-100 mt-5">
+    <div class="card-header">
+      <h3 class="text-center m-0 list-items-title">Paid Receipts</h3>
+    </div>
+    <ul class="list-group list-group-flush">
+      {{#each receipts}} {{#if isReceiptPaid}}
+        {{> dashboard-receipt-table-li receipt=this}}
+      {{/if}} {{/each}}
+    </ul>
+  </div>
+</div>
+

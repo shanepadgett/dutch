@@ -1,0 +1,15 @@
+{{> nav}}
+<div class="row">
+  <div class="col">
+    <h1 class="text-center pt-3">Welome, {{user.nickname}}</h1>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col d-flex">
+    <img class="mx-auto rounded-circle dashboard-avatar" src="{{user.picture}}" alt="avatar">
+  </div>
+</div>
+
+{{> dashboard-item-tables items=items}}
+{{> footer}}
