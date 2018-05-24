@@ -12,7 +12,8 @@
     --white: #ffffff;
     --green: #33d9b2;
     --sand: #f7f1e3;
-    --red: #ff5252;
+    --red: #DC5D36; /*ff5252*/
+    --orange: #DC5D36;
 }
 
 /* BACKGROUND COLORS */
@@ -140,10 +141,10 @@ body {
 }
 
 
-/* .item-container,
+.item-container,
 .analyze-btn {
     display: none;
-} */
+}
 
 .btn-outline-secondary {
     border: 1px solid #ced4da;
