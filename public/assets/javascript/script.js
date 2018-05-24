@@ -590,6 +590,13 @@ function checkTaxTip() {
         $('#location').removeClass('is-invalid').addClass('is-valid')
     }
 
+    if ($('#date').val().trim() === '') {
+        $('#date').addClass('is-invalid rounded-right').removeClass('is-valid')
+        invalidInput = true
+    } else {
+        $('#date').removeClass('is-invalid').addClass('is-valid')
+    }
+
     if (invalidInput) {
         $('.complete-form').show()
         $('.submit-button-row').remove()
@@ -627,7 +634,7 @@ $('.clickable-member-badge').on('click', function () {
     $.get(`/api/users/user/${text}`).then(data => {
         if(!data)
             return
-            
+
         memberIndex = groupMembers.length
         groupMembers.push(data)
 
@@ -933,6 +940,8 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
                         receiptId: parseInt(receipt),
                         assigneeId: memberId ? parseInt(memberId) : membersArr[j]
                     }
+
+                    console.log(sumTaxTip, allocationBase, itemQuantityOneArr[i].price, itemQuantityOneArr[i].children)
 
                     finalItems.push(obj)
 

@@ -59,7 +59,7 @@
                                             <i class="fas fa-calendar-alt"></i>
                                         </div>
                                     </div>
-                                    <input type="text" class="form-control" id="date" placeholder="Date">
+                                    <input type="text" class="form-control" id="date" placeholder="05/24/2018">
                                 </div>
                             </div>
                             <div class="form-group col-lg-2 col-6">
@@ -227,17 +227,17 @@
             <div class="card-header" id="heading{{id}}" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
                 <h5 class="mb-0">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-9">
+                            {{!-- <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
+                                
+                            </button> --}}
                             <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
-                                {{place}}
+                                <i class="fas fa-receipt"></i> {{place}}
                             </button>
                         </div>
-                        <div class="col-6 text-right">
+                        <div class="col-3 text-right">
                             <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
                                 $ {{receiptTotal}}
-                            </button>
-                            <button class="btn btn-light" data-toggle="collapse" data-target="#collapse{{id}}" aria-expanded="false" aria-controls="collapse{{id}}">
-                                <i class="fas fa-check-circle"></i>
                             </button>
                         </div>
                     </div>
@@ -246,9 +246,36 @@
             <div id="collapse{{id}}" class="collapse" aria-labelledby="heading{{id}}" data-parent="#accordion">
                 <div class="card-body">
                     {{#each Items}}
-                    <ul>
-                        <li>{{price}} {{isPaid}} {{User.avatar}}</li>
-                    </ul>
+                    <table class="table table-striped">
+                        <tbody class="items-form-block">
+                            <tr>
+                                <td>
+                                    <div class="row receipt-member-row mt-3">
+                                        <div class="col-4">
+                                            <span class="btn">
+                                                <img src="{{User.avatar}}" class="rounded-circle mr-4 receipt-member-badge">
+                                                <span class="receipt-member">{{User.displayName}}</span>
+                                            </span>
+                                        </div>
+                                        <div class="col-3 text-truncate text-right">
+                                            {{name}}
+                                        </div>
+                                        <div class="col-3 text-right">
+                                            {{price}} 
+                                   
+                                        </div>
+                                        <div class="col-2 text-center">
+                                                     {{#if isPaid}}
+                                            <i class="fas fa-check-circle"></i>
+                                            {{else}}
+                                            <i class="fas fa-exclamation-circle text-red"></i>
+                                            {{/if}}
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     {{/each}}
                 </div>
 
