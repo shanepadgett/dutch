@@ -72,6 +72,23 @@ function renderImg() {
 
 // Process OCR Receipt Image
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-//
+$('.enter-data-btn').on('click', function (event) {
+    event.preventDefault()
+
+    console.log($('.item-container').height())
+
+    $('.item-container').fadeIn()
+
+    $('.progress')
+        .animate({
+            width: '0%'
+        }, function () {
+            $('html, body').animate({
+                scrollTop: ($('.item-container').offset().top) - 74
+            }, 1000)
+        })
+})
+
 $('.analyze-btn').on('click', function (event) {
     event.preventDefault()
 
@@ -533,12 +550,6 @@ $('.save-receipt-btn').on('click', function (event) {
         .append(divTwo)
 
     $('.submit-button-block').append(divOne)
-
-    let container = $('.item-container')
-
-    $('html, body').animate({
-        scrollTop: container.prop('scrollHeight')
-    }, 1000)
 })
 
 function checkTaxTip() {
@@ -901,4 +912,43 @@ $(document).on('click', '.final-submit', function () { //here, make hover x for 
             }
             return
         })
+    resetAddReceipt()
 })
+
+$('.close-receipt-btn').on('click',function () {
+    resetAddReceipt()
+})
+
+function resetAddReceipt() {
+
+    $('.submit-button-row').remove()
+    $('.item-wrapper').remove()
+    $('.assigned-member-row').remove()
+
+    $('#total-amount').removeClass('is-invalid is-valid')
+    $('#tip-amount').removeClass('is-invalid is-valid')
+    $('#tax-amount').removeClass('is-invalid is-valid')
+
+    groupMembers = groupMembers[0]
+
+    $(':input').val('')
+    $('.item-container').fadeOut()
+    $('.analyze-btn').fadeOut()
+
+    $('html, body').animate({
+            scrollTop: 0
+        }, function () {
+            $('.img-preview').fadeOut()
+        },
+        function () {
+            $('.img-wrapper')
+                .animate({
+                    height: '0px'
+                }, function () {
+                    $('.progress')
+                        .animate({
+                            width: '100%'
+                        })
+                })
+        })
+}
