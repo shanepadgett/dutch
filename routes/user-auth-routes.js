@@ -41,7 +41,7 @@ module.exports = app => {
         }
       }).then(result => {
         if (result) {
-          res.redirect(req.session.returnTo || '/dashboard')
+          res.redirect(/*req.session.returnTo ||*/ '/dashboard')
         } else {
           db.User.create({
             authId: req.user.id,
@@ -51,7 +51,7 @@ module.exports = app => {
             displayName: req.user.nickname,
             avatar: req.user.picture
           })
-            .then(data => res.redirect(req.session.returnTo || '/dashboard'))
+            .then(data => res.redirect(/*req.session.returnTo ||*/ '/dashboard'))
             .catch(err => res.json(err))
         }
       })
