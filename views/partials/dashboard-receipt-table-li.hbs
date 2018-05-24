@@ -1,37 +1,44 @@
 <li class="list-group-item">
-  <div class="row">
-    <div class="col-6 col-sm-2 d-flex">
-      <h5 class="m-0 my-auto mx-auto list-item-text text-center">{{receipt.place}}</h5>
-    </div>
-    <div class="col-6 col-sm-2 d-flex">
-      {{#if receipt.isReceiptPaid}}
+  <div id="accordion">
+    <div class="row">
+      <div class="col-6 col-sm-2 d-flex">
+        <h5 class="m-0 my-auto mx-auto list-item-text text-center">{{receipt.place}}</h5>
+      </div>
+      <div class="col-6 col-sm-2 d-flex">
+        {{#if receipt.isReceiptPaid}}
         <h5 class="m-0 my-auto mx-auto list-item-text text-center text-success font-weight-bold">${{receipt.allocTotal}}</h5>
-      {{else}}
+        {{else}}
         <h5 class="m-0 my-auto mx-auto list-item-text text-center text-danger font-weight-bold">${{receipt.allocTotal}}</h5>
-      {{/if}}
-    </div>
-    <div class="col-12 col-sm-4 mt-4 mt-sm-0 d-flex">
-      <h5 class="m-0 my-auto mx-auto list-item-text">
-        {{receipt.receiptDate}}
-      </h5>
-    </div>
-    {{#if receipt.isReceiptPaid}}
+        {{/if}}
+      </div>
       <div class="col-12 col-sm-4 mt-4 mt-sm-0 d-flex">
-        <button type="button" class="btn btn-secondary btn-block"><i class="far fa-eye mr-2"></i>View</button>
+        <h5 class="m-0 my-auto mx-auto list-item-text">
+          {{receipt.receiptDate}}
+        </h5>
+      </div>
+      {{#if receipt.isReceiptPaid}}
+      <div class="col-12 col-sm-4 mt-4 mt-sm-0 d-flex">
+        <button type="button" class="btn btn-secondary btn-block" data-toggle="collapse" data-target="#collapse{{receipt.id}}" aria-expanded="false"
+          aria-controls="collapse{{receipt.id}}">
+          <i class="far fa-eye mr-2"></i>View</button>
       </div>
       <div class="col-12">
-        {{> dashboard-receipt-table-li-accordion items=receipt.items}}
+        {{> dashboard-receipt-table-li-accordion id=receipt.id items=receipt.items}}
       </div>
       {{else}}
-        <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
-          <button type="button" class="btn btn-secondary btn-block"><i class="far fa-eye mr-2"></i>View</button>
-        </div>
-        <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
-          <button type="button" class="btn btn-secondary btn-block"><i class="fas fa-money-bill-wave-alt mr-2"></i>Pay</button>
-        </div>
-        <div class="col-12">
-        {{> dashboard-receipt-table-li-accordion items=receipt.items}}
+      <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
+        <button type="button" class="btn btn-secondary btn-block" data-toggle="collapse" data-target="#collapse{{receipt.id}}" aria-expanded="false"
+          aria-controls="collapse{{receipt.id}}">
+          <i class="far fa-eye mr-2"></i>View</button>
+      </div>
+      <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
+        <button type="button" class="btn btn-secondary btn-block">
+          <i class="fas fa-money-bill-wave-alt mr-2"></i>Pay</button>
+      </div>
+      <div class="col-12">
+        {{> dashboard-receipt-table-li-accordion id=receipt.id items=receipt.items}}
       </div>
       {{/if}}
+    </div>
   </div>
 </li>
