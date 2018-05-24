@@ -18,7 +18,8 @@ class Receipt {
               as: 'owner'
             },
             {
-              model: dbItem
+              model: dbItem,
+              include: [{ model: dbUser}]
             }
           ]
         })

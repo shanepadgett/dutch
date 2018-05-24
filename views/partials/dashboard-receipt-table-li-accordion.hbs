@@ -1,4 +1,4 @@
-<div id="collapse{{id}}" class="collapse" aria-labelledby="heading{{id}}" data-parent="#accordion">
+<div id="collapse{{receiptId}}" class="collapse" aria-labelledby="heading{{receiptId}}" data-parent="#accordion">
   <div class="simple-receipt-accordion p-3 mt-2">
     <h5 class="text-center">Your Allocated Items</h5>
     <hr class="hr-gray">
@@ -14,7 +14,7 @@
       </div>
     </div>
     {{#each items}}
-      <div class="row">
+      <div class="row receipt-item-{{receiptId}}" data-itemId="{{id}}">
         <div class="col-4">
           <h5 class="text-center list-item-text">{{name}}</h5>
         </div>

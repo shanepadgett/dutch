@@ -16,7 +16,7 @@ class Item {
             /*{ model: dbUser, as: 'assignee' },*/
             {
               model: dbReceipt,
-              include: [{ model: dbUser, as: 'owner'}]
+              include: [{ model: dbUser, as: 'owner' }]
             }
           ]
         })
@@ -35,6 +35,22 @@ class Item {
         assigneeId: body.assigneeId
       })
       .then(data => res.json(data.id))
+      .catch(err => res.json(err))
+  }
+
+  static updateItem(req, res) {
+    dbItem
+      .update(
+        {
+          isPaid: req.body.isPaid
+        },
+        {
+          where: {
+            id: req.params.id
+          }
+        }
+      )
+      .then(data => res.json(data))
       .catch(err => res.json(err))
   }
 }

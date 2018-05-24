@@ -959,3 +959,7 @@ function resetAddReceipt() {
                 })
         })
 }
+
+$(document).on('click', '.btn-pay', function () {
+    console.log(this)
+})

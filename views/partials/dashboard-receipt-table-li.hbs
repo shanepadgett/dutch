@@ -23,7 +23,7 @@
           <i class="far fa-eye mr-2"></i>View</button>
       </div>
       <div class="col-12">
-        {{> dashboard-receipt-table-li-accordion id=receipt.id items=receipt.items}}
+        {{> dashboard-receipt-table-li-accordion receiptId=receipt.id items=receipt.items}}
       </div>
       {{else}}
       <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
@@ -32,11 +32,11 @@
           <i class="far fa-eye mr-2"></i>View</button>
       </div>
       <div class="col-12 col-sm-2 mt-4 mt-sm-0 d-flex">
-        <button type="button" class="btn btn-secondary btn-block">
+        <button type="button" class="btn btn-secondary btn-block btn-pay" id="pay-{{receipt.id}}">
           <i class="fas fa-money-bill-wave-alt mr-2"></i>Pay</button>
       </div>
       <div class="col-12">
-        {{> dashboard-receipt-table-li-accordion id=receipt.id items=receipt.items}}
+        {{> dashboard-receipt-table-li-accordion receiptId=receipt.id items=receipt.items}}
       </div>
       {{/if}}
     </div>
