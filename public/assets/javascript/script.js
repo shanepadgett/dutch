@@ -1035,3 +1035,6 @@ $(document).on('click', '.btn-pay', function () {
         }
     })
 })
+
+//here add a remove receipt button for posted receipts, mocha and chai testing
+//black div, white border shadow all around
